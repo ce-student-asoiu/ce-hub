@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Search | CE HUB</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <nav class="navbar">
+
+        <div class="logo">
+            CE <span>HUB</span>
+        </div>
+
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="index.html#subjects">Subjects</a></li>
+            <li><a href="exams.html">Exams</a></li>
+            <li><a href="deadlines.html">Deadlines</a></li>
+        </ul>
+
+    </nav>
+
+
+    <main class="course-page">
+
+        <a href="index.html" class="back-link">
+            ← Back to CE HUB
+        </a>
+
+
+        <div class="course-header">
+
+            <div>
+                <p class="eyebrow">CE HUB SEARCH</p>
+
+                <h1>🔍 Search</h1>
+
+                <p>
+                    Find subjects, materials, topics and useful resources.
+                </p>
+            </div>
+
+        </div>
+
+
+        <section class="info-card">
+
+            <h2>Search CE HUB</h2>
+
+            <input
+                type="text"
+                id="searchInput"
+                class="search-input"
+                placeholder="Search for a subject, topic or material..."
+            >
+
+
+            <div id="searchResults" class="search-results">
+
+
+                <!-- Computer Engineering Fundamentals -->
+                <a href="computer-engineering-fundamentals.html"
+                   class="search-result">
+
+                    <h3>Computer Engineering Fundamentals</h3>
+
+                    <p>
+                        Lectures, labs and course resources.
+                    </p>
+
+                </a>
+
+
+                <!-- Fundamentals of Programming -->
+                <a href="programming.html"
+                   class="search-result">
+
+                    <h3>Fundamentals of Programming</h3>
+
+                    <p>
+                        Programming lectures, labs, exercises and English terms.
+                    </p>
+
+                </a>
+
+
+                <!-- Linear Algebra -->
+                <a href="linear-algebra.html"
+                   class="search-result">
+
+                    <h3>Linear Algebra &amp; Analytic Geometry</h3>
+
+                    <p>
+                        Course materials, exercises and important topics.
+                    </p>
+
+                </a>
+
+
+                <!-- Computer Graphics -->
+                <a href="graphics.html"
+                   class="search-result">
+
+                    <h3>Computer Graphics</h3>
+
+                    <p>
+                        Course materials, topics and learning resources.
+                    </p>
+
+                </a>
+
+
+                <!-- Entrepreneurship -->
+                <a href="entrepreneurship.html"
+                   class="search-result">
+
+                    <h3>Entrepreneurship &amp; Introduction to Business</h3>
+
+                    <p>
+                        Seminars, business topics and course materials.
+                    </p>
+
+                </a>
+
+
+                <!-- Multiculturalism -->
+                <a href="multiculturalism.html"
+                   class="search-result">
+
+                    <h3>Introduction to Multiculturalism</h3>
+
+                    <p>
+                        Course materials and learning resources.
+                    </p>
+
+                </a>
+
+
+                <!-- No Results -->
+                <p id="noResults" style="display: none;">
+                    No results found.
+                </p>
+
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script>
+
+        const searchInput = document.getElementById("searchInput");
+        const results = document.querySelectorAll(".search-result");
+        const noResults = document.getElementById("noResults");
+
+
+        searchInput.addEventListener("input", function () {
+
+            const searchText = searchInput.value.toLowerCase().trim();
+
+            let found = false;
+
+
+            results.forEach(function (result) {
+
+                const text = result.textContent.toLowerCase();
+
+
+                if (text.includes(searchText)) {
+
+                    result.style.display = "block";
+                    found = true;
+
+                } else {
+
+                    result.style.display = "none";
+
+                }
+
+            });
+
+
+            if (searchText !== "" && !found) {
+
+                noResults.style.display = "block";
+
+            } else {
+
+                noResults.style.display = "none";
+
+            }
+
+        });
+
+    </script>
+
+
+</body>
+
+</html>

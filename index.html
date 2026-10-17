@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CE HUB | Computer Engineering</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="logo">
+            CE <span>HUB</span>
+        </div>
+
+        <ul class="nav-links">
+            <li><a href="#">Home</a></li>
+            <li><a href="#subjects">Subjects</a></li>
+            <li><a href="exams.html">Exams</a></li>
+            <li><a href="deadlines.html">Deadlines</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <p class="welcome">WELCOME TO CE HUB</p>
+
+        <h1>
+            Your academic life,
+            <br>
+            <span>in one place.</span>
+        </h1>
+
+        <p>
+            Courses, materials, exams and academic progress —
+            everything you need as a student, organized in one place.
+        </p>
+
+        <a href="#subjects" class="primary-btn">
+            Explore Subjects →
+        </a>
+    </section>
+
+    <!-- Subjects -->
+    <section class="dashboard" id="subjects">
+
+        <div class="section-title">
+            <div>
+                <p class="small-title">YOUR ACADEMIC SPACE</p>
+                <h2>📚 Your Subjects</h2>
+            </div>
+
+            <span class="course-count">6 Courses</span>
+        </div>
+
+        <div class="subjects-grid">
+
+            <a href="computer-engineering-fundamentals.html"
+               class="subject-card">
+                <div class="subject-icon">💻</div>
+                <div class="subject-info">
+                    <h3>Computer Engineering Fundamentals</h3>
+                    <p>Labs &amp; lectures</p>
+                </div>
+                <span class="arrow">→</span>
+            </a>
+
+            <a href="programming.html" class="subject-card">
+                <div class="subject-icon">🐍</div>
+                <div class="subject-info">
+                    <h3>Fundamentals of Programming</h3>
+                    <p>Labs &amp; lectures</p>
+                </div>
+                <span class="arrow">→</span>
+            </a>
+
+            <a href="linear-algebra.html" class="subject-card">
+                <div class="subject-icon">📐</div>
+                <div class="subject-info">
+                    <h3>Linear Algebra &amp; Analytic Geometry</h3>
+                    <p>Exercises &amp; topics</p>
+                </div>
+                <span class="arrow">→</span>
+            </a>
+
+            <a href="graphics.html" class="subject-card">
+                <div class="subject-icon">🎨</div>
+                <div class="subject-info">
+                    <h3>Computer Graphics</h3>
+                    <p>Topics &amp; materials</p>
+                </div>
+                <span class="arrow">→</span>
+            </a>
+
+            <a href="entrepreneurship.html" class="subject-card">
+                <div class="subject-icon">💼</div>
+                <div class="subject-info">
+                    <h3>Entrepreneurship &amp; Introduction to Business</h3>
+                    <p>Seminars &amp; materials</p>
+                </div>
+                <span class="arrow">→</span>
+            </a>
+
+            <a href="multiculturalism.html" class="subject-card">
+                <div class="subject-icon">🌍</div>
+                <div class="subject-info">
+                    <h3>Introduction to Multiculturalism</h3>
+                    <p>Lectures &amp; topics</p>
+                </div>
+                <span class="arrow">→</span>
+            </a>
+
+        </div>
+    </section>
+
+    <!-- Quick Access -->
+    <section class="dashboard" id="exams">
+
+        <div class="section-title">
+            <div>
+                <p class="small-title">QUICK ACCESS</p>
+                <h2>🎯 Student Tools</h2>
+            </div>
+        </div>
+
+        <div class="tools-grid">
+
+            <a href="exams.html" class="tool-card">
+                <div class="tool-icon">📝</div>
+                <h3>Exam Center</h3>
+                <p>
+                    Prepare for upcoming exams and review important topics.
+                </p>
+            </a>
+
+            <a href="deadlines.html" class="tool-card">
+                <div class="tool-icon">📅</div>
+                <h3>Deadlines</h3>
+                <p>
+                    Keep track of assignments, projects and important dates.
+                </p>
+            </a>
+
+            <a href="search.html" class="tool-card">
+                <div class="tool-icon">🔍</div>
+                <h3>Search</h3>
+                <p>
+                    Find subjects, materials, topics and useful resources.
+                </p>
+            </a>
+
+        </div>
+    </section>
+
+    <!-- Academic Progress -->
+    <section class="dashboard">
+
+        <div class="progress-section">
+
+            <div class="progress-header">
+                <div>
+                    <p class="small-title">YOUR PROGRESS</p>
+                    <h2>📊 Academic Progress</h2>
+                </div>
+
+                <strong id="progressPercentage">0%</strong>
+            </div>
+
+            <p class="progress-description" id="progressDescription">
+                Complete lessons and mini tests to track your progress.
+            </p>
+
+            <div
+                class="progress-bar"
+                id="academicProgressBar"
+                role="progressbar"
+                aria-label="Academic progress"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                aria-valuenow="0"
+            >
+                <div
+                    class="progress"
+                    id="academicProgressFill"
+                    style="width: 0%;"
+                ></div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="logo">
+            CE <span>HUB</span>
+        </div>
+
+        <p>Built for students. Designed for better learning.</p>
+
+        <p class="copyright">CE HUB © 2026</p>
+    </footer>
+
+    <!-- Academic Progress Script -->
+    <script>
+        (function () {
+            const STORAGE_KEY = "cehubProgressData";
+
+            const percentageElement =
+                document.getElementById("progressPercentage");
+
+            const fillElement =
+                document.getElementById("academicProgressFill");
+
+            const barElement =
+                document.getElementById("academicProgressBar");
+
+            const descriptionElement =
+                document.getElementById("progressDescription");
+
+            function updateProgress() {
+                let percentage = 0;
+
+                try {
+                    const savedData = localStorage.getItem(STORAGE_KEY);
+
+                    if (savedData) {
+                        const data = JSON.parse(savedData);
+
+                        const totalItems = Number(data.totalItems) || 0;
+
+                        const completedItems = Array.isArray(data.completedItems)
+                            ? data.completedItems
+                            : [];
+
+                        if (totalItems > 0) {
+                            percentage = Math.round(
+                                Math.min(
+                                    completedItems.length,
+                                    totalItems
+                                ) / totalItems * 100
+                            );
+                        }
+                    }
+                } catch (error) {
+                    console.error(
+                        "Could not load academic progress:",
+                        error
+                    );
+                }
+
+                percentageElement.textContent = percentage + "%";
+
+                fillElement.style.width = percentage + "%";
+
+                barElement.setAttribute(
+                    "aria-valuenow",
+                    percentage
+                );
+
+                if (percentage === 100) {
+                    descriptionElement.textContent =
+                        "Excellent work! You have completed all registered topics.";
+                } else if (percentage > 0) {
+                    descriptionElement.textContent =
+                        "Keep going! You have completed " +
+                        percentage +
+                        "% of your registered course topics.";
+                } else {
+                    descriptionElement.textContent =
+                        "Complete lessons and mini tests to track your progress.";
+                }
+            }
+
+            updateProgress();
+
+            // Refresh when progress changes in another open page.
+            window.addEventListener("storage", function (event) {
+                if (event.key === STORAGE_KEY || event.key === null) {
+                    updateProgress();
+                }
+            });
+        })();
+    </script>
+
+</body>
+</html>

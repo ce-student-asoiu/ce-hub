@@ -1,0 +1,1565 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Programming | CE HUB</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        .course-container {
+            max-width: 1000px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+        .course-header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .course-header h1 {
+            color: #1d4ed8;
+            margin-bottom: 10px;
+        }
+
+        .lecture-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 22px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04);
+        }
+
+        .lecture-card h3 {
+            margin: 0 0 8px;
+            color: #1f2937;
+        }
+
+        .lecture-card p {
+            margin: 0;
+            color: #6b7280;
+            line-height: 1.6;
+        }
+
+        .open-btn,
+        .primary-btn {
+            display: inline-block;
+            background: #2563eb;
+            color: white;
+            padding: 11px 22px;
+            border: none;
+            border-radius: 8px;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .open-btn:hover,
+        .primary-btn:hover {
+            background: #1d4ed8;
+        }
+
+        #lectureViewer {
+            display: none;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 28px;
+            margin: 30px 0;
+            line-height: 1.8;
+            overflow-wrap: anywhere;
+        }
+
+        #lectureContent h2 {
+            color: #1d4ed8;
+            margin-top: 5px;
+        }
+
+        #lectureContent h3 {
+            color: #1f2937;
+            margin-top: 25px;
+        }
+
+        #lectureContent h4 {
+            color: #374151;
+            margin-top: 20px;
+        }
+
+        #lectureContent ul,
+        #lectureContent ol {
+            padding-left: 25px;
+        }
+
+        #lectureContent li {
+            margin-bottom: 8px;
+        }
+
+        .code-example {
+            background: #111827;
+            color: #e5e7eb;
+            padding: 16px;
+            border-radius: 8px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            font-family: Consolas, monospace;
+            line-height: 1.6;
+        }
+
+        .info-box {
+            background: #eff6ff;
+            border-left: 4px solid #2563eb;
+            padding: 14px 18px;
+            margin: 18px 0;
+            border-radius: 5px;
+        }
+
+        .quiz-section {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 30px;
+            margin-top: 45px;
+            margin-bottom: 40px;
+        }
+
+        .quiz-intro {
+            text-align: center;
+        }
+
+        .quiz-intro h2 {
+            color: #1d4ed8;
+            margin-bottom: 10px;
+        }
+
+        .quiz-intro p {
+            color: #6b7280;
+        }
+
+        .time-limit {
+            font-weight: 600;
+            color: #374151;
+            margin: 18px 0;
+        }
+
+        .quiz-start {
+            font-size: 16px;
+            padding: 14px 30px;
+        }
+
+        #quizArea,
+        #quizResult {
+            display: none;
+        }
+
+        .quiz-top {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+            font-weight: 600;
+        }
+
+        #timer {
+            color: #dc2626;
+        }
+
+        .progress-track {
+            width: 100%;
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 25px;
+        }
+
+        #progressBar {
+            height: 100%;
+            width: 0%;
+            background: #2563eb;
+            transition: width 0.2s;
+        }
+
+        #questionText {
+            color: #1f2937;
+            font-size: 20px;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .answer-option {
+            display: block;
+            padding: 14px 16px;
+            border: 1px solid #d1d5db;
+            border-radius: 9px;
+            margin: 10px 0;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .answer-option:hover {
+            background: #eff6ff;
+            border-color: #2563eb;
+        }
+
+        .answer-option input {
+            margin-right: 10px;
+            accent-color: #2563eb;
+        }
+
+        .quiz-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+
+        .secondary-btn {
+            background: #e5e7eb;
+            color: #1f2937;
+            padding: 11px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .secondary-btn:hover {
+            background: #d1d5db;
+        }
+
+        .result-score {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1d4ed8;
+            margin: 15px 0;
+        }
+
+        .result-message {
+            color: #4b5563;
+            line-height: 1.7;
+        }
+
+        .review-item {
+            text-align: left;
+            border-top: 1px solid #e5e7eb;
+            padding: 15px 0;
+            line-height: 1.6;
+        }
+
+        .correct-answer {
+            color: #15803d;
+            font-weight: 600;
+        }
+
+        .wrong-answer {
+            color: #dc2626;
+            font-weight: 600;
+        }
+
+        @media (max-width: 600px) {
+            .lecture-card {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            #lectureViewer,
+            .quiz-section {
+                padding: 20px;
+            }
+
+            .open-btn {
+                width: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="logo">CE HUB</div>
+
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="index.html#subjects">Subjects</a></li>
+            <li><a href="exams.html">Exams</a></li>
+            <li><a href="deadlines.html">Deadlines</a></li>
+        </ul>
+    </nav>
+
+    <main class="course-container">
+
+        <!-- Course Header -->
+        <header class="course-header">
+            <h1>💻 Programming</h1>
+            <p>Computer Engineering — Course Materials</p>
+        </header>
+
+        <!-- Lecture List -->
+        <section id="lectureList">
+
+            <div class="lecture-card">
+                <div>
+                    <h3>Lecture 1: Introduction to Programming</h3>
+                    <p>Learn what programming is, how programs work, algorithms, programming languages, and your first Python program.</p>
+                </div>
+                <button class="open-btn" onclick="openLecture(0)">Open</button>
+            </div>
+
+            <div class="lecture-card">
+                <div>
+                    <h3>Lecture 2: Variables and Data Types</h3>
+                    <p>Understand variables, numbers, strings, Boolean values, input, type conversion, and operators in Python.</p>
+                </div>
+                <button class="open-btn" onclick="openLecture(1)">Open</button>
+            </div>
+
+            <div class="lecture-card">
+                <div>
+                    <h3>Lecture 3: Conditional Statements</h3>
+                    <p>Learn how programs make decisions using if, elif, else, comparison operators, and logical operators.</p>
+                </div>
+                <button class="open-btn" onclick="openLecture(2)">Open</button>
+            </div>
+
+            <div class="lecture-card">
+                <div>
+                    <h3>Lecture 4: Loops and Repetition</h3>
+                    <p>Explore for loops, while loops, range(), break, continue, nested loops, and common loop mistakes.</p>
+                </div>
+                <button class="open-btn" onclick="openLecture(3)">Open</button>
+            </div>
+
+        </section>
+
+        <!-- Lecture Viewer -->
+        <section id="lectureViewer">
+            <button class="secondary-btn" onclick="closeLecture()">← Back to Lectures</button>
+            <div id="lectureContent"></div>
+            <button class="secondary-btn" onclick="closeLecture()">← Back to Lectures</button>
+        </section>
+
+        <!-- Mini Test -->
+        <section class="quiz-section" id="miniTest">
+
+            <div class="quiz-intro" id="quizIntro">
+                <h2>📝 Mini Test</h2>
+                <p>Test your understanding of the Programming course.</p>
+                <p class="time-limit">⏱️ Time Limit: 10 minutes</p>
+                <button class="primary-btn quiz-start" onclick="startQuiz()">Start Mini Test</button>
+            </div>
+
+            <div id="quizArea">
+                <div class="quiz-top">
+                    <span id="questionCounter">Question 1 of 10</span>
+                    <span id="timer">Time: 10:00</span>
+                </div>
+
+                <div class="progress-track">
+                    <div id="progressBar"></div>
+                </div>
+
+                <h3 id="questionText"></h3>
+                <div id="answerOptions"></div>
+
+                <div class="quiz-controls">
+                    <button class="secondary-btn" id="previousBtn" onclick="previousQuestion()">Previous</button>
+                    <button class="primary-btn" id="nextBtn" onclick="nextQuestion()">Next</button>
+                </div>
+            </div>
+
+            <div id="quizResult">
+                <h2>📝 Test Completed!</h2>
+                <p>Your result:</p>
+                <div class="result-score" id="scoreText"></div>
+                <p class="result-message" id="resultMessage"></p>
+
+                <h3>Answer Review</h3>
+                <div id="answerReview"></div>
+
+                <button class="primary-btn" onclick="restartQuiz()">Try Again</button>
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer>
+        <p>© 2026 CE HUB | Computer Engineering Learning Hub</p>
+    </footer>
+
+    <script>
+        // =========================================
+        // LECTURE MATERIALS
+        // =========================================
+
+        const lectureMaterials = [
+
+            {
+                title: "Lecture 1: Introduction to Programming",
+                content: `
+                    <h3>1. What Is Programming?</h3>
+                    <p><strong>Programming</strong> is the process of writing instructions that tell a computer how to perform a task. These instructions are written using a programming language that follows specific rules.</p>
+
+                    <p>A computer can perform calculations, store information, process images, run websites, and control devices. However, it needs instructions to know what to do. Programming allows humans to provide those instructions.</p>
+
+                    <div class="info-box">
+                        <strong>Key idea:</strong> A program is a set of instructions that a computer executes to complete a particular task.
+                    </div>
+
+                    <h3>2. What Is a Program?</h3>
+                    <p>A <strong>program</strong> is a collection of instructions written to solve a problem or perform a task.</p>
+
+                    <p>Examples of programs include:</p>
+                    <ul>
+                        <li>A calculator that performs mathematical operations.</li>
+                        <li>A web browser that opens websites.</li>
+                        <li>A game that responds to a player's actions.</li>
+                        <li>A student management system that stores grades.</li>
+                        <li>A banking application that processes transactions.</li>
+                    </ul>
+
+                    <h3>3. Hardware and Software</h3>
+                    <p><strong>Hardware</strong> refers to the physical components of a computer that you can touch.</p>
+                    <ul>
+                        <li><strong>CPU:</strong> Executes instructions and performs calculations.</li>
+                        <li><strong>RAM:</strong> Temporarily stores data and programs currently in use.</li>
+                        <li><strong>Storage:</strong> Keeps files and applications for long-term use.</li>
+                        <li><strong>Keyboard:</strong> Allows users to enter information.</li>
+                        <li><strong>Monitor:</strong> Displays visual information.</li>
+                    </ul>
+
+                    <p><strong>Software</strong> refers to programs and instructions that run on a computer.</p>
+                    <ul>
+                        <li><strong>System software:</strong> Operating systems and other software that manage computer resources.</li>
+                        <li><strong>Application software:</strong> Programs used for tasks such as writing documents, browsing the internet, or editing images.</li>
+                    </ul>
+
+                    <p>Hardware and software work together. For example, a music player application is software, while the speakers that produce sound are hardware.</p>
+
+                    <h3>4. How Does a Program Work?</h3>
+                    <p>A simplified program execution process can be described in these steps:</p>
+                    <ol>
+                        <li>The programmer writes instructions in a programming language.</li>
+                        <li>The instructions are translated or interpreted into a form the computer can execute.</li>
+                        <li>The computer executes the instructions.</li>
+                        <li>The program produces an output or performs an action.</li>
+                    </ol>
+
+                    <p>For example, a program may receive two numbers, add them together, and display their sum.</p>
+
+                    <h3>5. What Is an Algorithm?</h3>
+                    <p>An <strong>algorithm</strong> is a finite, ordered sequence of clear steps used to solve a problem or complete a task.</p>
+
+                    <p>Consider an algorithm for adding two numbers:</p>
+                    <ol>
+                        <li>Start.</li>
+                        <li>Read the first number.</li>
+                        <li>Read the second number.</li>
+                        <li>Add the two numbers.</li>
+                        <li>Display the result.</li>
+                        <li>Stop.</li>
+                    </ol>
+
+                    <p>A good algorithm should be clear, have well-defined steps, and eventually finish for its intended input.</p>
+
+                    <h3>6. Pseudocode and Flowcharts</h3>
+                    <p><strong>Pseudocode</strong> describes an algorithm using simple, structured language without requiring the exact syntax of a programming language.</p>
+
+                    <div class="code-example">START
+INPUT number1
+INPUT number2
+result = number1 + number2
+OUTPUT result
+STOP</div>
+
+                    <p>A <strong>flowchart</strong> represents an algorithm visually using symbols connected by arrows.</p>
+                    <ul>
+                        <li><strong>Oval:</strong> Start or end.</li>
+                        <li><strong>Rectangle:</strong> A process or calculation.</li>
+                        <li><strong>Parallelogram:</strong> Input or output.</li>
+                        <li><strong>Diamond:</strong> A decision or condition.</li>
+                        <li><strong>Arrows:</strong> The direction of execution.</li>
+                    </ul>
+
+                    <h3>7. Programming Languages</h3>
+                    <p>A programming language provides rules and symbols for writing computer programs.</p>
+
+                    <p><strong>Machine language:</strong> Instructions represented in binary form, using bits such as 0 and 1.</p>
+
+                    <p><strong>Assembly language:</strong> A low-level language that uses symbolic instructions representing processor operations.</p>
+
+                    <p><strong>High-level languages:</strong> Languages designed to be easier for humans to read and write.</p>
+
+                    <p>Examples include:</p>
+                    <ul>
+                        <li><strong>Python:</strong> General-purpose programming, automation, data analysis, and AI.</li>
+                        <li><strong>C:</strong> Systems programming and embedded applications.</li>
+                        <li><strong>C++:</strong> Software, game development, and performance-sensitive applications.</li>
+                        <li><strong>Java:</strong> Enterprise applications and many other software systems.</li>
+                        <li><strong>JavaScript:</strong> Interactive websites and web applications.</li>
+                    </ul>
+
+                    <h3>8. Source Code, Compilers, and Interpreters</h3>
+                    <p><strong>Source code</strong> is the human-readable code written by a programmer.</p>
+
+                    <p>A <strong>compiler</strong> translates source code into another form, often machine code or an intermediate representation, before the resulting program is executed.</p>
+
+                    <p>An <strong>interpreter</strong> executes program instructions through an implementation that interprets or evaluates them at runtime.</p>
+
+                    <p>Python is commonly run using an interpreter, although Python implementations may also compile code into an intermediate form internally.</p>
+
+                    <h3>9. Errors in Programming</h3>
+                    <p><strong>Syntax error:</strong> The code violates the language's grammar or rules.</p>
+                    <div class="code-example">print("Hello"</div>
+                    <p>The closing parenthesis is missing.</p>
+
+                    <p><strong>Runtime error:</strong> An error occurs while the program is running.</p>
+                    <div class="code-example">number = 10 / 0</div>
+                    <p>In Python, dividing by zero raises a ZeroDivisionError.</p>
+
+                    <p><strong>Logic error:</strong> The program runs but produces an incorrect result because the logic is wrong.</p>
+                    <div class="code-example">length = 5
+width = 3
+area = length + width  # Incorrect for rectangle area</div>
+                    <p>The correct formula for the area of a rectangle is length multiplied by width.</p>
+
+                    <h3>10. Your First Python Program</h3>
+                    <div class="code-example">print("Hello, World!")</div>
+                    <p>The <code>print()</code> function displays information in the output.</p>
+
+                    <p>Another example:</p>
+                    <div class="code-example">print(5 + 3)
+print("Welcome to Programming!")</div>
+
+                    <p>Output:</p>
+                    <div class="code-example">8
+Welcome to Programming!</div>
+
+                    <h3>Lecture 1 Summary</h3>
+                    <ul>
+                        <li>Programming means writing instructions for a computer.</li>
+                        <li>A program is a collection of instructions.</li>
+                        <li>Hardware is physical; software consists of programs and instructions.</li>
+                        <li>An algorithm is a sequence of steps used to solve a problem.</li>
+                        <li>Pseudocode and flowcharts help plan solutions.</li>
+                        <li>Programming languages have specific rules and syntax.</li>
+                        <li>Syntax, runtime, and logic errors are different types of programming errors.</li>
+                    </ul>
+                `
+            },
+
+            {
+                title: "Lecture 2: Variables and Data Types",
+                content: `
+                    <h3>1. What Is a Variable?</h3>
+                    <p>A <strong>variable</strong> is a name used to refer to a value in a program. Variables allow programs to store, access, and work with information.</p>
+
+                    <div class="code-example">name = "Ali"
+age = 18
+score = 95</div>
+
+                    <p>In this example, <code>name</code>, <code>age</code>, and <code>score</code> are variable names. Their values are assigned using the equals sign (<code>=</code>).</p>
+
+                    <p>In Python, assignment creates or updates a name's binding to an object. You do not normally need to declare a variable's type in advance.</p>
+
+                    <h3>2. Assigning and Updating Variables</h3>
+                    <div class="code-example">x = 10
+print(x)
+
+x = 20
+print(x)</div>
+
+                    <p>Output:</p>
+                    <div class="code-example">10
+20</div>
+
+                    <p>The second assignment makes the name <code>x</code> refer to the value 20 instead of 10.</p>
+
+                    <p>Variables can also be used in calculations:</p>
+                    <div class="code-example">a = 5
+b = 7
+total = a + b
+
+print(total)</div>
+
+                    <p>Output: <code>12</code></p>
+
+                    <h3>3. Rules for Naming Variables</h3>
+                    <p>Python variable names must follow these rules:</p>
+                    <ul>
+                        <li>A name may contain letters, digits, and underscores.</li>
+                        <li>A name cannot start with a digit.</li>
+                        <li>Spaces are not allowed in a variable name.</li>
+                        <li>Python keywords such as <code>if</code> and <code>for</code> cannot be used as ordinary variable names.</li>
+                        <li>Variable names are case-sensitive: <code>age</code> and <code>Age</code> are different names.</li>
+                    </ul>
+
+                    <p>Valid examples:</p>
+                    <div class="code-example">student_name = "Aysel"
+age2 = 19
+total_score = 88</div>
+
+                    <p>Invalid examples:</p>
+                    <div class="code-example">2age = 19
+student name = "Aysel"</div>
+
+                    <p>Use meaningful names such as <code>total_price</code> rather than unclear names such as <code>x1</code> when the meaning matters.</p>
+
+                    <h3>4. What Is a Data Type?</h3>
+                    <p>A <strong>data type</strong> describes the kind of value an object represents and what operations are appropriate for it.</p>
+
+                    <h4>Integer — int</h4>
+                    <p>Integers are whole numbers without a fractional part.</p>
+                    <div class="code-example">age = 18
+temperature = -4
+count = 100</div>
+
+                    <h4>Floating-Point Number — float</h4>
+                    <p>Floating-point values represent numbers with a fractional part or decimal notation.</p>
+                    <div class="code-example">price = 12.5
+height = 1.75
+pi = 3.14159</div>
+
+                    <h4>String — str</h4>
+                    <p>A string is a sequence of characters, usually written inside quotation marks.</p>
+                    <div class="code-example">name = "Leyla"
+message = 'Hello!'
+university = "ADNSU"</div>
+
+                    <p>Strings can be joined using the <code>+</code> operator:</p>
+                    <div class="code-example">first_name = "Ali"
+last_name = "Mammadov"
+
+full_name = first_name + " " + last_name
+print(full_name)</div>
+
+                    <h4>Boolean — bool</h4>
+                    <p>A Boolean value represents one of two logical states: <code>True</code> or <code>False</code>.</p>
+                    <div class="code-example">is_student = True
+is_finished = False</div>
+
+                    <p>Booleans are often used in conditions and decision-making.</p>
+
+                    <h3>5. Checking a Data Type</h3>
+                    <p>Python provides the <code>type()</code> function to identify an object's type.</p>
+                    <div class="code-example">print(type(10))
+print(type(3.14))
+print(type("Hello"))
+print(type(True))</div>
+
+                    <p>Output:</p>
+                    <div class="code-example">&lt;class 'int'&gt;
+&lt;class 'float'&gt;
+&lt;class 'str'&gt;
+&lt;class 'bool'&gt;</div>
+
+                    <h3>6. Type Conversion</h3>
+                    <p><strong>Type conversion</strong> means converting a value from one type to another when the conversion is valid.</p>
+
+                    <div class="code-example">number = int("25")
+price = float("12.5")
+text = str(100)
+
+print(number + 5)
+print(price)
+print(text)</div>
+
+                    <p>Output:</p>
+                    <div class="code-example">30
+12.5
+100</div>
+
+                    <p>Be careful: <code>int("hello")</code> raises a ValueError because the text cannot be converted to an integer.</p>
+
+                    <h3>7. Getting Input from the User</h3>
+                    <p>The <code>input()</code> function reads text entered by the user. Its return value is a string, even if the user enters digits.</p>
+
+                    <div class="code-example">name = input("Enter your name: ")
+print("Hello,", name)</div>
+
+                    <p>To perform calculations with user input, convert the input into a numeric type.</p>
+
+                    <div class="code-example">age = int(input("Enter your age: "))
+print(age + 1)</div>
+
+                    <p>If the user enters <code>18</code>, the program displays <code>19</code>.</p>
+
+                    <h3>8. Arithmetic Operators</h3>
+                    <p>Python supports several arithmetic operators.</p>
+
+                    <ul>
+                        <li><code>+</code> — addition</li>
+                        <li><code>-</code> — subtraction</li>
+                        <li><code>*</code> — multiplication</li>
+                        <li><code>/</code> — division, producing a floating-point result</li>
+                        <li><code>//</code> — floor division</li>
+                        <li><code>%</code> — remainder (modulo)</li>
+                        <li><code>**</code> — exponentiation</li>
+                    </ul>
+
+                    <div class="code-example">print(10 + 3)   # 13
+print(10 - 3)   # 7
+print(10 * 3)   # 30
+print(10 / 3)   # 3.333...
+print(10 // 3)  # 3
+print(10 % 3)   # 1
+print(2 ** 3)   # 8</div>
+
+                    <h3>9. Operator Precedence</h3>
+                    <p>Python follows an order of operations. Parentheses can make the intended order clearer.</p>
+
+                    <div class="code-example">result1 = 2 + 3 * 4
+result2 = (2 + 3) * 4
+
+print(result1)
+print(result2)</div>
+
+                    <p>Output:</p>
+                    <div class="code-example">14
+20</div>
+
+                    <p>Multiplication happens before addition in the first expression. In the second expression, parentheses make addition happen first.</p>
+
+                    <h3>10. Common Mistakes</h3>
+                    <p><strong>Mistake 1: Forgetting that input() returns a string.</strong></p>
+                    <div class="code-example">number = input("Enter a number: ")
+print(number + 5)  # TypeError</div>
+                    <p>Correction:</p>
+                    <div class="code-example">number = int(input("Enter a number: "))
+print(number + 5)</div>
+
+                    <p><strong>Mistake 2: Confusing assignment and comparison.</strong></p>
+                    <ul>
+                        <li><code>=</code> assigns a value.</li>
+                        <li><code>==</code> checks whether two values are equal.</li>
+                    </ul>
+
+                    <p><strong>Mistake 3: Using an undefined variable.</strong></p>
+                    <div class="code-example">print(total)  # NameError if total was never defined</div>
+
+                    <h3>Lecture 2 Summary</h3>
+                    <ul>
+                        <li>Variables let programs work with stored values.</li>
+                        <li>Common Python types include int, float, str, and bool.</li>
+                        <li>The <code>type()</code> function checks a value's type.</li>
+                        <li><code>input()</code> returns a string.</li>
+                        <li>Functions such as <code>int()</code> and <code>float()</code> perform type conversion.</li>
+                        <li>Python supports arithmetic operators such as +, -, *, /, //, %, and **.</li>
+                    </ul>
+                `
+            },
+
+            {
+                title: "Lecture 3: Conditional Statements",
+                content: `
+                    <h3>1. What Are Conditional Statements?</h3>
+                    <p><strong>Conditional statements</strong> allow a program to choose which instructions to execute depending on whether a condition is true or false.</p>
+
+                    <p>Programs use conditions to make decisions. For example:</p>
+                    <ul>
+                        <li>Determine whether a student passed an exam.</li>
+                        <li>Check whether a user entered the correct password.</li>
+                        <li>Decide whether a number is positive or negative.</li>
+                        <li>Determine whether a purchase qualifies for a discount.</li>
+                    </ul>
+
+                    <h3>2. Comparison Operators</h3>
+                    <p>Comparison operators compare values and produce a Boolean result: <code>True</code> or <code>False</code>.</p>
+
+                    <ul>
+                        <li><code>==</code> — equal to</li>
+                        <li><code>!=</code> — not equal to</li>
+                        <li><code>&gt;</code> — greater than</li>
+                        <li><code>&lt;</code> — less than</li>
+                        <li><code>&gt;=</code> — greater than or equal to</li>
+                        <li><code>&lt;=</code> — less than or equal to</li>
+                    </ul>
+
+                    <div class="code-example">print(5 == 5)   # True
+print(5 != 3)   # True
+print(7 > 10)   # False
+print(8 >= 8)   # True
+print(4 < 2)    # False</div>
+
+                    <h3>3. The if Statement</h3>
+                    <p>The <code>if</code> statement executes a block of code only when its condition is true.</p>
+
+                    <div class="code-example">age = 20
+
+if age >= 18:
+    print("You are an adult.")</div>
+
+                    <p>Because <code>age</code> is 20, the condition is true and the message is displayed.</p>
+
+                    <p>Python uses indentation to define the body of a conditional statement. The colon (<code>:</code>) after the condition is required.</p>
+
+                    <h3>4. The if-else Statement</h3>
+                    <p>The <code>else</code> block executes when the <code>if</code> condition is false.</p>
+
+                    <div class="code-example">age = 16
+
+if age >= 18:
+    print("Adult")
+else:
+    print("Not an adult")</div>
+
+                    <p>Output: <code>Not an adult</code></p>
+
+                    <p>Only one of these two branches runs in this example.</p>
+
+                    <h3>5. The if-elif-else Structure</h3>
+                    <p>Use <code>elif</code> when there are several possible conditions. Python checks the conditions in order and executes the first matching branch.</p>
+
+                    <div class="code-example">score = 85
+
+if score >= 90:
+    print("Grade A")
+elif score >= 80:
+    print("Grade B")
+elif score >= 70:
+    print("Grade C")
+else:
+    print("Needs improvement")</div>
+
+                    <p>Output: <code>Grade B</code></p>
+
+                    <p>The first condition is false. The second condition is true, so Python prints Grade B and skips the remaining branches.</p>
+
+                    <div class="info-box">
+                        <strong>Important:</strong> The order of conditions matters. In an if-elif-else chain, once a condition is true, the remaining branches are skipped.
+                    </div>
+
+                    <h3>6. Logical Operators</h3>
+                    <p>Logical operators combine conditions or reverse a condition.</p>
+
+                    <h4>and</h4>
+                    <p><code>and</code> evaluates to true when both conditions are true.</p>
+                    <div class="code-example">age = 20
+has_id = True
+
+if age >= 18 and has_id:
+    print("Requirements satisfied")</div>
+
+                    <h4>or</h4>
+                    <p><code>or</code> evaluates to true when at least one condition is true.</p>
+                    <div class="code-example">is_weekend = True
+is_holiday = False
+
+if is_weekend or is_holiday:
+    print("No regular classes")</div>
+
+                    <h4>not</h4>
+                    <p><code>not</code> reverses a Boolean condition.</p>
+                    <div class="code-example">is_raining = False
+
+if not is_raining:
+    print("You can consider going for a walk")</div>
+
+                    <h3>7. Nested if Statements</h3>
+                    <p>A <strong>nested conditional</strong> is an if statement placed inside another conditional block.</p>
+
+                    <div class="code-example">age = 20
+has_ticket = True
+
+if age >= 18:
+    if has_ticket:
+        print("Entry allowed")
+    else:
+        print("A ticket is required")
+else:
+    print("Age requirement not met")</div>
+
+                    <p>Nested conditions are useful when one decision depends on another decision.</p>
+
+                    <h3>8. Checking Whether a Number Is Positive, Negative, or Zero</h3>
+                    <div class="code-example">number = int(input("Enter a number: "))
+
+if number > 0:
+    print("Positive")
+elif number < 0:
+    print("Negative")
+else:
+    print("Zero")</div>
+
+                    <p>This example shows how several mutually exclusive possibilities can be handled using if, elif, and else.</p>
+
+                    <h3>9. Checking Even and Odd Numbers</h3>
+                    <p>The modulo operator (<code>%</code>) gives the remainder after division. An integer is even if dividing it by 2 leaves a remainder of 0.</p>
+
+                    <div class="code-example">number = int(input("Enter an integer: "))
+
+if number % 2 == 0:
+    print("Even")
+else:
+    print("Odd")</div>
+
+                    <h3>10. Truthy and Falsy Values</h3>
+                    <p>Python conditions do not always need to contain an explicit comparison. Values can also be evaluated for truthiness.</p>
+
+                    <p>Examples of values that are falsy include:</p>
+                    <ul>
+                        <li><code>False</code></li>
+                        <li><code>None</code></li>
+                        <li>The number <code>0</code></li>
+                        <li>Empty strings such as <code>""</code></li>
+                        <li>Empty lists such as <code>[]</code></li>
+                    </ul>
+
+                    <div class="code-example">name = input("Enter your name: ")
+
+if name:
+    print("Hello,", name)
+else:
+    print("You did not enter a name")</div>
+
+                    <p>If the user enters an empty string, the condition is false.</p>
+
+                    <h3>11. Common Conditional Errors</h3>
+                    <p><strong>Error 1: Using = instead of == in a comparison.</strong></p>
+                    <div class="code-example"># Incorrect
+# if age = 18:
+
+# Correct
+if age == 18:
+    print("Age is 18")</div>
+
+                    <p><strong>Error 2: Forgetting the colon.</strong></p>
+                    <div class="code-example">if age >= 18:
+    print("Adult")</div>
+
+                    <p><strong>Error 3: Incorrect indentation.</strong></p>
+                    <div class="code-example">if age >= 18:
+    print("Adult")</div>
+
+                    <p>The print statement must be indented to belong to the if block.</p>
+
+                    <p><strong>Error 4: Incorrect condition order.</strong></p>
+                    <div class="code-example">score = 95
+
+if score >= 50:
+    print("Passed")
+elif score >= 90:
+    print("Excellent")</div>
+
+                    <p>The second branch will never be reached for a score of 95 because the first condition is already true. Check more specific conditions first if they need to take priority.</p>
+
+                    <h3>Lecture 3 Summary</h3>
+                    <ul>
+                        <li>Conditional statements allow programs to make decisions.</li>
+                        <li><code>if</code> checks a condition.</li>
+                        <li><code>else</code> handles the alternative branch.</li>
+                        <li><code>elif</code> checks additional conditions.</li>
+                        <li>Comparison operators return Boolean results.</li>
+                        <li><code>and</code>, <code>or</code>, and <code>not</code> combine or reverse conditions.</li>
+                        <li>Python uses indentation and colons in conditional blocks.</li>
+                    </ul>
+                `
+            },
+
+            {
+                title: "Lecture 4: Loops and Repetition",
+                content: `
+                    <h3>1. What Is a Loop?</h3>
+                    <p>A <strong>loop</strong> is a programming structure that repeats a block of instructions. Loops help programmers avoid writing the same code many times.</p>
+
+                    <p>For example, instead of writing five separate print statements, a loop can display the same message five times.</p>
+
+                    <div class="code-example">for i in range(5):
+    print("Hello")</div>
+
+                    <p>The message is printed five times.</p>
+
+                    <h3>2. Why Are Loops Useful?</h3>
+                    <p>Loops are useful when you need to:</p>
+                    <ul>
+                        <li>Process many items in a list.</li>
+                        <li>Repeat a calculation.</li>
+                        <li>Read multiple user inputs.</li>
+                        <li>Count numbers.</li>
+                        <li>Search through data.</li>
+                        <li>Keep a program running until a condition changes.</li>
+                    </ul>
+
+                    <h3>3. The for Loop</h3>
+                    <p>A <code>for</code> loop iterates over the items of an iterable, such as a list, string, or range of numbers.</p>
+
+                    <div class="code-example">for number in [1, 2, 3, 4, 5]:
+    print(number)</div>
+
+                    <p>Output:</p>
+                    <div class="code-example">1
+2
+3
+4
+5</div>
+
+                    <p>On each iteration, the variable <code>number</code> refers to the next item in the list.</p>
+
+                    <h3>4. The range() Function</h3>
+                    <p>The <code>range()</code> function produces a sequence of integers commonly used with for loops.</p>
+
+                    <p><strong>range(stop)</strong> starts at 0 and stops before the specified number.</p>
+                    <div class="code-example">for i in range(5):
+    print(i)</div>
+
+                    <p>Output:</p>
+                    <div class="code-example">0
+1
+2
+3
+4</div>
+
+                    <p>There are five values because the stop value, 5, is not included.</p>
+
+                    <p><strong>range(start, stop)</strong> begins at the start value and stops before the stop value.</p>
+                    <div class="code-example">for i in range(2, 6):
+    print(i)</div>
+
+                    <p>Output: 2, 3, 4, 5.</p>
+
+                    <p><strong>range(start, stop, step)</strong> uses the step to control how the sequence changes.</p>
+                    <div class="code-example">for i in range(0, 10, 2):
+    print(i)</div>
+
+                    <p>Output: 0, 2, 4, 6, 8.</p>
+
+                    <h3>5. Counting Backwards</h3>
+                    <p>A negative step allows a range to count downwards.</p>
+
+                    <div class="code-example">for i in range(5, 0, -1):
+    print(i)</div>
+
+                    <p>Output: 5, 4, 3, 2, 1.</p>
+
+                    <p>Remember that the stop value is still excluded.</p>
+
+                    <h3>6. The while Loop</h3>
+                    <p>A <code>while</code> loop repeats its body while its condition remains true.</p>
+
+                    <div class="code-example">count = 1
+
+while count <= 5:
+    print(count)
+    count = count + 1</div>
+
+                    <p>Output: 1, 2, 3, 4, 5.</p>
+
+                    <p>In this example:</p>
+                    <ol>
+                        <li>The variable <code>count</code> starts at 1.</li>
+                        <li>The program checks whether <code>count <= 5</code>.</li>
+                        <li>If the condition is true, the value is printed.</li>
+                        <li>The value of count increases by 1.</li>
+                        <li>The condition is checked again.</li>
+                        <li>The loop ends when the condition becomes false.</li>
+                    </ol>
+
+                    <h3>7. Updating a Loop Variable</h3>
+                    <p>A loop often uses a variable to track its progress. In a while loop, you must ensure that the loop can eventually stop.</p>
+
+                    <div class="code-example">count = 1
+
+while count <= 3:
+    print(count)
+    count += 1</div>
+
+                    <p>The statement <code>count += 1</code> is a shorter way to write <code>count = count + 1</code>.</p>
+
+                    <h3>8. Infinite Loops</h3>
+                    <p>An <strong>infinite loop</strong> is a loop that does not terminate under its current execution conditions.</p>
+
+                    <div class="code-example">count = 1
+
+while count <= 5:
+    print(count)
+    # count is never increased</div>
+
+                    <p>In this example, count stays at 1, so the condition remains true. The program keeps repeating the loop.</p>
+
+                    <p>To avoid accidental infinite loops, check that the loop condition can eventually become false or that another valid exit condition exists.</p>
+
+                    <h3>9. The break Statement</h3>
+                    <p>The <code>break</code> statement immediately exits the nearest enclosing loop.</p>
+
+                    <div class="code-example">for number in range(1, 10):
+    if number == 5:
+        break
+    print(number)</div>
+
+                    <p>Output:</p>
+                    <div class="code-example">1
+2
+3
+4</div>
+
+                    <p>When number becomes 5, the break statement ends the loop before 5 is printed.</p>
+
+                    <h3>10. The continue Statement</h3>
+                    <p>The <code>continue</code> statement skips the remaining instructions in the current iteration and proceeds to the next iteration.</p>
+
+                    <div class="code-example">for number in range(1, 6):
+    if number == 3:
+        continue
+    print(number)</div>
+
+                    <p>Output:</p>
+                    <div class="code-example">1
+2
+4
+5</div>
+
+                    <p>The value 3 is skipped, but the loop continues with 4 and 5.</p>
+
+                    <div class="info-box">
+                        <strong>Remember:</strong> <code>break</code> exits the loop. <code>continue</code> skips to the next iteration.
+                    </div>
+
+                    <h3>11. Nested Loops</h3>
+                    <p>A <strong>nested loop</strong> is a loop placed inside another loop. The inner loop generally runs through its iterations for each iteration of the outer loop.</p>
+
+                    <div class="code-example">for row in range(1, 4):
+    for column in range(1, 3):
+        print(row, column)</div>
+
+                    <p>The output consists of these pairs:</p>
+                    <div class="code-example">1 1
+1 2
+2 1
+2 2
+3 1
+3 2</div>
+
+                    <p>The outer loop has three iterations, and the inner loop has two iterations for each outer iteration. The print statement therefore runs six times.</p>
+
+                    <h3>12. Accumulators and Calculating a Sum</h3>
+                    <p>An <strong>accumulator</strong> is a variable that collects a result across multiple iterations, such as a total or sum.</p>
+
+                    <div class="code-example">total = 0
+
+for number in range(1, 6):
+    total = total + number
+
+print(total)</div>
+
+                    <p>Output: <code>15</code></p>
+
+                    <p>The program adds 1 + 2 + 3 + 4 + 5. The total starts at zero and is updated on each iteration.</p>
+
+                    <h3>13. Iterating Through a String</h3>
+                    <p>A string is iterable, which means a for loop can process its characters one by one.</p>
+
+                    <div class="code-example">word = "CODE"
+
+for letter in word:
+    print(letter)</div>
+
+                    <p>Output:</p>
+                    <div class="code-example">C
+O
+D
+E</div>
+
+                    <h3>14. Choosing Between for and while</h3>
+                    <p>Use a <code>for</code> loop when you want to iterate over a sequence or a known range of values.</p>
+
+                    <div class="code-example">for i in range(10):
+    print(i)</div>
+
+                    <p>Use a <code>while</code> loop when repetition depends on a condition and the number of iterations may not be known in advance.</p>
+
+                    <div class="code-example">command = ""
+
+while command != "quit":
+    command = input("Enter a command (or quit): ")</div>
+
+                    <p>This loop continues until the user enters <code>quit</code>.</p>
+
+                    <h3>15. Common Loop Mistakes</h3>
+                    <ul>
+                        <li><strong>Off-by-one error:</strong> Forgetting that range() excludes its stop value.</li>
+                        <li><strong>Infinite loop:</strong> Forgetting to update a variable that affects the while condition.</li>
+                        <li><strong>Wrong indentation:</strong> Placing statements inside or outside a loop incorrectly.</li>
+                        <li><strong>Wrong use of break:</strong> Exiting the loop when you only wanted to skip one iteration.</li>
+                        <li><strong>Incorrect accumulator initialization:</strong> Forgetting to set a total variable before the loop.</li>
+                    </ul>
+
+                    <h3>Lecture 4 Summary</h3>
+                    <ul>
+                        <li>Loops repeat instructions.</li>
+                        <li>For loops iterate over sequences and other iterables.</li>
+                        <li>range() generates integer sequences and excludes the stop value.</li>
+                        <li>While loops repeat as long as their conditions are true.</li>
+                        <li>Loop variables often need to be updated to ensure termination.</li>
+                        <li>break exits a loop; continue skips the current iteration.</li>
+                        <li>Nested loops contain one loop inside another.</li>
+                        <li>Accumulators can calculate totals across iterations.</li>
+                    </ul>
+                `
+            }
+
+        ];
+
+        // =========================================
+        // OPEN AND CLOSE LECTURES
+        // =========================================
+
+        function openLecture(index) {
+            const lecture = lectureMaterials[index];
+
+            if (!lecture) {
+                return;
+            }
+
+            document.getElementById("lectureList").style.display = "none";
+            document.getElementById("miniTest").style.display = "none";
+
+            const viewer = document.getElementById("lectureViewer");
+            const content = document.getElementById("lectureContent");
+
+            content.innerHTML = `
+                <h2>${lecture.title}</h2>
+                ${lecture.content}
+            `;
+
+            viewer.style.display = "block";
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+
+        function closeLecture() {
+            document.getElementById("lectureViewer").style.display = "none";
+            document.getElementById("lectureList").style.display = "block";
+            document.getElementById("miniTest").style.display = "block";
+
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+
+        // =========================================
+        // MINI TEST QUESTIONS
+        // =========================================
+
+        const quizQuestions = [
+            {
+                question: "1. What is the main purpose of programming?",
+                options: [
+                    "A. To physically build computer parts",
+                    "B. To write instructions that a computer can execute",
+                    "C. To increase the size of a monitor",
+                    "D. To replace all computer hardware"
+                ],
+                answer: 1
+            },
+            {
+                question: "2. Which Python function displays information in the output?",
+                options: [
+                    "A. input()",
+                    "B. type()",
+                    "C. print()",
+                    "D. int()"
+                ],
+                answer: 2
+            },
+            {
+                question: "3. Which data type represents True or False?",
+                options: [
+                    "A. str",
+                    "B. float",
+                    "C. int",
+                    "D. bool"
+                ],
+                answer: 3
+            },
+            {
+                question: "4. What is the output of print(10 % 3)?",
+                options: [
+                    "A. 3",
+                    "B. 1",
+                    "C. 0",
+                    "D. 3.33"
+                ],
+                answer: 1
+            },
+            {
+                question: "5. Which operator checks whether two values are equal?",
+                options: [
+                    "A. =",
+                    "B. !=",
+                    "C. ==",
+                    "D. >"
+                ],
+                answer: 2
+            },
+            {
+                question: "6. Which keyword checks another condition after an if?",
+                options: [
+                    "A. elif",
+                    "B. repeat",
+                    "C. loop",
+                    "D. define"
+                ],
+                answer: 0
+            },
+            {
+                question: "7. What does range(5) generate in a for loop?",
+                options: [
+                    "A. 1, 2, 3, 4, 5",
+                    "B. 0, 1, 2, 3, 4",
+                    "C. 0, 1, 2, 3, 4, 5",
+                    "D. 5, 4, 3, 2, 1"
+                ],
+                answer: 1
+            },
+            {
+                question: "8. Which loop repeats while its condition is True?",
+                options: [
+                    "A. if loop",
+                    "B. print loop",
+                    "C. while loop",
+                    "D. type loop"
+                ],
+                answer: 2
+            },
+            {
+                question: "9. What does the break statement do?",
+                options: [
+                    "A. Exits the nearest enclosing loop",
+                    "B. Skips only the current iteration",
+                    "C. Restarts the entire program",
+                    "D. Converts a string to an integer"
+                ],
+                answer: 0
+            },
+            {
+                question: "10. What is the output of this code? for i in range(3): print(i)",
+                options: [
+                    "A. 1, 2, 3",
+                    "B. 0, 1, 2, 3",
+                    "C. 3, 2, 1",
+                    "D. 0, 1, 2"
+                ],
+                answer: 3
+            }
+        ];
+
+        let currentQuestion = 0;
+        let userAnswers = [];
+        let timeLeft = 600;
+        let quizTimer = null;
+        let quizFinished = false;
+
+        function startQuiz() {
+            clearInterval(quizTimer);
+
+            currentQuestion = 0;
+            userAnswers = new Array(quizQuestions.length).fill(null);
+            timeLeft = 600;
+            quizFinished = false;
+
+            document.getElementById("quizIntro").style.display = "none";
+            document.getElementById("quizResult").style.display = "none";
+            document.getElementById("quizArea").style.display = "block";
+
+            renderQuestion();
+            updateTimer();
+
+            quizTimer = setInterval(function () {
+                timeLeft--;
+                updateTimer();
+
+                if (timeLeft <= 0) {
+                    finishQuiz();
+                }
+            }, 1000);
+
+            document.getElementById("miniTest").scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+        }
+
+        function updateTimer() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+
+            document.getElementById("timer").textContent =
+                "Time: " +
+                String(minutes).padStart(2, "0") +
+                ":" +
+                String(seconds).padStart(2, "0");
+        }
+
+        function renderQuestion() {
+            const question = quizQuestions[currentQuestion];
+
+            document.getElementById("questionCounter").textContent =
+                "Question " + (currentQuestion + 1) +
+                " of " + quizQuestions.length;
+
+            document.getElementById("progressBar").style.width =
+                ((currentQuestion + 1) / quizQuestions.length * 100) + "%";
+
+            document.getElementById("questionText").textContent =
+                question.question;
+
+            const optionsContainer = document.getElementById("answerOptions");
+            optionsContainer.innerHTML = "";
+
+            question.options.forEach(function (option, index) {
+                const label = document.createElement("label");
+                label.className = "answer-option";
+
+                const radio = document.createElement("input");
+                radio.type = "radio";
+                radio.name = "quizAnswer";
+                radio.value = index;
+                radio.checked = userAnswers[currentQuestion] === index;
+
+                radio.addEventListener("change", function () {
+                    userAnswers[currentQuestion] = index;
+                });
+
+                label.appendChild(radio);
+                label.appendChild(document.createTextNode(option));
+                optionsContainer.appendChild(label);
+            });
+
+            document.getElementById("previousBtn").disabled =
+                currentQuestion === 0;
+
+            const nextButton = document.getElementById("nextBtn");
+
+            if (currentQuestion === quizQuestions.length - 1) {
+                nextButton.textContent = "Finish Test";
+            } else {
+                nextButton.textContent = "Next";
+            }
+        }
+
+        function nextQuestion() {
+            if (quizFinished) {
+                return;
+            }
+
+            if (currentQuestion === quizQuestions.length - 1) {
+                finishQuiz();
+                return;
+            }
+
+            currentQuestion++;
+            renderQuestion();
+        }
+
+        function previousQuestion() {
+            if (quizFinished || currentQuestion === 0) {
+                return;
+            }
+
+            currentQuestion--;
+            renderQuestion();
+        }
+
+        function finishQuiz() {
+            if (quizFinished) {
+                return;
+            }
+
+            quizFinished = true;
+            clearInterval(quizTimer);
+
+            let score = 0;
+
+            quizQuestions.forEach(function (question, index) {
+                if (userAnswers[index] === question.answer) {
+                    score++;
+                }
+            });
+
+            const percentage = Math.round(
+                (score / quizQuestions.length) * 100
+            );
+
+            document.getElementById("quizArea").style.display = "none";
+            document.getElementById("quizResult").style.display = "block";
+
+            document.getElementById("scoreText").textContent =
+                score + "/" + quizQuestions.length + " — " + percentage + "%";
+
+            let message = "";
+
+            if (percentage === 100) {
+                message = "Excellent! You answered every question correctly.";
+            } else if (percentage >= 80) {
+                message = "Great job! You have a strong understanding of the material.";
+            } else if (percentage >= 60) {
+                message = "Good effort! Review the incorrect answers to improve.";
+            } else {
+                message = "Keep practicing! Review the lectures and try the test again.";
+            }
+
+            document.getElementById("resultMessage").textContent = message;
+
+            const review = document.getElementById("answerReview");
+            review.innerHTML = "";
+
+            quizQuestions.forEach(function (question, index) {
+                const item = document.createElement("div");
+                item.className = "review-item";
+
+                const questionTitle = document.createElement("p");
+                questionTitle.textContent = question.question;
+                item.appendChild(questionTitle);
+
+                const yourAnswer = document.createElement("p");
+
+                if (userAnswers[index] === null) {
+                    yourAnswer.textContent = "Your answer: Not answered";
+                    yourAnswer.className = "wrong-answer";
+                } else {
+                    yourAnswer.textContent =
+                        "Your answer: " + question.options[userAnswers[index]];
+
+                    yourAnswer.className =
+                        userAnswers[index] === question.answer
+                            ? "correct-answer"
+                            : "wrong-answer";
+                }
+
+                item.appendChild(yourAnswer);
+
+                const correctAnswer = document.createElement("p");
+                correctAnswer.textContent =
+                    "Correct answer: " + question.options[question.answer];
+                correctAnswer.className = "correct-answer";
+
+                item.appendChild(correctAnswer);
+                review.appendChild(item);
+            });
+
+            document.getElementById("quizResult").scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+        }
+
+        function restartQuiz() {
+            startQuiz();
+        }
+    </script>
+
+</body>
+</html>

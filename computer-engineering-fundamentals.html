@@ -1,0 +1,1487 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Computer Engineering Fundamentals | CE HUB</title>
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        .course-container {
+            max-width: 1000px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+        .course-header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .course-header h1 {
+            color: #1d4ed8;
+            margin-bottom: 10px;
+        }
+
+        .lecture-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 22px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04);
+        }
+
+        .lecture-card h3 {
+            margin: 0 0 8px;
+            color: #1f2937;
+        }
+
+        .lecture-card p {
+            margin: 0;
+            color: #6b7280;
+            line-height: 1.6;
+        }
+
+        .open-btn,
+        .primary-btn {
+            display: inline-block;
+            background: #2563eb;
+            color: white;
+            padding: 11px 22px;
+            border: none;
+            border-radius: 8px;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .open-btn:hover,
+        .primary-btn:hover {
+            background: #1d4ed8;
+        }
+
+        #lectureViewer {
+            display: none;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 28px;
+            margin: 30px 0;
+            line-height: 1.8;
+            overflow-wrap: anywhere;
+        }
+
+        #lectureContent h2 {
+            color: #1d4ed8;
+            margin-top: 20px;
+        }
+
+        #lectureContent h3 {
+            color: #1f2937;
+            margin-top: 25px;
+        }
+
+        #lectureContent li {
+            margin-bottom: 8px;
+        }
+
+        .code-example {
+            background: #111827;
+            color: #e5e7eb;
+            padding: 16px;
+            border-radius: 8px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            font-family: Consolas, monospace;
+            line-height: 1.7;
+        }
+
+        .info-box {
+            background: #eff6ff;
+            border-left: 4px solid #2563eb;
+            padding: 14px 18px;
+            margin: 18px 0;
+            border-radius: 5px;
+        }
+
+        .secondary-btn {
+            background: #e5e7eb;
+            color: #1f2937;
+            padding: 11px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .secondary-btn:hover {
+            background: #d1d5db;
+        }
+
+        .quiz-section {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 30px;
+            margin-top: 45px;
+            margin-bottom: 40px;
+        }
+
+        .quiz-intro {
+            text-align: center;
+        }
+
+        .quiz-intro h2 {
+            color: #1d4ed8;
+            margin-bottom: 10px;
+        }
+
+        .quiz-intro p {
+            color: #6b7280;
+        }
+
+        .time-limit {
+            font-weight: 600;
+            color: #374151 !important;
+            margin: 18px 0;
+        }
+
+        .quiz-start {
+            font-size: 16px;
+            padding: 14px 30px;
+        }
+
+        #quizArea,
+        #quizResult {
+            display: none;
+        }
+
+        .quiz-top {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+            font-weight: 600;
+        }
+
+        #timer {
+            color: #dc2626;
+        }
+
+        .progress-track {
+            width: 100%;
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 25px;
+        }
+
+        #progressBar {
+            height: 100%;
+            width: 0%;
+            background: #2563eb;
+            transition: width 0.2s;
+        }
+
+        #questionText {
+            color: #1f2937;
+            font-size: 20px;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .answer-option {
+            display: block;
+            padding: 14px 16px;
+            border: 1px solid #d1d5db;
+            border-radius: 9px;
+            margin: 10px 0;
+            cursor: pointer;
+        }
+
+        .answer-option:hover {
+            background: #eff6ff;
+            border-color: #2563eb;
+        }
+
+        .answer-option input {
+            margin-right: 10px;
+            accent-color: #2563eb;
+        }
+
+        .quiz-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+
+        .result-score {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1d4ed8;
+            margin: 15px 0;
+        }
+
+        .result-message {
+            color: #4b5563;
+            line-height: 1.7;
+        }
+
+        .review-item {
+            text-align: left;
+            border-top: 1px solid #e5e7eb;
+            padding: 15px 0;
+            line-height: 1.6;
+        }
+
+        .correct-answer {
+            color: #15803d;
+            font-weight: 600;
+        }
+
+        .wrong-answer {
+            color: #dc2626;
+            font-weight: 600;
+        }
+
+        @media (max-width: 600px) {
+            .lecture-card {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            #lectureViewer,
+            .quiz-section {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="logo">CE HUB</div>
+
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="index.html#subjects">Subjects</a></li>
+            <li><a href="exams.html">Exams</a></li>
+            <li><a href="deadlines.html">Deadlines</a></li>
+        </ul>
+    </nav>
+
+    <main class="course-container">
+
+        <header class="course-header">
+            <h1>🖥️ Computer Engineering Fundamentals</h1>
+            <p>Computer Engineering — Course Materials</p>
+        </header>
+
+        <!-- Lecture Cards -->
+        <section id="lectureList">
+
+            <div class="lecture-card">
+                <div>
+                    <h3>Lecture 1: Introduction to Computers</h3>
+                    <p>Computer systems, characteristics, basic operations, computer generations, and types of computers.</p>
+                </div>
+                <button class="open-btn" onclick="openLecture(0)">Open</button>
+            </div>
+
+            <div class="lecture-card">
+                <div>
+                    <h3>Lecture 2: Computer Hardware and Architecture</h3>
+                    <p>CPU, ALU, control unit, registers, RAM, ROM, storage devices, and the fetch-decode-execute cycle.</p>
+                </div>
+                <button class="open-btn" onclick="openLecture(1)">Open</button>
+            </div>
+
+            <div class="lecture-card">
+                <div>
+                    <h3>Lecture 3: Software, Operating Systems and I/O</h3>
+                    <p>System software, application software, operating systems, input devices, output devices, and networks.</p>
+                </div>
+                <button class="open-btn" onclick="openLecture(2)">Open</button>
+            </div>
+
+            <div class="lecture-card">
+                <div>
+                    <h3>Lecture 4: Data Representation and Number Systems</h3>
+                    <p>Bits, bytes, binary, decimal, hexadecimal, character encoding, logic gates, and digital information.</p>
+                </div>
+                <button class="open-btn" onclick="openLecture(3)">Open</button>
+            </div>
+
+        </section>
+
+        <!-- Lecture Viewer -->
+        <section id="lectureViewer">
+            <button class="secondary-btn" onclick="closeLecture()">← Back to Lectures</button>
+
+            <div id="lectureContent"></div>
+
+            <button class="secondary-btn" onclick="closeLecture()">← Back to Lectures</button>
+        </section>
+
+        <!-- Mini Test -->
+        <section class="quiz-section" id="miniTest">
+
+            <div class="quiz-intro" id="quizIntro">
+                <h2>📝 Mini Test</h2>
+                <p>Test your knowledge of Computer Engineering Fundamentals.</p>
+                <p class="time-limit">⏱️ Time Limit: 10 minutes</p>
+                <button class="primary-btn quiz-start" onclick="startQuiz()">Start Mini Test</button>
+            </div>
+
+            <div id="quizArea">
+                <div class="quiz-top">
+                    <span id="questionCounter">Question 1 of 10</span>
+                    <span id="timer">Time: 10:00</span>
+                </div>
+
+                <div class="progress-track">
+                    <div id="progressBar"></div>
+                </div>
+
+                <h3 id="questionText"></h3>
+                <div id="answerOptions"></div>
+
+                <div class="quiz-controls">
+                    <button class="secondary-btn" id="previousBtn" onclick="previousQuestion()">Previous</button>
+                    <button class="primary-btn" id="nextBtn" onclick="nextQuestion()">Next</button>
+                </div>
+            </div>
+
+            <div id="quizResult">
+                <h2>📝 Test Completed!</h2>
+                <p>Your result:</p>
+                <div class="result-score" id="scoreText"></div>
+                <p class="result-message" id="resultMessage"></p>
+
+                <h3>Answer Review</h3>
+                <div id="answerReview"></div>
+
+                <button class="primary-btn" onclick="restartQuiz()">Try Again</button>
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer>
+        <p>© 2026 CE HUB | Computer Engineering Learning Hub</p>
+    </footer>
+
+    <script>
+        // =========================================
+        // LECTURE MATERIALS
+        // =========================================
+
+        const lectureMaterials = [
+
+            {
+                title: "Lecture 1: Introduction to Computers",
+                content: `
+                    <h3>1. What Is a Computer?</h3>
+
+                    <p>A <strong>computer</strong> is an electronic, programmable device that accepts data as input, processes it according to instructions, stores data or results, and produces information as output.</p>
+
+                    <p>Computers are used in education, medicine, engineering, transportation, communication, scientific research, business, and entertainment.</p>
+
+                    <div class="info-box">
+                        <strong>Key concept:</strong> A computer does not independently understand a task in the human sense. It follows instructions provided by software and processes data using its hardware.
+                    </div>
+
+                    <h3>2. Data and Information</h3>
+
+                    <p><strong>Data</strong> consists of raw facts, measurements, symbols, or values. Data may not be very meaningful until it is organized or processed.</p>
+
+                    <p><strong>Information</strong> is data that has been processed or organized so that it becomes useful in a particular context.</p>
+
+                    <p>Example:</p>
+
+                    <ul>
+                        <li>Data: 65, 80, 90, 75.</li>
+                        <li>Processing: Calculate the average of these values.</li>
+                        <li>Information: The average score is 77.5.</li>
+                    </ul>
+
+                    <p>Computers transform data into useful information by performing operations defined by programs.</p>
+
+                    <h3>3. The Basic Functions of a Computer</h3>
+
+                    <p>A computer system commonly performs four fundamental functions.</p>
+
+                    <p><strong>Input:</strong> Receives data and instructions from users or other systems.</p>
+                    <p>Examples: Keyboard, mouse, scanner, microphone, and sensors.</p>
+
+                    <p><strong>Processing:</strong> Performs operations on data, such as calculations, comparisons, and logical decisions.</p>
+                    <p>The CPU plays a central role in processing instructions.</p>
+
+                    <p><strong>Storage:</strong> Retains data, programs, and results for temporary or long-term use.</p>
+                    <p>Examples: RAM, SSDs, and hard disk drives.</p>
+
+                    <p><strong>Output:</strong> Presents the results of processing.</p>
+                    <p>Examples: Monitor, printer, speakers, and output sent to another computer.</p>
+
+                    <div class="code-example">Input → Processing → Output
+             ↕
+           Storage</div>
+
+                    <h3>4. Characteristics of Computers</h3>
+
+                    <ul>
+                        <li><strong>Speed:</strong> Computers can perform many operations in a short period.</li>
+                        <li><strong>Accuracy:</strong> They can calculate accurately when the instructions and input are correct.</li>
+                        <li><strong>Storage capacity:</strong> They can store large amounts of digital information.</li>
+                        <li><strong>Automation:</strong> They can perform tasks automatically after being configured or instructed.</li>
+                        <li><strong>Consistency:</strong> They can repeat the same operation many times with consistent results.</li>
+                        <li><strong>Versatility:</strong> The same computer can perform many different tasks using different programs.</li>
+                    </ul>
+
+                    <p>Computers also have limitations. Incorrect data, faulty hardware, software bugs, or unsuitable instructions can lead to incorrect results.</p>
+
+                    <h3>5. Hardware and Software</h3>
+
+                    <p><strong>Hardware</strong> means the physical components of a computer system.</p>
+
+                    <ul>
+                        <li>CPU and motherboard</li>
+                        <li>RAM and storage devices</li>
+                        <li>Keyboard and mouse</li>
+                        <li>Monitor and printer</li>
+                        <li>Network interface and other electronic components</li>
+                    </ul>
+
+                    <p><strong>Software</strong> consists of programs and related instructions that tell a computer what operations to perform.</p>
+
+                    <ul>
+                        <li>Operating systems</li>
+                        <li>Web browsers</li>
+                        <li>Word processors</li>
+                        <li>Games and educational applications</li>
+                        <li>Engineering and design software</li>
+                    </ul>
+
+                    <p>Hardware and software depend on one another. Hardware provides the physical resources, while software specifies the operations to be performed.</p>
+
+                    <h3>6. Types of Computers</h3>
+
+                    <p><strong>Personal computers:</strong> General-purpose computers used by individuals, including desktops and laptops.</p>
+
+                    <p><strong>Servers:</strong> Computers that provide services or resources to other computers, such as websites, files, or databases.</p>
+
+                    <p><strong>Supercomputers:</strong> High-performance systems designed for computationally demanding tasks such as climate modeling and scientific simulation.</p>
+
+                    <p><strong>Embedded systems:</strong> Computing systems built into larger devices. Examples include washing machines, cars, medical equipment, and industrial controllers.</p>
+
+                    <p><strong>Mobile devices:</strong> Portable computing devices such as smartphones and tablets.</p>
+
+                    <p>These categories can overlap. For example, an embedded computer may contain a processor, memory, storage, and an operating system.</p>
+
+                    <h3>7. Generations of Computers</h3>
+
+                    <p>Computer generations are a simplified way of describing major historical changes in computer technology. Exact dates may vary between textbooks.</p>
+
+                    <p><strong>First Generation — Vacuum Tubes</strong></p>
+                    <ul>
+                        <li>Used vacuum tubes for electronic processing.</li>
+                        <li>Machines were often very large and consumed substantial electrical power.</li>
+                        <li>Produced significant heat and required considerable maintenance.</li>
+                        <li>Programming often involved machine language and early low-level techniques.</li>
+                    </ul>
+
+                    <p><strong>Second Generation — Transistors</strong></p>
+                    <ul>
+                        <li>Transistors replaced vacuum tubes in many computer designs.</li>
+                        <li>Systems became smaller and more energy-efficient.</li>
+                        <li>Reliability improved.</li>
+                        <li>Assembly language and high-level languages became increasingly important.</li>
+                    </ul>
+
+                    <p><strong>Third Generation — Integrated Circuits</strong></p>
+                    <ul>
+                        <li>Integrated circuits placed multiple electronic components on a chip.</li>
+                        <li>Computers became more compact and capable.</li>
+                        <li>Operating systems and multiprogramming became more developed.</li>
+                    </ul>
+
+                    <p><strong>Fourth Generation — Microprocessors</strong></p>
+                    <ul>
+                        <li>Microprocessors placed major CPU functions on a single integrated circuit.</li>
+                        <li>Personal computers became widespread.</li>
+                        <li>Computer networks and graphical user interfaces became increasingly common.</li>
+                    </ul>
+
+                    <p><strong>Modern Computing</strong></p>
+                    <ul>
+                        <li>Modern systems use advanced integrated circuits and multicore processors.</li>
+                        <li>Cloud computing, mobile computing, graphics processing, and artificial intelligence are important areas.</li>
+                        <li>Computing devices are found in homes, vehicles, factories, and many everyday objects.</li>
+                    </ul>
+
+                    <h3>8. Analog and Digital Computers</h3>
+
+                    <p><strong>Analog systems</strong> represent information through continuously varying physical quantities, such as voltage.</p>
+
+                    <p><strong>Digital systems</strong> represent information using discrete values. Modern digital computers typically use binary digits, 0 and 1.</p>
+
+                    <p>Digital representation allows computers to store, process, and transmit data using electronic circuits designed for discrete states.</p>
+
+                    <h3>9. Where Computer Engineering Is Used</h3>
+
+                    <ul>
+                        <li>Designing processors and digital circuits.</li>
+                        <li>Developing embedded systems and smart devices.</li>
+                        <li>Building computer networks and communication systems.</li>
+                        <li>Creating hardware-software interfaces.</li>
+                        <li>Developing robotics and control systems.</li>
+                        <li>Designing reliable and efficient computing systems.</li>
+                    </ul>
+
+                    <h3>Lecture 1 Summary</h3>
+
+                    <ul>
+                        <li>A computer accepts input, processes data, stores information, and produces output.</li>
+                        <li>Data is raw input; information is processed or organized data.</li>
+                        <li>Hardware consists of physical components; software consists of programs and instructions.</li>
+                        <li>Computers include personal computers, servers, supercomputers, and embedded systems.</li>
+                        <li>Computer generations are commonly associated with vacuum tubes, transistors, integrated circuits, and microprocessors.</li>
+                    </ul>
+                `
+            },
+
+            {
+                title: "Lecture 2: Computer Hardware and Architecture",
+                content: `
+                    <h3>1. What Is Computer Architecture?</h3>
+
+                    <p><strong>Computer architecture</strong> describes the programmer-visible structure and behavior of a computer system, including its instruction set and how software interacts with the processor and memory.</p>
+
+                    <p><strong>Computer organization</strong> describes how the hardware components are arranged and implemented to realize the architecture.</p>
+
+                    <p>In introductory courses, these ideas help explain how the CPU, memory, storage, and input/output components work together.</p>
+
+                    <h3>2. The Central Processing Unit (CPU)</h3>
+
+                    <p>The <strong>CPU</strong> is the processor that executes program instructions. It performs arithmetic and logical operations and coordinates many activities within a computer system.</p>
+
+                    <p>Important CPU components include:</p>
+
+                    <p><strong>Arithmetic Logic Unit (ALU):</strong> Performs arithmetic operations, such as addition and subtraction, and logical operations, such as AND, OR, and comparisons.</p>
+
+                    <p><strong>Control Unit (CU):</strong> Coordinates instruction processing and directs the movement of control signals and data between components.</p>
+
+                    <p><strong>Registers:</strong> Very small, fast storage locations inside the processor. Registers hold values such as operands, addresses, and intermediate results.</p>
+
+                    <p><strong>Cache:</strong> Small, high-speed memory that keeps copies of frequently or recently used data and instructions to reduce average access time.</p>
+
+                    <div class="info-box">
+                        The CPU, memory, and input/output systems cooperate to execute programs. The CPU does not replace RAM or long-term storage; each has a different role.
+                    </div>
+
+                    <h3>3. The Instruction Cycle</h3>
+
+                    <p>Processors execute machine instructions through an instruction-processing cycle. A simplified model contains three stages.</p>
+
+                    <p><strong>Fetch:</strong> The processor obtains the next instruction from memory, using the program's current instruction address.</p>
+
+                    <p><strong>Decode:</strong> The processor interprets the instruction to determine what operation is required and which operands are needed.</p>
+
+                    <p><strong>Execute:</strong> The processor performs the operation, such as an arithmetic calculation, a data transfer, or a branch.</p>
+
+                    <div class="code-example">Fetch → Decode → Execute
+   ↑                  |
+   └──────────────────┘</div>
+
+                    <p>This cycle is a simplified explanation. Modern CPUs may use pipelines, parallel execution, and other techniques to process instructions more efficiently.</p>
+
+                    <h3>4. CPU Clock Speed and Cores</h3>
+
+                    <p><strong>Clock speed</strong> is commonly expressed in hertz, often gigahertz (GHz). It describes the frequency of a processor's clock signal.</p>
+
+                    <p>A clock speed of 3 GHz corresponds to approximately three billion clock cycles per second. It does not mean that the CPU necessarily completes exactly three billion instructions per second.</p>
+
+                    <p><strong>CPU cores</strong> are processing units within a processor. A multicore CPU can execute work on multiple cores, allowing certain tasks to run in parallel.</p>
+
+                    <p>Performance depends on many factors, including architecture, instructions per cycle, number of cores, memory performance, power limits, and the software being used.</p>
+
+                    <h3>5. Primary Memory: RAM</h3>
+
+                    <p><strong>Random Access Memory (RAM)</strong> stores data and instructions that the computer is actively using.</p>
+
+                    <ul>
+                        <li>RAM is designed for fast access.</li>
+                        <li>Programs and their working data are commonly loaded into RAM while running.</li>
+                        <li>Ordinary RAM is volatile: its contents are lost when power is removed.</li>
+                        <li>More RAM can help a system handle larger workloads or more applications at the same time.</li>
+                    </ul>
+
+                    <p>Example: When you open a browser, its running code and active data use RAM. Saving a document to an SSD provides longer-term storage.</p>
+
+                    <h3>6. ROM and Firmware</h3>
+
+                    <p><strong>Read-Only Memory (ROM)</strong> is a term associated with memory designed to retain stored contents without continuous power. Different ROM technologies have different capabilities.</p>
+
+                    <p><strong>Firmware</strong> is low-level software stored in non-volatile memory. It helps hardware initialize or perform specific functions.</p>
+
+                    <p>For example, a computer's firmware can perform initial hardware checks and help start the operating system.</p>
+
+                    <h3>7. Cache Memory</h3>
+
+                    <p>Processors are much faster than many forms of main memory. Cache helps reduce the delay when the CPU needs data or instructions.</p>
+
+                    <p>Common cache levels include:</p>
+
+                    <ul>
+                        <li><strong>L1 cache:</strong> Usually very small and very fast.</li>
+                        <li><strong>L2 cache:</strong> Usually larger than L1, with somewhat different access characteristics.</li>
+                        <li><strong>L3 cache:</strong> Often larger and may be shared by multiple CPU cores.</li>
+                    </ul>
+
+                    <p>Exact cache arrangements differ between processor designs.</p>
+
+                    <h3>8. Secondary Storage</h3>
+
+                    <p>Secondary storage retains data when the computer is turned off.</p>
+
+                    <p><strong>Hard Disk Drive (HDD):</strong> Stores data magnetically on rotating disks. HDDs often offer relatively high capacity at a lower cost per unit of storage.</p>
+
+                    <p><strong>Solid-State Drive (SSD):</strong> Stores data using flash memory and has no moving mechanical parts. SSDs generally provide faster access than traditional HDDs.</p>
+
+                    <p><strong>USB flash drive:</strong> A portable flash-storage device used to transfer files.</p>
+
+                    <p><strong>Memory card:</strong> Compact flash storage commonly used in cameras and other portable devices.</p>
+
+                    <p><strong>Optical disc:</strong> Uses laser technology to read or write supported optical media.</p>
+
+                    <h3>9. Comparing Memory and Storage</h3>
+
+                    <ul>
+                        <li><strong>Registers:</strong> Very small, extremely fast storage inside the CPU.</li>
+                        <li><strong>Cache:</strong> Fast memory that helps the CPU access frequently needed data.</li>
+                        <li><strong>RAM:</strong> Holds active programs and working data; ordinarily volatile.</li>
+                        <li><strong>SSD/HDD:</strong> Stores files and applications for long-term use; non-volatile.</li>
+                    </ul>
+
+                    <div class="info-box">
+                        <strong>Remember:</strong> RAM is not the same as storage. Increasing storage capacity does not automatically increase the amount of RAM available to running programs.
+                    </div>
+
+                    <h3>10. The Motherboard</h3>
+
+                    <p>The <strong>motherboard</strong> is the main circuit board that connects many computer components.</p>
+
+                    <p>It may provide sockets for the CPU and memory, connectors for storage, expansion slots, power connections, and interfaces for peripherals.</p>
+
+                    <p>The motherboard helps components communicate through electrical connections and communication pathways.</p>
+
+                    <h3>11. Buses and Data Transfer</h3>
+
+                    <p>A <strong>bus</strong> is a communication pathway used to transfer information between computer components.</p>
+
+                    <ul>
+                        <li><strong>Data bus:</strong> Carries data.</li>
+                        <li><strong>Address bus:</strong> Carries addresses that identify locations or devices.</li>
+                        <li><strong>Control signals:</strong> Coordinate operations such as reading, writing, and timing.</li>
+                    </ul>
+
+                    <p>Modern computers use several specialized interconnects and protocols, so this traditional bus model is a simplified introduction.</p>
+
+                    <h3>12. A Simple Example of CPU and Memory Interaction</h3>
+
+                    <p>Imagine a program that calculates <code>5 + 3</code>.</p>
+
+                    <ol>
+                        <li>The program's instructions and data are available to the processor.</li>
+                        <li>The CPU fetches and decodes the required instruction.</li>
+                        <li>The ALU performs the addition operation.</li>
+                        <li>The result, 8, is placed in a register or another appropriate destination.</li>
+                        <li>The program may later send the result to an output device.</li>
+                    </ol>
+
+                    <p>This example illustrates the roles of instructions, processing units, registers, and data movement.</p>
+
+                    <h3>Lecture 2 Summary</h3>
+
+                    <ul>
+                        <li>The CPU executes program instructions.</li>
+                        <li>The ALU performs arithmetic and logical operations.</li>
+                        <li>The control unit coordinates instruction execution.</li>
+                        <li>Registers and cache provide fast access to important data.</li>
+                        <li>RAM holds active data and is ordinarily volatile.</li>
+                        <li>SSDs and HDDs provide long-term storage.</li>
+                        <li>The motherboard connects major hardware components.</li>
+                    </ul>
+                `
+            },
+
+            {
+                title: "Lecture 3: Software, Operating Systems and I/O",
+                content: `
+                    <h3>1. What Is Software?</h3>
+
+                    <p><strong>Software</strong> is a collection of programs and related instructions that tell a computer how to perform tasks.</p>
+
+                    <p>Software allows users to work with hardware without directly controlling every electrical operation.</p>
+
+                    <p>For example, a user can edit a document through a word processor instead of manually controlling the computer's memory and display hardware.</p>
+
+                    <h3>2. System Software</h3>
+
+                    <p><strong>System software</strong> manages hardware resources and provides services that application programs can use.</p>
+
+                    <p>Examples include:</p>
+
+                    <ul>
+                        <li>Operating systems.</li>
+                        <li>Device drivers.</li>
+                        <li>System utilities.</li>
+                        <li>Some language translators and development tools.</li>
+                    </ul>
+
+                    <p>System software helps coordinate the CPU, memory, storage, input/output devices, and running applications.</p>
+
+                    <h3>3. Application Software</h3>
+
+                    <p><strong>Application software</strong> helps users complete specific tasks.</p>
+
+                    <ul>
+                        <li>Word processors create and edit documents.</li>
+                        <li>Spreadsheets organize data and perform calculations.</li>
+                        <li>Web browsers access websites and web applications.</li>
+                        <li>Graphics programs create and edit visual content.</li>
+                        <li>Engineering software supports modeling, design, and analysis.</li>
+                        <li>Database applications help organize and retrieve information.</li>
+                    </ul>
+
+                    <p>The main distinction is that system software manages or supports the computing environment, while application software is designed to accomplish user-oriented tasks.</p>
+
+                    <h3>4. What Is an Operating System?</h3>
+
+                    <p>An <strong>operating system (OS)</strong> is system software that manages computer resources and provides an environment in which applications run.</p>
+
+                    <p>Examples include Microsoft Windows, Linux distributions, macOS, Android, and iOS.</p>
+
+                    <p>The operating system acts as an intermediary between applications, users, and hardware resources.</p>
+
+                    <h3>5. Main Functions of an Operating System</h3>
+
+                    <p><strong>Process management:</strong> Coordinates the execution of programs and processes, including scheduling CPU time.</p>
+
+                    <p><strong>Memory management:</strong> Allocates and tracks memory used by processes and the operating system.</p>
+
+                    <p><strong>File management:</strong> Organizes files and directories and provides operations for creating, reading, writing, and deleting files.</p>
+
+                    <p><strong>Device management:</strong> Coordinates access to hardware devices through drivers and other system mechanisms.</p>
+
+                    <p><strong>User interface:</strong> Provides ways for users to interact with the computer, such as graphical interfaces or command-line shells.</p>
+
+                    <p><strong>Security and permissions:</strong> Helps control access to accounts, files, processes, and other resources.</p>
+
+                    <h3>6. Graphical and Command-Line Interfaces</h3>
+
+                    <p>A <strong>Graphical User Interface (GUI)</strong> lets users interact with visual elements such as windows, icons, menus, and buttons.</p>
+
+                    <p>A <strong>Command-Line Interface (CLI)</strong> lets users enter text commands to perform operations.</p>
+
+                    <p>Both interfaces can be useful. A GUI can be approachable for everyday tasks, while a CLI can be efficient for automation, system administration, and development.</p>
+
+                    <h3>7. Device Drivers</h3>
+
+                    <p>A <strong>device driver</strong> is software that allows an operating system to communicate with or control a particular hardware device.</p>
+
+                    <p>Examples include drivers for printers, graphics hardware, network adapters, and audio devices.</p>
+
+                    <p>Without a suitable driver, an operating system may be unable to use all the functions of a device correctly.</p>
+
+                    <h3>8. Input Devices</h3>
+
+                    <p><strong>Input devices</strong> allow a computer to receive data or commands.</p>
+
+                    <ul>
+                        <li><strong>Keyboard:</strong> Enters text, numbers, and commands.</li>
+                        <li><strong>Mouse:</strong> Controls a pointer and selects interface elements.</li>
+                        <li><strong>Microphone:</strong> Captures sound.</li>
+                        <li><strong>Scanner:</strong> Captures images of physical documents.</li>
+                        <li><strong>Camera:</strong> Captures images or video.</li>
+                        <li><strong>Sensors:</strong> Measure physical quantities such as temperature, pressure, or motion.</li>
+                    </ul>
+
+                    <h3>9. Output Devices</h3>
+
+                    <p><strong>Output devices</strong> present information produced by a computer.</p>
+
+                    <ul>
+                        <li><strong>Monitor:</strong> Displays text, images, and video.</li>
+                        <li><strong>Printer:</strong> Produces a physical copy of digital content.</li>
+                        <li><strong>Speakers:</strong> Produce sound.</li>
+                        <li><strong>Projector:</strong> Displays an image on a larger surface.</li>
+                        <li><strong>Actuators:</strong> Convert control signals into physical action in certain systems.</li>
+                    </ul>
+
+                    <p>Some devices perform both input and output functions. For example, a touchscreen displays information and detects touch.</p>
+
+                    <h3>10. What Is a Computer Network?</h3>
+
+                    <p>A <strong>computer network</strong> is a group of connected devices that can exchange data and share resources using communication technologies and protocols.</p>
+
+                    <p>Networks can support communication, file sharing, remote access, online services, and distributed computing.</p>
+
+                    <h3>11. LAN, WAN and the Internet</h3>
+
+                    <p><strong>Local Area Network (LAN):</strong> Connects devices within a limited area, such as a home, laboratory, office, or campus building.</p>
+
+                    <p><strong>Wide Area Network (WAN):</strong> Connects networks across larger geographical areas.</p>
+
+                    <p><strong>Internet:</strong> A global system of interconnected networks that communicate using a shared suite of protocols, including the Internet Protocol (IP).</p>
+
+                    <p>Wi-Fi is a technology commonly used to connect devices to a local network wirelessly. Wi-Fi and the Internet are not the same thing: a Wi-Fi network can exist without an Internet connection.</p>
+
+                    <h3>12. Basic Computer Security</h3>
+
+                    <p>Computer security aims to protect systems and information from unauthorized access, misuse, damage, and disruption.</p>
+
+                    <ul>
+                        <li>Use strong, unique passwords.</li>
+                        <li>Keep operating systems and applications updated.</li>
+                        <li>Back up important data.</li>
+                        <li>Use appropriate account permissions.</li>
+                        <li>Be cautious with unexpected links and attachments.</li>
+                        <li>Use trusted software sources.</li>
+                    </ul>
+
+                    <p>Security is a shared responsibility involving software design, hardware features, system configuration, and user behavior.</p>
+
+                    <h3>13. How the Components Work Together</h3>
+
+                    <p>Consider opening a website on a laptop.</p>
+
+                    <ol>
+                        <li>The user enters a website address using an input device.</li>
+                        <li>The browser application processes the request.</li>
+                        <li>The operating system manages the browser's resources and network access.</li>
+                        <li>The network hardware sends and receives data.</li>
+                        <li>The CPU processes instructions and data.</li>
+                        <li>RAM holds active code and working data.</li>
+                        <li>The monitor displays the resulting web page.</li>
+                    </ol>
+
+                    <p>This example demonstrates that a modern computer performs tasks through cooperation between hardware, system software, applications, and networks.</p>
+
+                    <h3>Lecture 3 Summary</h3>
+
+                    <ul>
+                        <li>System software manages or supports the computer environment.</li>
+                        <li>Application software performs user-oriented tasks.</li>
+                        <li>The operating system manages processes, memory, files, devices, and permissions.</li>
+                        <li>Input devices provide data; output devices present results.</li>
+                        <li>Networks allow devices to communicate and share resources.</li>
+                        <li>Computer security protects systems and information.</li>
+                    </ul>
+                `
+            },
+
+            {
+                title: "Lecture 4: Data Representation and Number Systems",
+                content: `
+                    <h3>1. Why Do Computers Use Binary?</h3>
+
+                    <p>Digital computers use electronic circuits that can distinguish between discrete states. These states are commonly represented using the binary digits <strong>0</strong> and <strong>1</strong>.</p>
+
+                    <p>Binary representation works well with electronic systems that distinguish between two ranges of electrical states. The physical implementation is more complex than simply treating every signal as a perfect zero or one, but binary provides a convenient logical model.</p>
+
+                    <h3>2. Bits and Bytes</h3>
+
+                    <p>A <strong>bit</strong> is the basic unit of binary information. It can represent either 0 or 1.</p>
+
+                    <p>A <strong>byte</strong> consists of 8 bits.</p>
+
+                    <div class="code-example">1 bit  = one binary digit
+1 byte = 8 bits
+
+Example byte:
+01000001</div>
+
+                    <p>A byte can represent 256 different bit patterns because each of its eight bits has two possible values.</p>
+
+                    <p>The number of possible patterns is calculated as:</p>
+
+                    <div class="code-example">2 × 2 × 2 × 2 × 2 × 2 × 2 × 2 = 2⁸ = 256</div>
+
+                    <h3>3. Units of Digital Information</h3>
+
+                    <ul>
+                        <li><strong>Bit (b):</strong> One binary digit.</li>
+                        <li><strong>Byte (B):</strong> Eight bits.</li>
+                        <li><strong>Kilobyte (kB):</strong> 1,000 bytes in the decimal system.</li>
+                        <li><strong>Megabyte (MB):</strong> 1,000,000 bytes in the decimal system.</li>
+                        <li><strong>Gigabyte (GB):</strong> 1,000,000,000 bytes in the decimal system.</li>
+                        <li><strong>Terabyte (TB):</strong> 1,000,000,000,000 bytes in the decimal system.</li>
+                    </ul>
+
+                    <p>Binary-based units are also used in computing:</p>
+
+                    <ul>
+                        <li><strong>1 KiB:</strong> 1,024 bytes.</li>
+                        <li><strong>1 MiB:</strong> 1,024 KiB.</li>
+                        <li><strong>1 GiB:</strong> 1,024 MiB.</li>
+                    </ul>
+
+                    <div class="info-box">
+                        <strong>Important:</strong> MB and MiB are not identical. Decimal units use powers of 1,000, while binary units such as KiB and MiB use powers of 1,024.
+                    </div>
+
+                    <h3>4. The Decimal Number System</h3>
+
+                    <p>The decimal system is base 10. It uses ten digits: 0 through 9.</p>
+
+                    <p>Each position represents a power of 10.</p>
+
+                    <div class="code-example">347 = (3 × 100) + (4 × 10) + (7 × 1)
+
+347 = (3 × 10²) + (4 × 10¹) + (7 × 10⁰)</div>
+
+                    <p>This positional system allows a relatively small set of digits to represent many different values.</p>
+
+                    <h3>5. The Binary Number System</h3>
+
+                    <p>The binary system is base 2 and uses only two digits: 0 and 1.</p>
+
+                    <p>Each position represents a power of 2, starting from the right with 2⁰.</p>
+
+                    <div class="code-example">Binary: 1011
+
+Position values:
+1 × 2³ = 8
+0 × 2² = 0
+1 × 2¹ = 2
+1 × 2⁰ = 1
+
+Total = 8 + 0 + 2 + 1 = 11</div>
+
+                    <p>Therefore, binary <code>1011</code> represents decimal <code>11</code>.</p>
+
+                    <h3>6. Converting Binary to Decimal</h3>
+
+                    <p>To convert a binary number to decimal:</p>
+
+                    <ol>
+                        <li>Write the powers of 2 under the binary digits, beginning with 2⁰ on the right.</li>
+                        <li>Multiply each digit by its position value.</li>
+                        <li>Add the results.</li>
+                    </ol>
+
+                    <p>Example: Convert binary 1101 to decimal.</p>
+
+                    <div class="code-example">1101₂
+
+= (1 × 2³) + (1 × 2²) + (0 × 2¹) + (1 × 2⁰)
+
+= 8 + 4 + 0 + 1
+
+= 13₁₀</div>
+
+                    <p>So, <code>1101₂ = 13₁₀</code>.</p>
+
+                    <h3>7. Converting Decimal to Binary</h3>
+
+                    <p>One method is to repeatedly divide the decimal number by 2 and record each remainder.</p>
+
+                    <p>Example: Convert decimal 13 to binary.</p>
+
+                    <div class="code-example">13 ÷ 2 = 6 remainder 1
+ 6 ÷ 2 = 3 remainder 0
+ 3 ÷ 2 = 1 remainder 1
+ 1 ÷ 2 = 0 remainder 1</div>
+
+                    <p>Read the remainders from bottom to top.</p>
+
+                    <div class="code-example">13₁₀ = 1101₂</div>
+
+                    <h3>8. Binary Addition</h3>
+
+                    <p>Binary addition follows a small set of rules:</p>
+
+                    <ul>
+                        <li>0 + 0 = 0</li>
+                        <li>0 + 1 = 1</li>
+                        <li>1 + 0 = 1</li>
+                        <li>1 + 1 = 10 in binary</li>
+                    </ul>
+
+                    <p>The final rule means that the result is 0 in the current column with a carry of 1 into the next column.</p>
+
+                    <div class="code-example">  0101   (5)
++ 0011   (3)
+------
+  1000   (8)</div>
+
+                    <p>Binary arithmetic is fundamental to digital computing.</p>
+
+                    <h3>9. The Hexadecimal Number System</h3>
+
+                    <p>The hexadecimal system is base 16. It uses the digits 0–9 and the letters A–F.</p>
+
+                    <ul>
+                        <li>A represents decimal 10.</li>
+                        <li>B represents decimal 11.</li>
+                        <li>C represents decimal 12.</li>
+                        <li>D represents decimal 13.</li>
+                        <li>E represents decimal 14.</li>
+                        <li>F represents decimal 15.</li>
+                    </ul>
+
+                    <p>Hexadecimal is useful because one hexadecimal digit represents exactly four binary bits.</p>
+
+                    <div class="code-example">Binary:      1111
+Hexadecimal: F
+Decimal:     15</div>
+
+                    <p>Example: Hexadecimal 2A represents:</p>
+
+                    <div class="code-example">2A₁₆ = (2 × 16¹) + (10 × 16⁰)
+     = 32 + 10
+     = 42₁₀</div>
+
+                    <h3>10. How Computers Represent Text</h3>
+
+                    <p>Computers store text using numerical codes that represent characters.</p>
+
+                    <p><strong>ASCII</strong> is a character encoding standard that assigns numeric codes to a set of characters, including English letters, digits, and control characters.</p>
+
+                    <p><strong>Unicode</strong> provides a much broader system for representing characters used by many writing systems and symbol sets.</p>
+
+                    <p><strong>UTF-8</strong> is a widely used Unicode encoding. It represents a character using one to four bytes.</p>
+
+                    <p>For example, the ASCII code for uppercase A is decimal 65, represented as binary <code>01000001</code> in one byte.</p>
+
+                    <h3>11. Representing Images and Audio</h3>
+
+                    <p><strong>Digital images</strong> are commonly represented using pixels. Each pixel stores information about a color or intensity.</p>
+
+                    <p>Color images may use multiple values per pixel, such as red, green, and blue components. Image size depends on factors including resolution, color depth, and compression.</p>
+
+                    <p><strong>Digital audio</strong> can be produced by sampling a sound signal over time and representing the measurements numerically.</p>
+
+                    <p>Important audio concepts include:</p>
+
+                    <ul>
+                        <li><strong>Sample rate:</strong> Number of samples taken per second.</li>
+                        <li><strong>Bit depth:</strong> Number of bits used for each sample in common digital audio formats.</li>
+                        <li><strong>Compression:</strong> Techniques used to reduce the size of audio data.</li>
+                    </ul>
+
+                    <h3>12. Logic Gates</h3>
+
+                    <p>Logic gates are basic building blocks of digital circuits. They operate on binary inputs and produce binary outputs.</p>
+
+                    <p><strong>AND gate:</strong> Produces 1 only when both inputs are 1.</p>
+
+                    <div class="code-example">A B | AND
+0 0 |  0
+0 1 |  0
+1 0 |  0
+1 1 |  1</div>
+
+                    <p><strong>OR gate:</strong> Produces 1 when at least one input is 1.</p>
+
+                    <div class="code-example">A B | OR
+0 0 |  0
+0 1 |  1
+1 0 |  1
+1 1 |  1</div>
+
+                    <p><strong>NOT gate:</strong> Reverses the input value.</p>
+
+                    <div class="code-example">A | NOT A
+0 |   1
+1 |   0</div>
+
+                    <p>These gates can be combined to build more complex circuits, including arithmetic circuits, control circuits, and processor components.</p>
+
+                    <h3>13. Why Data Representation Matters</h3>
+
+                    <p>Understanding digital representation helps computer engineers:</p>
+
+                    <ul>
+                        <li>Understand how information is stored in memory.</li>
+                        <li>Work with low-level programming and digital systems.</li>
+                        <li>Understand file sizes and data transfer rates.</li>
+                        <li>Design and analyze digital circuits.</li>
+                        <li>Understand character encodings and multimedia formats.</li>
+                    </ul>
+
+                    <h3>Lecture 4 Summary</h3>
+
+                    <ul>
+                        <li>A bit represents 0 or 1, and a byte contains 8 bits.</li>
+                        <li>Binary is base 2; decimal is base 10; hexadecimal is base 16.</li>
+                        <li>Binary numbers can be converted to decimal using powers of 2.</li>
+                        <li>Hexadecimal provides a compact representation of binary data.</li>
+                        <li>Character encodings represent text using numerical values.</li>
+                        <li>Images and audio are represented as digital data.</li>
+                        <li>Logic gates form the basis of digital circuits.</li>
+                    </ul>
+                `
+            }
+
+        ];
+
+        // =========================================
+        // OPEN AND CLOSE LECTURES
+        // =========================================
+
+        function openLecture(index) {
+            const lecture = lectureMaterials[index];
+
+            if (!lecture) {
+                return;
+            }
+
+            document.getElementById("lectureList").style.display = "none";
+            document.getElementById("miniTest").style.display = "none";
+
+            document.getElementById("lectureContent").innerHTML =
+                "<h2>" + lecture.title + "</h2>" + lecture.content;
+
+            document.getElementById("lectureViewer").style.display = "block";
+
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+
+        function closeLecture() {
+            document.getElementById("lectureViewer").style.display = "none";
+            document.getElementById("lectureList").style.display = "block";
+            document.getElementById("miniTest").style.display = "block";
+
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+
+        // =========================================
+        // MINI TEST QUESTIONS
+        // =========================================
+
+        const quizQuestions = [
+            {
+                question: "1. What are the four basic functions of a computer?",
+                options: [
+                    "A. Input, processing, storage, output",
+                    "B. Typing, printing, drawing, gaming",
+                    "C. Opening, closing, copying, deleting",
+                    "D. CPU, monitor, keyboard, mouse"
+                ],
+                answer: 0
+            },
+            {
+                question: "2. Which of the following is an example of hardware?",
+                options: [
+                    "A. Windows",
+                    "B. A web browser",
+                    "C. A CPU",
+                    "D. A text editor"
+                ],
+                answer: 2
+            },
+            {
+                question: "3. Which CPU component performs arithmetic and logical operations?",
+                options: [
+                    "A. SSD",
+                    "B. ALU",
+                    "C. Monitor",
+                    "D. Keyboard"
+                ],
+                answer: 1
+            },
+            {
+                question: "4. Which type of memory is normally volatile?",
+                options: [
+                    "A. SSD",
+                    "B. HDD",
+                    "C. USB flash drive",
+                    "D. RAM"
+                ],
+                answer: 3
+            },
+            {
+                question: "5. Which of the following is an operating system?",
+                options: [
+                    "A. Microsoft Word",
+                    "B. Windows",
+                    "C. A keyboard",
+                    "D. A CPU"
+                ],
+                answer: 1
+            },
+            {
+                question: "6. Which device is primarily used for input?",
+                options: [
+                    "A. Keyboard",
+                    "B. Monitor",
+                    "C. Speaker",
+                    "D. Projector"
+                ],
+                answer: 0
+            },
+            {
+                question: "7. How many bits are in one byte?",
+                options: [
+                    "A. 2",
+                    "B. 4",
+                    "C. 8",
+                    "D. 16"
+                ],
+                answer: 2
+            },
+            {
+                question: "8. What is the decimal value of binary 1010?",
+                options: [
+                    "A. 8",
+                    "B. 10",
+                    "C. 12",
+                    "D. 14"
+                ],
+                answer: 1
+            },
+            {
+                question: "9. Which logic gate produces 1 only when both inputs are 1?",
+                options: [
+                    "A. OR",
+                    "B. NOT",
+                    "C. AND",
+                    "D. None of these"
+                ],
+                answer: 2
+            },
+            {
+                question: "10. Which statement about an SSD is correct?",
+                options: [
+                    "A. It is a type of input device",
+                    "B. It is used only for calculations",
+                    "C. It is volatile memory like ordinary RAM",
+                    "D. It provides non-volatile data storage"
+                ],
+                answer: 3
+            }
+        ];
+
+        let currentQuestion = 0;
+        let userAnswers = [];
+        let timeLeft = 600;
+        let quizTimer = null;
+        let quizFinished = false;
+
+        function startQuiz() {
+            clearInterval(quizTimer);
+
+            currentQuestion = 0;
+            userAnswers = new Array(quizQuestions.length).fill(null);
+            timeLeft = 600;
+            quizFinished = false;
+
+            document.getElementById("quizIntro").style.display = "none";
+            document.getElementById("quizResult").style.display = "none";
+            document.getElementById("quizArea").style.display = "block";
+
+            renderQuestion();
+            updateTimer();
+
+            quizTimer = setInterval(function () {
+                timeLeft--;
+                updateTimer();
+
+                if (timeLeft <= 0) {
+                    finishQuiz();
+                }
+            }, 1000);
+
+            document.getElementById("miniTest").scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+        }
+
+        function updateTimer() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+
+            document.getElementById("timer").textContent =
+                "Time: " +
+                String(minutes).padStart(2, "0") +
+                ":" +
+                String(seconds).padStart(2, "0");
+        }
+
+        function renderQuestion() {
+            const question = quizQuestions[currentQuestion];
+
+            document.getElementById("questionCounter").textContent =
+                "Question " + (currentQuestion + 1) +
+                " of " + quizQuestions.length;
+
+            document.getElementById("progressBar").style.width =
+                ((currentQuestion + 1) / quizQuestions.length * 100) + "%";
+
+            document.getElementById("questionText").textContent =
+                question.question;
+
+            const optionsContainer = document.getElementById("answerOptions");
+            optionsContainer.innerHTML = "";
+
+            question.options.forEach(function (option, index) {
+                const label = document.createElement("label");
+                label.className = "answer-option";
+
+                const radio = document.createElement("input");
+                radio.type = "radio";
+                radio.name = "quizAnswer";
+                radio.value = index;
+                radio.checked = userAnswers[currentQuestion] === index;
+
+                radio.addEventListener("change", function () {
+                    userAnswers[currentQuestion] = index;
+                });
+
+                label.appendChild(radio);
+                label.appendChild(document.createTextNode(option));
+                optionsContainer.appendChild(label);
+            });
+
+            document.getElementById("previousBtn").disabled =
+                currentQuestion === 0;
+
+            document.getElementById("nextBtn").textContent =
+                currentQuestion === quizQuestions.length - 1
+                    ? "Finish Test"
+                    : "Next";
+        }
+
+        function nextQuestion() {
+            if (quizFinished) {
+                return;
+            }
+
+            if (currentQuestion === quizQuestions.length - 1) {
+                finishQuiz();
+                return;
+            }
+
+            currentQuestion++;
+            renderQuestion();
+        }
+
+        function previousQuestion() {
+            if (quizFinished || currentQuestion === 0) {
+                return;
+            }
+
+            currentQuestion--;
+            renderQuestion();
+        }
+
+        function finishQuiz() {
+            if (quizFinished) {
+                return;
+            }
+
+            quizFinished = true;
+            clearInterval(quizTimer);
+
+            let score = 0;
+
+            quizQuestions.forEach(function (question, index) {
+                if (userAnswers[index] === question.answer) {
+                    score++;
+                }
+            });
+
+            const percentage = Math.round(
+                score / quizQuestions.length * 100
+            );
+
+            document.getElementById("quizArea").style.display = "none";
+            document.getElementById("quizResult").style.display = "block";
+
+            document.getElementById("scoreText").textContent =
+                score + "/" + quizQuestions.length + " — " + percentage + "%";
+
+            let message;
+
+            if (percentage === 100) {
+                message = "Excellent! You answered every question correctly.";
+            } else if (percentage >= 80) {
+                message = "Great job! You have a strong understanding of the material.";
+            } else if (percentage >= 60) {
+                message = "Good effort! Review the incorrect answers to improve.";
+            } else {
+                message = "Keep practicing! Review the lectures and try the test again.";
+            }
+
+            document.getElementById("resultMessage").textContent = message;
+
+            const review = document.getElementById("answerReview");
+            review.innerHTML = "";
+
+            quizQuestions.forEach(function (question, index) {
+                const item = document.createElement("div");
+                item.className = "review-item";
+
+                const title = document.createElement("p");
+                title.textContent = question.question;
+                item.appendChild(title);
+
+                const yourAnswer = document.createElement("p");
+
+                if (userAnswers[index] === null) {
+                    yourAnswer.textContent = "Your answer: Not answered";
+                    yourAnswer.className = "wrong-answer";
+                } else {
+                    yourAnswer.textContent =
+                        "Your answer: " + question.options[userAnswers[index]];
+
+                    yourAnswer.className =
+                        userAnswers[index] === question.answer
+                            ? "correct-answer"
+                            : "wrong-answer";
+                }
+
+                item.appendChild(yourAnswer);
+
+                const correctAnswer = document.createElement("p");
+                correctAnswer.textContent =
+                    "Correct answer: " + question.options[question.answer];
+                correctAnswer.className = "correct-answer";
+
+                item.appendChild(correctAnswer);
+                review.appendChild(item);
+            });
+
+            document.getElementById("quizResult").scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+        }
+
+        function restartQuiz() {
+            startQuiz();
+        }
+    </script>
+
+</body>
+</html>

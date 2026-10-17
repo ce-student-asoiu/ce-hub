@@ -1,0 +1,1621 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Linear Algebra & Analytic Geometry | CE HUB</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        .course-container {
+            max-width: 1000px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+        .course-header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .course-header h1 {
+            color: #1d4ed8;
+            margin-bottom: 10px;
+        }
+
+        .lecture-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 22px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04);
+        }
+
+        .lecture-card h3 {
+            margin: 0 0 8px;
+            color: #1f2937;
+        }
+
+        .lecture-card p {
+            margin: 0;
+            color: #6b7280;
+            line-height: 1.6;
+        }
+
+        .open-btn,
+        .primary-btn {
+            display: inline-block;
+            background: #2563eb;
+            color: white;
+            padding: 11px 22px;
+            border: none;
+            border-radius: 8px;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .open-btn:hover,
+        .primary-btn:hover {
+            background: #1d4ed8;
+        }
+
+        #lectureViewer {
+            display: none;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 28px;
+            margin: 30px 0;
+            line-height: 1.8;
+            overflow-wrap: anywhere;
+        }
+
+        #lectureContent h2 {
+            color: #1d4ed8;
+            margin-top: 5px;
+        }
+
+        #lectureContent h3 {
+            color: #1f2937;
+            margin-top: 25px;
+        }
+
+        #lectureContent h4 {
+            color: #374151;
+            margin-top: 20px;
+        }
+
+        #lectureContent ul,
+        #lectureContent ol {
+            padding-left: 25px;
+        }
+
+        #lectureContent li {
+            margin-bottom: 8px;
+        }
+
+        .code-example {
+            background: #111827;
+            color: #e5e7eb;
+            padding: 16px;
+            border-radius: 8px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            font-family: Consolas, monospace;
+            line-height: 1.6;
+        }
+
+        .info-box {
+            background: #eff6ff;
+            border-left: 4px solid #2563eb;
+            padding: 14px 18px;
+            margin: 18px 0;
+            border-radius: 5px;
+        }
+
+        .quiz-section {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 30px;
+            margin-top: 45px;
+            margin-bottom: 40px;
+        }
+
+        .quiz-intro {
+            text-align: center;
+        }
+
+        .quiz-intro h2 {
+            color: #1d4ed8;
+            margin-bottom: 10px;
+        }
+
+        .quiz-intro p {
+            color: #6b7280;
+        }
+
+        .time-limit {
+            font-weight: 600;
+            color: #374151;
+            margin: 18px 0;
+        }
+
+        .quiz-start {
+            font-size: 16px;
+            padding: 14px 30px;
+        }
+
+        #quizArea,
+        #quizResult {
+            display: none;
+        }
+
+        .quiz-top {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+            font-weight: 600;
+        }
+
+        #timer {
+            color: #dc2626;
+        }
+
+        .progress-track {
+            width: 100%;
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 25px;
+        }
+
+        #progressBar {
+            height: 100%;
+            width: 0%;
+            background: #2563eb;
+            transition: width 0.2s;
+        }
+
+        #questionText {
+            color: #1f2937;
+            font-size: 20px;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .answer-option {
+            display: block;
+            padding: 14px 16px;
+            border: 1px solid #d1d5db;
+            border-radius: 9px;
+            margin: 10px 0;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .answer-option:hover {
+            background: #eff6ff;
+            border-color: #2563eb;
+        }
+
+        .answer-option input {
+            margin-right: 10px;
+            accent-color: #2563eb;
+        }
+
+        .quiz-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+
+        .secondary-btn {
+            background: #e5e7eb;
+            color: #1f2937;
+            padding: 11px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .secondary-btn:hover {
+            background: #d1d5db;
+        }
+
+        .secondary-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .result-score {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1d4ed8;
+            margin: 15px 0;
+        }
+
+        .result-message {
+            color: #4b5563;
+            line-height: 1.7;
+        }
+
+        .review-item {
+            text-align: left;
+            border-top: 1px solid #e5e7eb;
+            padding: 15px 0;
+            line-height: 1.6;
+        }
+
+        .correct-answer {
+            color: #15803d;
+            font-weight: 600;
+        }
+
+        .wrong-answer {
+            color: #dc2626;
+            font-weight: 600;
+        }
+
+        @media (max-width: 600px) {
+            .lecture-card {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            #lectureViewer,
+            .quiz-section {
+                padding: 20px;
+            }
+
+            .open-btn {
+                width: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="logo">CE HUB</div>
+
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="index.html#subjects">Subjects</a></li>
+            <li><a href="exams.html">Exams</a></li>
+            <li><a href="deadlines.html">Deadlines</a></li>
+        </ul>
+    </nav>
+
+    <main class="course-container">
+
+        <!-- Course Header -->
+        <header class="course-header">
+            <h1>📐 Linear Algebra & Analytic Geometry</h1>
+            <p>Computer Engineering — Course Materials</p>
+        </header>
+
+        <!-- Lecture List -->
+        <section id="lectureList">
+
+            <div class="lecture-card">
+                <div>
+                    <h3>Lecture 1: Vectors and Vector Operations</h3>
+                    <p>Learn vectors, components, magnitude, vector addition, scalar multiplication, dot products, and geometric applications.</p>
+                </div>
+                <button class="open-btn" onclick="openLecture(0)">Open</button>
+            </div>
+
+            <div class="lecture-card">
+                <div>
+                    <h3>Lecture 2: Matrices and Matrix Operations</h3>
+                    <p>Understand matrix notation, dimensions, addition, scalar multiplication, matrix multiplication, transpose, and identity matrices.</p>
+                </div>
+                <button class="open-btn" onclick="openLecture(1)">Open</button>
+            </div>
+
+            <div class="lecture-card">
+                <div>
+                    <h3>Lecture 3: Systems of Linear Equations</h3>
+                    <p>Study linear systems, augmented matrices, Gaussian elimination, row operations, and the possible types of solutions.</p>
+                </div>
+                <button class="open-btn" onclick="openLecture(2)">Open</button>
+            </div>
+
+            <div class="lecture-card">
+                <div>
+                    <h3>Lecture 4: Determinants and Eigenvalues</h3>
+                    <p>Explore determinants, inverse matrices, singular matrices, eigenvalues, eigenvectors, and their applications.</p>
+                </div>
+                <button class="open-btn" onclick="openLecture(3)">Open</button>
+            </div>
+
+        </section>
+
+        <!-- Lecture Viewer -->
+        <section id="lectureViewer">
+            <button class="secondary-btn" onclick="closeLecture()">← Back to Lectures</button>
+            <div id="lectureContent"></div>
+            <button class="secondary-btn" onclick="closeLecture()">← Back to Lectures</button>
+        </section>
+
+        <!-- Mini Test -->
+        <section class="quiz-section" id="miniTest">
+
+            <div class="quiz-intro" id="quizIntro">
+                <h2>📝 Mini Test</h2>
+                <p>Test your understanding of Linear Algebra & Analytic Geometry.</p>
+                <p class="time-limit">⏱️ Time Limit: 10 minutes</p>
+                <button class="primary-btn quiz-start" onclick="startQuiz()">Start Mini Test</button>
+            </div>
+
+            <div id="quizArea">
+                <div class="quiz-top">
+                    <span id="questionCounter">Question 1 of 10</span>
+                    <span id="timer">Time: 10:00</span>
+                </div>
+
+                <div class="progress-track">
+                    <div id="progressBar"></div>
+                </div>
+
+                <h3 id="questionText"></h3>
+                <div id="answerOptions"></div>
+
+                <div class="quiz-controls">
+                    <button class="secondary-btn" id="previousBtn" onclick="previousQuestion()">Previous</button>
+                    <button class="primary-btn" id="nextBtn" onclick="nextQuestion()">Next</button>
+                </div>
+            </div>
+
+            <div id="quizResult">
+                <h2>📝 Test Completed!</h2>
+                <p>Your result:</p>
+                <div class="result-score" id="scoreText"></div>
+                <p class="result-message" id="resultMessage"></p>
+
+                <h3>Answer Review</h3>
+                <div id="answerReview"></div>
+
+                <button class="primary-btn" onclick="restartQuiz()">Try Again</button>
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer>
+        <p>© 2026 CE HUB | Computer Engineering Learning Hub</p>
+    </footer>
+
+    <script>
+        // =========================================
+        // LECTURE MATERIALS
+        // =========================================
+
+        const lectureMaterials = [
+
+            // -------------------------------------
+            // LECTURE 1
+            // -------------------------------------
+
+            {
+                title: "Lecture 1: Vectors and Vector Operations",
+                content: `
+                    <h3>1. What Is a Vector?</h3>
+
+                    <p>A <strong>vector</strong> is a mathematical object that has components and can represent quantities such as displacement, velocity, force, or a point's direction and position relative to an origin.</p>
+
+                    <p>In two-dimensional space, a vector can be written as:</p>
+
+                    <div class="code-example">v = (v₁, v₂)</div>
+
+                    <p>In three-dimensional space, it can be written as:</p>
+
+                    <div class="code-example">v = (v₁, v₂, v₃)</div>
+
+                    <p>The numbers inside the vector are called its <strong>components</strong>.</p>
+
+                    <div class="info-box">
+                        <strong>Example:</strong> The vector (3, 4) represents a displacement of 3 units along the x-direction and 4 units along the y-direction.
+                    </div>
+
+                    <h3>2. Scalars and Vectors</h3>
+
+                    <p>A <strong>scalar</strong> is a quantity represented by a single number. A vector has multiple components and includes directional information when used to describe geometric or physical quantities.</p>
+
+                    <ul>
+                        <li><strong>Scalar examples:</strong> temperature, mass, time, and distance.</li>
+                        <li><strong>Vector examples:</strong> displacement, velocity, acceleration, and force.</li>
+                    </ul>
+
+                    <p>For example, saying that an object travels 5 metres gives a distance. Saying that it moves 5 metres east gives a displacement with direction.</p>
+
+                    <h3>3. Vector Notation</h3>
+
+                    <p>Vectors are often represented using bold letters, arrows, or component notation.</p>
+
+                    <div class="code-example">a = (2, 5)
+b = (-1, 3)
+c = (4, 0, 2)</div>
+
+                    <p>The vectors a and b are two-dimensional. Vector c is three-dimensional.</p>
+
+                    <p>Two vectors in the same space are equal if their corresponding components are equal.</p>
+
+                    <p>For example:</p>
+
+                    <div class="code-example">(2, 5) = (2, 5)
+(2, 5) ≠ (5, 2)</div>
+
+                    <h3>4. Magnitude of a Vector</h3>
+
+                    <p>The <strong>magnitude</strong> or length of a vector is its non-negative length.</p>
+
+                    <p>For a two-dimensional vector v = (a, b):</p>
+
+                    <div class="code-example">|v| = √(a² + b²)</div>
+
+                    <p>For a three-dimensional vector v = (a, b, c):</p>
+
+                    <div class="code-example">|v| = √(a² + b² + c²)</div>
+
+                    <p>Example: Find the magnitude of v = (3, 4).</p>
+
+                    <div class="code-example">|v| = √(3² + 4²)
+    = √(9 + 16)
+    = √25
+    = 5</div>
+
+                    <p>Therefore, the vector's magnitude is 5.</p>
+
+                    <h3>5. Unit Vectors</h3>
+
+                    <p>A <strong>unit vector</strong> is a vector whose magnitude is 1. A non-zero vector v can be converted to a unit vector in the same direction by dividing it by its magnitude.</p>
+
+                    <div class="code-example">u = v / |v|</div>
+
+                    <p>For v = (3, 4), its magnitude is 5. Its unit vector is:</p>
+
+                    <div class="code-example">u = (3/5, 4/5)</div>
+
+                    <p>Its magnitude is:</p>
+
+                    <div class="code-example">|u| = √((3/5)² + (4/5)²)
+    = √(9/25 + 16/25)
+    = 1</div>
+
+                    <p>The zero vector has magnitude zero and cannot be normalized using this formula.</p>
+
+                    <h3>6. Vector Addition</h3>
+
+                    <p>Vectors of the same dimension are added component by component.</p>
+
+                    <div class="code-example">a = (a₁, a₂)
+b = (b₁, b₂)
+
+a + b = (a₁ + b₁, a₂ + b₂)</div>
+
+                    <p>Example:</p>
+
+                    <div class="code-example">a = (2, 3)
+b = (4, 1)
+
+a + b = (2 + 4, 3 + 1)
+      = (6, 4)</div>
+
+                    <p>Vector addition is commutative:</p>
+
+                    <div class="code-example">a + b = b + a</div>
+
+                    <p>It is also associative:</p>
+
+                    <div class="code-example">(a + b) + c = a + (b + c)</div>
+
+                    <h3>7. Vector Subtraction</h3>
+
+                    <p>Vector subtraction is also performed component by component.</p>
+
+                    <div class="code-example">a - b = (a₁ - b₁, a₂ - b₂)</div>
+
+                    <p>Example:</p>
+
+                    <div class="code-example">a = (7, 5)
+b = (2, 3)
+
+a - b = (7 - 2, 5 - 3)
+      = (5, 2)</div>
+
+                    <p>Subtraction can also be understood as adding the negative vector:</p>
+
+                    <div class="code-example">a - b = a + (-b)</div>
+
+                    <h3>8. Scalar Multiplication</h3>
+
+                    <p>Scalar multiplication multiplies every component of a vector by the same number.</p>
+
+                    <div class="code-example">k(a₁, a₂) = (ka₁, ka₂)</div>
+
+                    <p>Example:</p>
+
+                    <div class="code-example">a = (2, -3)
+k = 4
+
+ka = (4 × 2, 4 × -3)
+   = (8, -12)</div>
+
+                    <p>Multiplying by a positive scalar changes the vector's magnitude and preserves its direction. Multiplying by a negative scalar reverses its direction.</p>
+
+                    <h3>9. The Dot Product</h3>
+
+                    <p>The <strong>dot product</strong> of two vectors produces a scalar. For two-dimensional vectors:</p>
+
+                    <div class="code-example">a · b = a₁b₁ + a₂b₂</div>
+
+                    <p>For three-dimensional vectors:</p>
+
+                    <div class="code-example">a · b = a₁b₁ + a₂b₂ + a₃b₃</div>
+
+                    <p>Example: a = (2, 3) and b = (4, 5).</p>
+
+                    <div class="code-example">a · b = (2 × 4) + (3 × 5)
+      = 8 + 15
+      = 23</div>
+
+                    <p>The dot product can also be related to the angle θ between two non-zero vectors:</p>
+
+                    <div class="code-example">a · b = |a| |b| cos(θ)</div>
+
+                    <p>If two non-zero vectors have a dot product of zero, they are perpendicular.</p>
+
+                    <h3>10. Applications of Vectors</h3>
+
+                    <p>Vectors are widely used in science and engineering:</p>
+
+                    <ul>
+                        <li>Representing positions and displacements.</li>
+                        <li>Calculating forces in mechanical systems.</li>
+                        <li>Describing velocity and acceleration.</li>
+                        <li>Representing points and directions in 2D and 3D computer graphics.</li>
+                        <li>Storing coordinates and feature values in computer applications.</li>
+                    </ul>
+
+                    <h3>Lecture 1 Summary</h3>
+
+                    <ul>
+                        <li>A vector is represented by components.</li>
+                        <li>The magnitude measures a vector's length.</li>
+                        <li>A unit vector has magnitude 1.</li>
+                        <li>Vector addition and subtraction operate component by component.</li>
+                        <li>Scalar multiplication multiplies every component by a scalar.</li>
+                        <li>The dot product of two vectors is a scalar.</li>
+                        <li>A zero dot product means non-zero vectors are perpendicular.</li>
+                    </ul>
+                `
+            },
+
+            // -------------------------------------
+            // LECTURE 2
+            // -------------------------------------
+
+            {
+                title: "Lecture 2: Matrices and Matrix Operations",
+                content: `
+                    <h3>1. What Is a Matrix?</h3>
+
+                    <p>A <strong>matrix</strong> is a rectangular arrangement of numbers or other mathematical entries organized into rows and columns.</p>
+
+                    <p>For example:</p>
+
+                    <div class="code-example">A = | 1  2  3 |
+    | 4  5  6 |</div>
+
+                    <p>This matrix has two rows and three columns. Its dimensions are 2 × 3.</p>
+
+                    <div class="info-box">
+                        <strong>Important:</strong> Matrix dimensions are written as rows × columns, not columns × rows.
+                    </div>
+
+                    <h3>2. Elements and Matrix Notation</h3>
+
+                    <p>Individual entries are called <strong>elements</strong>. An element is often represented as aᵢⱼ, where i indicates the row and j indicates the column.</p>
+
+                    <p>For the matrix:</p>
+
+                    <div class="code-example">A = | 1  2 |
+    | 3  4 |</div>
+
+                    <ul>
+                        <li>a₁₁ = 1</li>
+                        <li>a₁₂ = 2</li>
+                        <li>a₂₁ = 3</li>
+                        <li>a₂₂ = 4</li>
+                    </ul>
+
+                    <h3>3. Types of Matrices</h3>
+
+                    <p><strong>Row matrix:</strong> A matrix containing only one row.</p>
+
+                    <div class="code-example">| 1  2  3 |</div>
+
+                    <p><strong>Column matrix:</strong> A matrix containing only one column.</p>
+
+                    <div class="code-example">| 1 |
+| 2 |
+| 3 |</div>
+
+                    <p><strong>Square matrix:</strong> A matrix with the same number of rows and columns.</p>
+
+                    <div class="code-example">| 1  2 |
+| 3  4 |</div>
+
+                    <p><strong>Zero matrix:</strong> A matrix whose entries are all zero.</p>
+
+                    <div class="code-example">| 0  0 |
+| 0  0 |</div>
+
+                    <p><strong>Diagonal matrix:</strong> A square matrix whose entries outside the main diagonal are zero.</p>
+
+                    <div class="code-example">| 2  0  0 |
+| 0  5  0 |
+| 0  0  7 |</div>
+
+                    <h3>4. Matrix Equality</h3>
+
+                    <p>Two matrices are equal if they have the same dimensions and all corresponding entries are equal.</p>
+
+                    <p>For example:</p>
+
+                    <div class="code-example">A = | 1  2 |
+    | 3  4 |
+
+B = | 1  2 |
+    | 3  4 |</div>
+
+                    <p>Here A = B because their corresponding entries match.</p>
+
+                    <p>Matrices with different dimensions cannot be equal.</p>
+
+                    <h3>5. Matrix Addition</h3>
+
+                    <p>Matrices can be added only when they have the same dimensions. Corresponding entries are added together.</p>
+
+                    <div class="code-example">A = | 1  2 |
+    | 3  4 |
+
+B = | 5  6 |
+    | 7  8 |
+
+A + B = | 1+5  2+6 |
+        | 3+7  4+8 |
+
+      = | 6  8  |
+        | 10 12 |</div>
+
+                    <h3>6. Scalar Multiplication</h3>
+
+                    <p>To multiply a matrix by a scalar, multiply every entry by that scalar.</p>
+
+                    <div class="code-example">A = | 1  2 |
+    | 3  4 |
+
+2A = | 2  4 |
+     | 6  8 |</div>
+
+                    <p>Scalar multiplication preserves the dimensions of the matrix.</p>
+
+                    <h3>7. Matrix Subtraction</h3>
+
+                    <p>Matrix subtraction follows the same dimension rule as addition. Subtract each entry in the second matrix from the corresponding entry in the first.</p>
+
+                    <div class="code-example">A = | 7  5 |
+    | 4  9 |
+
+B = | 2  1 |
+    | 3  6 |
+
+A - B = | 5  4 |
+        | 1  3 |</div>
+
+                    <h3>8. Matrix Multiplication</h3>
+
+                    <p>Matrix multiplication has a specific dimension requirement. If A has dimensions m × n and B has dimensions n × p, then AB is defined and has dimensions m × p.</p>
+
+                    <div class="info-box">
+                        <strong>Dimension rule:</strong> The number of columns in the first matrix must equal the number of rows in the second matrix.
+                    </div>
+
+                    <p>Example:</p>
+
+                    <div class="code-example">A = | 1  2 |
+    | 3  4 |
+
+B = | 5 |
+    | 6 |</div>
+
+                    <p>A is 2 × 2 and B is 2 × 1. Therefore, AB is a 2 × 1 matrix.</p>
+
+                    <div class="code-example">AB = | (1×5) + (2×6) |
+     | (3×5) + (4×6) |
+
+   = | 17 |
+     | 39 |</div>
+
+                    <p>In general, matrix multiplication is not commutative. Even when both AB and BA are defined, they are not necessarily equal.</p>
+
+                    <h3>9. The Identity Matrix</h3>
+
+                    <p>The <strong>identity matrix</strong> is a square matrix with ones on the main diagonal and zeros elsewhere.</p>
+
+                    <div class="code-example">I = | 1  0 |
+    | 0  1 |</div>
+
+                    <p>For a compatible matrix A:</p>
+
+                    <div class="code-example">AI = IA = A</div>
+
+                    <p>The identity matrix plays a role similar to the number 1 in ordinary multiplication.</p>
+
+                    <h3>10. The Transpose of a Matrix</h3>
+
+                    <p>The <strong>transpose</strong> of a matrix is obtained by exchanging its rows and columns. It is written as Aᵀ.</p>
+
+                    <div class="code-example">A = | 1  2  3 |
+    | 4  5  6 |
+
+Aᵀ = | 1  4 |
+     | 2  5 |
+     | 3  6 |</div>
+
+                    <p>A 2 × 3 matrix becomes a 3 × 2 matrix after transposition.</p>
+
+                    <h3>11. Applications of Matrices</h3>
+
+                    <ul>
+                        <li>Representing systems of linear equations.</li>
+                        <li>Transforming points and objects in computer graphics.</li>
+                        <li>Organizing numerical data in tables.</li>
+                        <li>Performing computations in scientific software.</li>
+                        <li>Representing data transformations in machine learning.</li>
+                    </ul>
+
+                    <h3>Lecture 2 Summary</h3>
+
+                    <ul>
+                        <li>A matrix organizes entries into rows and columns.</li>
+                        <li>Matrix dimensions are written as rows × columns.</li>
+                        <li>Addition and subtraction require equal dimensions.</li>
+                        <li>Scalar multiplication multiplies every matrix entry by a number.</li>
+                        <li>Matrix multiplication requires matching inner dimensions.</li>
+                        <li>The identity matrix has ones on its main diagonal.</li>
+                        <li>The transpose exchanges rows and columns.</li>
+                    </ul>
+                `
+            },
+
+            // -------------------------------------
+            // LECTURE 3
+            // -------------------------------------
+
+            {
+                title: "Lecture 3: Systems of Linear Equations",
+                content: `
+                    <h3>1. What Is a Linear Equation?</h3>
+
+                    <p>A <strong>linear equation</strong> in two variables can be written in the form:</p>
+
+                    <div class="code-example">ax + by = c</div>
+
+                    <p>Here a, b, and c are constants, while x and y are variables. In a linear equation, the variables have degree one and are not multiplied by one another.</p>
+
+                    <p>Examples of linear equations:</p>
+
+                    <div class="code-example">2x + 3y = 12
+x - y = 1
+4x + 2y = 8</div>
+
+                    <h3>2. What Is a System of Linear Equations?</h3>
+
+                    <p>A <strong>system of linear equations</strong> is a collection of equations that must be satisfied simultaneously.</p>
+
+                    <p>For example:</p>
+
+                    <div class="code-example">x + y = 5
+x - y = 1</div>
+
+                    <p>A solution is a pair of values for x and y that satisfies both equations.</p>
+
+                    <p>Adding the equations gives:</p>
+
+                    <div class="code-example">2x = 6
+x = 3</div>
+
+                    <p>Substituting x = 3 into x + y = 5 gives y = 2. The solution is (3, 2).</p>
+
+                    <h3>3. Geometric Interpretation</h3>
+
+                    <p>In two variables, each linear equation typically represents a straight line in the coordinate plane.</p>
+
+                    <ul>
+                        <li><strong>One solution:</strong> The two lines intersect at one point.</li>
+                        <li><strong>No solution:</strong> The lines are distinct and parallel.</li>
+                        <li><strong>Infinitely many solutions:</strong> The equations represent the same line.</li>
+                    </ul>
+
+                    <p>In three variables, a linear equation can represent a plane in three-dimensional space.</p>
+
+                    <h3>4. Writing a System in Matrix Form</h3>
+
+                    <p>A system can be written compactly as:</p>
+
+                    <div class="code-example">Ax = b</div>
+
+                    <p>Here A is the coefficient matrix, x is the vector of unknown variables, and b is the vector of constants.</p>
+
+                    <p>Consider:</p>
+
+                    <div class="code-example">2x + y = 5
+x - y = 1</div>
+
+                    <p>Its matrix form is:</p>
+
+                    <div class="code-example">| 2   1 | | x |   | 5 |
+| 1  -1 | | y | = | 1 |</div>
+
+                    <p>The coefficient matrix contains the coefficients of the variables.</p>
+
+                    <h3>5. The Augmented Matrix</h3>
+
+                    <p>An <strong>augmented matrix</strong> contains the coefficients of a system together with the constants on the right-hand side.</p>
+
+                    <p>For the system:</p>
+
+                    <div class="code-example">x + y = 5
+2x - y = 1</div>
+
+                    <p>The augmented matrix is:</p>
+
+                    <div class="code-example">| 1   1 | 5 |
+| 2  -1 | 1 |</div>
+
+                    <p>This notation makes it easier to apply row operations systematically.</p>
+
+                    <h3>6. Elementary Row Operations</h3>
+
+                    <p>Elementary row operations transform a system into an equivalent system with the same solution set.</p>
+
+                    <ol>
+                        <li><strong>Row swap:</strong> Exchange two rows.</li>
+                        <li><strong>Row scaling:</strong> Multiply a row by a non-zero constant.</li>
+                        <li><strong>Row replacement:</strong> Add a multiple of one row to another row.</li>
+                    </ol>
+
+                    <p>These operations are the basis of Gaussian elimination.</p>
+
+                    <h3>7. Gaussian Elimination</h3>
+
+                    <p><strong>Gaussian elimination</strong> uses row operations to transform an augmented matrix into row-echelon form. The system can then be solved by back-substitution.</p>
+
+                    <p>Consider:</p>
+
+                    <div class="code-example">x + y = 5
+2x + y = 8</div>
+
+                    <p>Write the augmented matrix:</p>
+
+                    <div class="code-example">| 1  1 | 5 |
+| 2  1 | 8 |</div>
+
+                    <p>Replace row 2 with row 2 minus twice row 1:</p>
+
+                    <div class="code-example">R₂ → R₂ - 2R₁
+
+| 1  1 |  5 |
+| 0 -1 | -2 |</div>
+
+                    <p>The second row gives:</p>
+
+                    <div class="code-example">-y = -2
+y = 2</div>
+
+                    <p>Substitute y = 2 into the first equation:</p>
+
+                    <div class="code-example">x + 2 = 5
+x = 3</div>
+
+                    <p>The solution is x = 3 and y = 2.</p>
+
+                    <h3>8. Row-Echelon Form</h3>
+
+                    <p>A matrix is in row-echelon form when:</p>
+
+                    <ul>
+                        <li>Any rows consisting entirely of zeros appear below non-zero rows.</li>
+                        <li>The first non-zero entry of each lower non-zero row appears to the right of the leading entry in the row above.</li>
+                        <li>All entries below each leading entry are zero.</li>
+                    </ul>
+
+                    <p>In <strong>reduced row-echelon form</strong>, each leading entry is 1 and is the only non-zero entry in its column.</p>
+
+                    <h3>9. The Three Possible Solution Types</h3>
+
+                    <p>A linear system can have three possible outcomes.</p>
+
+                    <h4>Unique solution</h4>
+
+                    <p>The system has exactly one solution. For a square system, this occurs when the coefficient matrix is invertible.</p>
+
+                    <h4>No solution</h4>
+
+                    <p>The system is inconsistent. During elimination, a row such as the following indicates a contradiction:</p>
+
+                    <div class="code-example">0x + 0y = 4</div>
+
+                    <p>This would require 0 = 4, which is impossible.</p>
+
+                    <h4>Infinitely many solutions</h4>
+
+                    <p>The equations are dependent and the system is consistent, but at least one variable is free.</p>
+
+                    <p>For example:</p>
+
+                    <div class="code-example">x + y = 4
+2x + 2y = 8</div>
+
+                    <p>The second equation is twice the first, so the equations describe the same line.</p>
+
+                    <h3>10. Homogeneous Systems</h3>
+
+                    <p>A <strong>homogeneous system</strong> has zero constants and can be written as:</p>
+
+                    <div class="code-example">Ax = 0</div>
+
+                    <p>Every homogeneous system has at least one solution: the trivial solution, in which all variables equal zero.</p>
+
+                    <p>Depending on the coefficient matrix, it may also have non-trivial solutions.</p>
+
+                    <h3>11. Common Mistakes</h3>
+
+                    <ul>
+                        <li>Changing a row without applying a valid elementary row operation.</li>
+                        <li>Making arithmetic errors when eliminating coefficients.</li>
+                        <li>Forgetting to substitute values back into the original equations.</li>
+                        <li>Assuming every system has exactly one solution.</li>
+                        <li>Confusing a row of zeros with an inconsistent row such as 0 = 4.</li>
+                    </ul>
+
+                    <h3>Lecture 3 Summary</h3>
+
+                    <ul>
+                        <li>A linear system consists of equations that must hold simultaneously.</li>
+                        <li>The matrix equation Ax = b represents a linear system.</li>
+                        <li>An augmented matrix contains coefficients and constants.</li>
+                        <li>Elementary row operations preserve the solution set.</li>
+                        <li>Gaussian elimination transforms a system into a simpler form.</li>
+                        <li>A system may have one solution, no solution, or infinitely many solutions.</li>
+                        <li>Every homogeneous system has the trivial solution.</li>
+                    </ul>
+                `
+            },
+
+            // -------------------------------------
+            // LECTURE 4
+            // -------------------------------------
+
+            {
+                title: "Lecture 4: Determinants and Eigenvalues",
+                content: `
+                    <h3>1. What Is a Determinant?</h3>
+
+                    <p>The <strong>determinant</strong> is a scalar associated with a square matrix. It provides useful information about the matrix, including whether it is invertible.</p>
+
+                    <p>The determinant of a matrix A is written as det(A) or |A|.</p>
+
+                    <div class="info-box">
+                        <strong>Important:</strong> A determinant is defined for square matrices, such as 2 × 2 and 3 × 3 matrices.
+                    </div>
+
+                    <h3>2. Determinant of a 2 × 2 Matrix</h3>
+
+                    <p>For the matrix:</p>
+
+                    <div class="code-example">A = | a  b |
+    | c  d |</div>
+
+                    <p>The determinant is:</p>
+
+                    <div class="code-example">det(A) = ad - bc</div>
+
+                    <p>Example:</p>
+
+                    <div class="code-example">A = | 3  2 |
+    | 1  4 |
+
+det(A) = (3 × 4) - (2 × 1)
+       = 12 - 2
+       = 10</div>
+
+                    <p>The determinant is 10.</p>
+
+                    <h3>3. Determinant of a 3 × 3 Matrix</h3>
+
+                    <p>For a 3 × 3 matrix, the determinant can be calculated by cofactor expansion or other equivalent methods.</p>
+
+                    <p>For:</p>
+
+                    <div class="code-example">A = | a  b  c |
+    | d  e  f |
+    | g  h  i |</div>
+
+                    <p>Expanding along the first row gives:</p>
+
+                    <div class="code-example">det(A) = a(ei - fh)
+       - b(di - fg)
+       + c(dh - eg)</div>
+
+                    <p>The signs in a cofactor expansion along a row alternate as +, −, +.</p>
+
+                    <h3>4. What Does the Determinant Tell Us?</h3>
+
+                    <p>The determinant helps determine whether a square matrix is invertible.</p>
+
+                    <ul>
+                        <li>If det(A) ≠ 0, the matrix is invertible.</li>
+                        <li>If det(A) = 0, the matrix is singular and is not invertible.</li>
+                    </ul>
+
+                    <p>For a square system Ax = b, a non-zero determinant of A guarantees a unique solution for every vector b.</p>
+
+                    <h3>5. Singular and Non-Singular Matrices</h3>
+
+                    <p>A <strong>singular matrix</strong> has determinant zero and has no inverse.</p>
+
+                    <div class="code-example">A = | 1  2 |
+    | 2  4 |
+
+det(A) = (1 × 4) - (2 × 2)
+       = 4 - 4
+       = 0</div>
+
+                    <p>The second row is twice the first row, so the rows are linearly dependent.</p>
+
+                    <p>A <strong>non-singular matrix</strong> has a non-zero determinant and is invertible.</p>
+
+                    <h3>6. The Inverse of a 2 × 2 Matrix</h3>
+
+                    <p>If:</p>
+
+                    <div class="code-example">A = | a  b |
+    | c  d |</div>
+
+                    <p>and det(A) = ad − bc ≠ 0, then:</p>
+
+                    <div class="code-example">A⁻¹ = 1/(ad - bc) |  d  -b |
+                   | -c   a |</div>
+
+                    <p>Example:</p>
+
+                    <div class="code-example">A = | 2  1 |
+    | 1  1 |
+
+det(A) = (2 × 1) - (1 × 1) = 1
+
+A⁻¹ = |  1  -1 |
+      | -1   2 |</div>
+
+                    <p>The inverse satisfies:</p>
+
+                    <div class="code-example">AA⁻¹ = A⁻¹A = I</div>
+
+                    <h3>7. What Is an Eigenvalue?</h3>
+
+                    <p>An <strong>eigenvector</strong> is a non-zero vector whose direction is preserved by a linear transformation, although its magnitude or orientation may change.</p>
+
+                    <p>If A is a square matrix, an eigenvector v and its eigenvalue λ satisfy:</p>
+
+                    <div class="code-example">Av = λv</div>
+
+                    <p>Here A transforms v into a scalar multiple of itself.</p>
+
+                    <p>The scalar λ is the eigenvalue associated with v.</p>
+
+                    <h3>8. Finding Eigenvalues</h3>
+
+                    <p>Starting from:</p>
+
+                    <div class="code-example">Av = λv</div>
+
+                    <p>Move all terms to one side:</p>
+
+                    <div class="code-example">(A - λI)v = 0</div>
+
+                    <p>For a non-zero vector v to exist, the matrix A − λI must be singular. Therefore, eigenvalues satisfy the characteristic equation:</p>
+
+                    <div class="code-example">det(A - λI) = 0</div>
+
+                    <p>Solving this equation gives the eigenvalues.</p>
+
+                    <h3>9. Example of Eigenvalues</h3>
+
+                    <p>Consider the diagonal matrix:</p>
+
+                    <div class="code-example">A = | 2  0 |
+    | 0  3 |</div>
+
+                    <p>Then:</p>
+
+                    <div class="code-example">A - λI = | 2-λ   0   |
+          |  0   3-λ |</div>
+
+                    <p>The characteristic equation is:</p>
+
+                    <div class="code-example">det(A - λI) = (2 - λ)(3 - λ) = 0</div>
+
+                    <p>Thus, the eigenvalues are:</p>
+
+                    <div class="code-example">λ₁ = 2
+λ₂ = 3</div>
+
+                    <h3>10. Finding Eigenvectors</h3>
+
+                    <p>After finding an eigenvalue λ, substitute it into:</p>
+
+                    <div class="code-example">(A - λI)v = 0</div>
+
+                    <p>For λ = 2 in the previous example, the equation forces the second component of v to be zero. Therefore, any non-zero vector of the form (x, 0) is an eigenvector for λ = 2.</p>
+
+                    <p>For λ = 3, the first component must be zero. Any non-zero vector of the form (0, y) is an eigenvector for λ = 3.</p>
+
+                    <h3>11. Applications of Eigenvalues and Eigenvectors</h3>
+
+                    <ul>
+                        <li>Analyzing linear transformations.</li>
+                        <li>Understanding vibration modes in engineering.</li>
+                        <li>Principal component analysis in data science.</li>
+                        <li>Studying stability in mathematical models.</li>
+                        <li>Analyzing transformations in computer graphics.</li>
+                    </ul>
+
+                    <h3>12. Common Mistakes</h3>
+
+                    <ul>
+                        <li>Applying the 2 × 2 determinant formula to a non-square matrix.</li>
+                        <li>Forgetting the negative sign in the formula ad − bc.</li>
+                        <li>Assuming a matrix with determinant zero has an inverse.</li>
+                        <li>Confusing an eigenvalue with an eigenvector.</li>
+                        <li>Accepting the zero vector as an eigenvector; eigenvectors must be non-zero.</li>
+                        <li>Forgetting to solve det(A − λI) = 0 when finding eigenvalues.</li>
+                    </ul>
+
+                    <h3>Lecture 4 Summary</h3>
+
+                    <ul>
+                        <li>The determinant is a scalar associated with a square matrix.</li>
+                        <li>For a 2 × 2 matrix, det(A) = ad − bc.</li>
+                        <li>A matrix is invertible exactly when its determinant is non-zero.</li>
+                        <li>The inverse of a matrix satisfies AA⁻¹ = I.</li>
+                        <li>An eigenvector satisfies Av = λv and must be non-zero.</li>
+                        <li>Eigenvalues can be found from det(A − λI) = 0.</li>
+                    </ul>
+                `
+            }
+
+        ];
+
+        // =========================================
+        // OPEN AND CLOSE LECTURES
+        // =========================================
+
+        function openLecture(index) {
+            const lecture = lectureMaterials[index];
+
+            if (!lecture) {
+                return;
+            }
+
+            document.getElementById("lectureList").style.display = "none";
+            document.getElementById("miniTest").style.display = "none";
+
+            const viewer = document.getElementById("lectureViewer");
+            const content = document.getElementById("lectureContent");
+
+            content.innerHTML = `
+                <h2>${lecture.title}</h2>
+                ${lecture.content}
+            `;
+
+            viewer.style.display = "block";
+
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+        }
+
+        function closeLecture() {
+            document.getElementById("lectureViewer").style.display = "none";
+            document.getElementById("lectureList").style.display = "block";
+            document.getElementById("miniTest").style.display = "block";
+
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+        }
+
+        // =========================================
+        // MINI TEST QUESTIONS
+        // =========================================
+
+        const quizQuestions = [
+
+            {
+                question: "1. What is the magnitude of the vector v = (3, 4)?",
+                options: [
+                    "A. 4",
+                    "B. 5",
+                    "C. 7",
+                    "D. 12"
+                ],
+                answer: 1
+            },
+
+            {
+                question: "2. If a = (2, 3) and b = (4, 1), what is a + b?",
+                options: [
+                    "A. (6, 4)",
+                    "B. (8, 3)",
+                    "C. (2, 2)",
+                    "D. (4, 6)"
+                ],
+                answer: 0
+            },
+
+            {
+                question: "3. What is the dot product of a = (2, 3) and b = (4, 5)?",
+                options: [
+                    "A. 15",
+                    "B. 20",
+                    "C. 23",
+                    "D. 26"
+                ],
+                answer: 2
+            },
+
+            {
+                question: "4. What are the dimensions of a matrix with 3 rows and 2 columns?",
+                options: [
+                    "A. 2 × 3",
+                    "B. 3 × 2",
+                    "C. 3 × 3",
+                    "D. 2 × 2"
+                ],
+                answer: 1
+            },
+
+            {
+                question: "5. When can two matrices be added?",
+                options: [
+                    "A. Only when both are square",
+                    "B. Only when both have the same number of rows",
+                    "C. Only when both have the same number of columns",
+                    "D. When they have the same dimensions"
+                ],
+                answer: 3
+            },
+
+            {
+                question: "6. If A is 2 × 3 and B is 3 × 4, what are the dimensions of AB?",
+                options: [
+                    "A. 3 × 3",
+                    "B. 2 × 4",
+                    "C. 4 × 2",
+                    "D. 2 × 3"
+                ],
+                answer: 1
+            },
+
+            {
+                question: "7. Which method uses elementary row operations to solve linear systems?",
+                options: [
+                    "A. Gaussian elimination",
+                    "B. Scalar multiplication only",
+                    "C. Vector normalization",
+                    "D. Matrix transposition"
+                ],
+                answer: 0
+            },
+
+            {
+                question: "8. Which statement describes an inconsistent linear system?",
+                options: [
+                    "A. It has exactly one solution",
+                    "B. It always has infinitely many solutions",
+                    "C. It has no solution",
+                    "D. All its variables must be zero"
+                ],
+                answer: 2
+            },
+
+            {
+                question: "9. What is the determinant of the matrix [[3, 2], [1, 4]]?",
+                options: [
+                    "A. 8",
+                    "B. 10",
+                    "C. 12",
+                    "D. 14"
+                ],
+                answer: 1
+            },
+
+            {
+                question: "10. Which equation is used to find the eigenvalues of a square matrix A?",
+                options: [
+                    "A. det(A + λI) = 1",
+                    "B. A + v = λ",
+                    "C. det(A) = λ",
+                    "D. det(A - λI) = 0"
+                ],
+                answer: 3
+            }
+
+        ];
+
+        let currentQuestion = 0;
+        let userAnswers = [];
+        let timeLeft = 600;
+        let quizTimer = null;
+        let quizFinished = false;
+
+        // =========================================
+        // START QUIZ
+        // =========================================
+
+        function startQuiz() {
+            clearInterval(quizTimer);
+
+            currentQuestion = 0;
+            userAnswers = new Array(quizQuestions.length).fill(null);
+            timeLeft = 600;
+            quizFinished = false;
+
+            document.getElementById("quizIntro").style.display = "none";
+            document.getElementById("quizResult").style.display = "none";
+            document.getElementById("quizArea").style.display = "block";
+
+            renderQuestion();
+            updateTimer();
+
+            quizTimer = setInterval(function () {
+                timeLeft--;
+                updateTimer();
+
+                if (timeLeft <= 0) {
+                    finishQuiz();
+                }
+            }, 1000);
+
+            document.getElementById("miniTest").scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+        }
+
+        // =========================================
+        // TIMER
+        // =========================================
+
+        function updateTimer() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+
+            document.getElementById("timer").textContent =
+                "Time: " +
+                String(minutes).padStart(2, "0") +
+                ":" +
+                String(seconds).padStart(2, "0");
+        }
+
+        // =========================================
+        // DISPLAY QUESTION
+        // =========================================
+
+        function renderQuestion() {
+            const question = quizQuestions[currentQuestion];
+
+            document.getElementById("questionCounter").textContent =
+                "Question " + (currentQuestion + 1) +
+                " of " + quizQuestions.length;
+
+            document.getElementById("progressBar").style.width =
+                ((currentQuestion + 1) / quizQuestions.length * 100) + "%";
+
+            document.getElementById("questionText").textContent =
+                question.question;
+
+            const optionsContainer =
+                document.getElementById("answerOptions");
+
+            optionsContainer.innerHTML = "";
+
+            question.options.forEach(function (option, index) {
+                const label = document.createElement("label");
+                label.className = "answer-option";
+
+                const radio = document.createElement("input");
+                radio.type = "radio";
+                radio.name = "quizAnswer";
+                radio.value = index;
+                radio.checked = userAnswers[currentQuestion] === index;
+
+                radio.addEventListener("change", function () {
+                    userAnswers[currentQuestion] = index;
+                });
+
+                label.appendChild(radio);
+                label.appendChild(document.createTextNode(option));
+
+                optionsContainer.appendChild(label);
+            });
+
+            document.getElementById("previousBtn").disabled =
+                currentQuestion === 0;
+
+            const nextButton = document.getElementById("nextBtn");
+
+            if (currentQuestion === quizQuestions.length - 1) {
+                nextButton.textContent = "Finish Test";
+            } else {
+                nextButton.textContent = "Next";
+            }
+        }
+
+        // =========================================
+        // NEXT AND PREVIOUS
+        // =========================================
+
+        function nextQuestion() {
+            if (quizFinished) {
+                return;
+            }
+
+            if (currentQuestion === quizQuestions.length - 1) {
+                finishQuiz();
+                return;
+            }
+
+            currentQuestion++;
+            renderQuestion();
+        }
+
+        function previousQuestion() {
+            if (quizFinished || currentQuestion === 0) {
+                return;
+            }
+
+            currentQuestion--;
+            renderQuestion();
+        }
+
+        // =========================================
+        // FINISH QUIZ AND SHOW RESULTS
+        // =========================================
+
+        function finishQuiz() {
+            if (quizFinished) {
+                return;
+            }
+
+            quizFinished = true;
+            clearInterval(quizTimer);
+
+            let score = 0;
+
+            quizQuestions.forEach(function (question, index) {
+                if (userAnswers[index] === question.answer) {
+                    score++;
+                }
+            });
+
+            const percentage = Math.round(
+                (score / quizQuestions.length) * 100
+            );
+
+            document.getElementById("quizArea").style.display = "none";
+            document.getElementById("quizResult").style.display = "block";
+
+            document.getElementById("scoreText").textContent =
+                score + "/" + quizQuestions.length + " — " + percentage + "%";
+
+            let message = "";
+
+            if (percentage === 100) {
+                message = "Excellent! You answered every question correctly.";
+            } else if (percentage >= 80) {
+                message = "Great job! You have a strong understanding of the material.";
+            } else if (percentage >= 60) {
+                message = "Good effort! Review the incorrect answers to improve.";
+            } else {
+                message = "Keep practicing! Review the lectures and try the test again.";
+            }
+
+            document.getElementById("resultMessage").textContent = message;
+
+            const review = document.getElementById("answerReview");
+            review.innerHTML = "";
+
+            quizQuestions.forEach(function (question, index) {
+                const item = document.createElement("div");
+                item.className = "review-item";
+
+                const questionTitle = document.createElement("p");
+                questionTitle.textContent = question.question;
+                item.appendChild(questionTitle);
+
+                const yourAnswer = document.createElement("p");
+
+                if (userAnswers[index] === null) {
+                    yourAnswer.textContent = "Your answer: Not answered";
+                    yourAnswer.className = "wrong-answer";
+                } else {
+                    yourAnswer.textContent =
+                        "Your answer: " +
+                        question.options[userAnswers[index]];
+
+                    yourAnswer.className =
+                        userAnswers[index] === question.answer
+                            ? "correct-answer"
+                            : "wrong-answer";
+                }
+
+                item.appendChild(yourAnswer);
+
+                const correctAnswer = document.createElement("p");
+
+                correctAnswer.textContent =
+                    "Correct answer: " +
+                    question.options[question.answer];
+
+                correctAnswer.className = "correct-answer";
+
+                item.appendChild(correctAnswer);
+                review.appendChild(item);
+            });
+
+            document.getElementById("quizResult").scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+        }
+
+        // =========================================
+        // RESTART QUIZ
+        // =========================================
+
+        function restartQuiz() {
+            startQuiz();
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Computer Graphics | CE HUB</title>
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        .course-container {
+            max-width: 1000px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+        .course-header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .course-header h1 {
+            color: #1d4ed8;
+            margin-bottom: 10px;
+        }
+
+        .lecture-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 22px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,.04);
+        }
+
+        .lecture-card h3 {
+            margin: 0 0 8px;
+            color: #1f2937;
+        }
+
+        .lecture-card p {
+            margin: 0;
+            color: #6b7280;
+            line-height: 1.6;
+        }
+
+        .open-btn, .primary-btn {
+            display: inline-block;
+            background: #2563eb;
+            color: white;
+            padding: 11px 22px;
+            border: none;
+            border-radius: 8px;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .open-btn:hover, .primary-btn:hover {
+            background: #1d4ed8;
+        }
+
+        #lectureViewer {
+            display: none;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 28px;
+            margin: 30px 0;
+            line-height: 1.8;
+            overflow-wrap: anywhere;
+        }
+
+        #lectureContent h2 {
+            color: #1d4ed8;
+            margin-top: 5px;
+        }
+
+        #lectureContent h3 {
+            color: #1f2937;
+            margin-top: 25px;
+        }
+
+        #lectureContent ul, #lectureContent ol {
+            padding-left: 25px;
+        }
+
+        #lectureContent li {
+            margin-bottom: 8px;
+        }
+
+        .code-example {
+            background: #111827;
+            color: #e5e7eb;
+            padding: 16px;
+            border-radius: 8px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            font-family: Consolas, monospace;
+            line-height: 1.6;
+        }
+
+        .info-box {
+            background: #eff6ff;
+            border-left: 4px solid #2563eb;
+            padding: 14px 18px;
+            margin: 18px 0;
+            border-radius: 5px;
+        }
+
+        .quiz-section {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 30px;
+            margin-top: 45px;
+            margin-bottom: 40px;
+        }
+
+        .quiz-intro {
+            text-align: center;
+        }
+
+        .quiz-intro h2 {
+            color: #1d4ed8;
+            margin-bottom: 10px;
+        }
+
+        .quiz-intro p {
+            color: #6b7280;
+        }
+
+        .time-limit {
+            font-weight: 600;
+            color: #374151;
+            margin: 18px 0;
+        }
+
+        .quiz-start {
+            font-size: 16px;
+            padding: 14px 30px;
+        }
+
+        #quizArea, #quizResult {
+            display: none;
+        }
+
+        .quiz-top {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+            font-weight: 600;
+        }
+
+        #timer {
+            color: #dc2626;
+        }
+
+        .progress-track {
+            width: 100%;
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 25px;
+        }
+
+        #progressBar {
+            height: 100%;
+            width: 0%;
+            background: #2563eb;
+            transition: width .2s;
+        }
+
+        #questionText {
+            color: #1f2937;
+            font-size: 20px;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .answer-option {
+            display: block;
+            padding: 14px 16px;
+            border: 1px solid #d1d5db;
+            border-radius: 9px;
+            margin: 10px 0;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .answer-option:hover {
+            background: #eff6ff;
+            border-color: #2563eb;
+        }
+
+        .answer-option input {
+            margin-right: 10px;
+            accent-color: #2563eb;
+        }
+
+        .quiz-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+
+        .secondary-btn {
+            background: #e5e7eb;
+            color: #1f2937;
+            padding: 11px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .secondary-btn:hover {
+            background: #d1d5db;
+        }
+
+        .secondary-btn:disabled {
+            opacity: .5;
+            cursor: not-allowed;
+        }
+
+        .result-score {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1d4ed8;
+            margin: 15px 0;
+        }
+
+        .result-message {
+            color: #4b5563;
+            line-height: 1.7;
+        }
+
+        .review-item {
+            text-align: left;
+            border-top: 1px solid #e5e7eb;
+            padding: 15px 0;
+            line-height: 1.6;
+        }
+
+        .correct-answer {
+            color: #15803d;
+            font-weight: 600;
+        }
+
+        .wrong-answer {
+            color: #dc2626;
+            font-weight: 600;
+        }
+
+        @media (max-width: 600px) {
+            .lecture-card {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            #lectureViewer, .quiz-section {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="logo">CE HUB</div>
+
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="index.html#subjects">Subjects</a></li>
+            <li><a href="exams.html">Exams</a></li>
+            <li><a href="deadlines.html">Deadlines</a></li>
+        </ul>
+    </nav>
+
+    <main class="course-container">
+
+        <header class="course-header">
+            <h1>🎨 Computer Graphics</h1>
+            <p>Computer Engineering — Course Materials</p>
+        </header>
+
+        <section id="lectureList">
+
+            <div class="lecture-card">
+                <div>
+                    <h3>Lecture 1: Introduction to Computer Graphics</h3>
+                    <p>Learn the definition, applications, types, and graphics pipeline.</p>
+                </div>
+                <button class="open-btn" onclick="openLecture(0)">Open</button>
+            </div>
+
+            <div class="lecture-card">
+                <div>
+                    <h3>Lecture 2: Graphics Primitives and Coordinates</h3>
+                    <p>Study pixels, lines, polygons, resolution, and coordinate systems.</p>
+                </div>
+                <button class="open-btn" onclick="openLecture(1)">Open</button>
+            </div>
+
+            <div class="lecture-card">
+                <div>
+                    <h3>Lecture 3: 2D Transformations</h3>
+                    <p>Learn translation, scaling, rotation, reflection, and matrices.</p>
+                </div>
+                <button class="open-btn" onclick="openLecture(2)">Open</button>
+            </div>
+
+            <div class="lecture-card">
+                <div>
+                    <h3>Lecture 4: 3D Graphics and Projections</h3>
+                    <p>Explore 3D models, cameras, perspective, and orthographic projection.</p>
+                </div>
+                <button class="open-btn" onclick="openLecture(3)">Open</button>
+            </div>
+
+            <div class="lecture-card">
+                <div>
+                    <h3>Lecture 5: Color, Lighting, and Shading</h3>
+                    <p>Understand RGB, light sources, materials, textures, and shading.</p>
+                </div>
+                <button class="open-btn" onclick="openLecture(4)">Open</button>
+            </div>
+
+            <div class="lecture-card">
+                <div>
+                    <h3>Lecture 6: Rendering and Animation</h3>
+                    <p>Learn rendering, frame rates, keyframes, and graphics applications.</p>
+                </div>
+                <button class="open-btn" onclick="openLecture(5)">Open</button>
+            </div>
+
+        </section>
+
+        <section id="lectureViewer">
+            <button class="secondary-btn" onclick="closeLecture()">← Back to Lectures</button>
+            <div id="lectureContent"></div>
+            <button class="secondary-btn" onclick="closeLecture()">← Back to Lectures</button>
+        </section>
+
+        <section class="quiz-section" id="miniTest">
+
+            <div class="quiz-intro" id="quizIntro">
+                <h2>📝 Mini Test</h2>
+                <p>Test your understanding of the Computer Graphics course.</p>
+                <p class="time-limit">⏱️ Time Limit: 10 minutes</p>
+                <button class="primary-btn quiz-start" onclick="startQuiz()">Start Mini Test</button>
+            </div>
+
+            <div id="quizArea">
+                <div class="quiz-top">
+                    <span id="questionCounter">Question 1 of 10</span>
+                    <span id="timer">Time: 10:00</span>
+                </div>
+
+                <div class="progress-track">
+                    <div id="progressBar"></div>
+                </div>
+
+                <h3 id="questionText"></h3>
+                <div id="answerOptions"></div>
+
+                <div class="quiz-controls">
+                    <button class="secondary-btn" id="previousBtn" onclick="previousQuestion()">Previous</button>
+                    <button class="primary-btn" id="nextBtn" onclick="nextQuestion()">Next</button>
+                </div>
+            </div>
+
+            <div id="quizResult">
+                <h2>📝 Test Completed!</h2>
+                <p>Your result:</p>
+                <div class="result-score" id="scoreText"></div>
+                <p class="result-message" id="resultMessage"></p>
+                <h3>Answer Review</h3>
+                <div id="answerReview"></div>
+                <button class="primary-btn" onclick="restartQuiz()">Try Again</button>
+            </div>
+
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 CE HUB | Computer Engineering Learning Hub</p>
+    </footer>
+
+    <script>
+        const lectureMaterials = [
+            {
+                title: "Lecture 1: Introduction to Computer Graphics",
+                content: `
+                    <h3>1. What Is Computer Graphics?</h3>
+                    <p>Computer graphics is the field of computing concerned with creating, storing, manipulating, and displaying visual images using computers.</p>
+                    <div class="info-box"><strong>Key idea:</strong> Computer graphics turns data and mathematical descriptions into visual output.</div>
+
+                    <h3>2. Applications</h3>
+                    <ul>
+                        <li>Video games, animation, and visual effects.</li>
+                        <li>Engineering design and CAD software.</li>
+                        <li>Medical image visualisation.</li>
+                        <li>Scientific simulations and charts.</li>
+                        <li>User interfaces and educational tools.</li>
+                    </ul>
+
+                    <h3>3. Raster and Vector Graphics</h3>
+                    <p><strong>Raster graphics</strong> represent images using a grid of pixels. Photographs are common examples.</p>
+                    <p><strong>Vector graphics</strong> represent shapes using mathematical descriptions such as points, lines, and curves. They can usually be resized without pixelation.</p>
+
+                    <h3>4. 2D and 3D Graphics</h3>
+                    <p>2D graphics use x and y coordinates. 3D graphics use x, y, and z to represent depth as well.</p>
+
+                    <h3>5. The Graphics Pipeline</h3>
+                    <ol>
+                        <li>Create or load object geometry.</li>
+                        <li>Transform objects into the required coordinate space.</li>
+                        <li>Project 3D geometry onto a 2D view when necessary.</li>
+                        <li>Apply materials and lighting.</li>
+                        <li>Rasterise shapes into pixels.</li>
+                        <li>Display the resulting image.</li>
+                    </ol>
+
+                    <h3>6. GPU</h3>
+                    <p>A Graphics Processing Unit (GPU) accelerates many graphics operations. Graphics software provides the models, textures, and instructions needed to create images.</p>
+
+                    <h3>Summary</h3>
+                    <ul>
+                        <li>Computer graphics creates and manipulates visual content.</li>
+                        <li>Raster images use pixels; vector graphics use mathematical shapes.</li>
+                        <li>2D uses two coordinates, while 3D commonly uses three.</li>
+                    </ul>
+                `
+            },
+            {
+                title: "Lecture 2: Graphics Primitives and Coordinate Systems",
+                content: `
+                    <h3>1. Graphics Primitives</h3>
+                    <p>Primitives are basic elements used to construct images and models.</p>
+                    <ul>
+                        <li><strong>Point:</strong> identifies a position.</li>
+                        <li><strong>Line:</strong> connects two points.</li>
+                        <li><strong>Polygon:</strong> a closed shape made of line segments.</li>
+                        <li><strong>Curve:</strong> represents a smooth path.</li>
+                    </ul>
+
+                    <h3>2. Pixels and Resolution</h3>
+                    <p>A pixel is a small picture element in a raster image. Resolution is often written as width × height.</p>
+                    <p>A 1920 × 1080 image contains 2,073,600 pixels.</p>
+
+                    <h3>3. Coordinate Systems</h3>
+                    <p>A 2D Cartesian point is written as (x, y).</p>
+                    <div class="code-example">Point A = (2, 3)
+Point B = (6, 3)</div>
+                    <p>Both points have the same y-coordinate, so they lie on the same horizontal level.</p>
+
+                    <h3>4. Screen Coordinates</h3>
+                    <p>Many screen coordinate systems place the origin at the top-left. The x-coordinate increases to the right and the y-coordinate increases downward.</p>
+
+                    <h3>5. Polygons</h3>
+                    <p>Triangles and quadrilaterals are common polygons. Many 3D surfaces are represented by meshes made from triangles.</p>
+
+                    <h3>6. Rasterisation</h3>
+                    <p>Rasterisation converts geometric primitives into fragments or pixels that can be displayed on the screen.</p>
+
+                    <h3>Summary</h3>
+                    <ul>
+                        <li>Points, lines, and polygons are common primitives.</li>
+                        <li>Raster images consist of pixels.</li>
+                        <li>Resolution describes an image's pixel dimensions.</li>
+                    </ul>
+                `
+            },
+            {
+                title: "Lecture 3: 2D Transformations",
+                content: `
+                    <h3>1. What Is a Transformation?</h3>
+                    <p>A transformation changes an object's position, size, or orientation.</p>
+
+                    <h3>2. Translation</h3>
+                    <p>Translation moves an object by adding offsets to its coordinates.</p>
+                    <div class="code-example">x' = x + tx
+y' = y + ty</div>
+                    <p>Point (2, 3) translated by (4, 1) becomes (6, 4).</p>
+
+                    <h3>3. Scaling</h3>
+                    <p>Scaling changes an object's size by multiplying coordinates by scale factors.</p>
+                    <div class="code-example">x' = sx * x
+y' = sy * y</div>
+
+                    <h3>4. Rotation</h3>
+                    <p>Rotation turns a point around a centre. For rotation by angle θ around the origin:</p>
+                    <div class="code-example">x' = x cos(θ) - y sin(θ)
+y' = x sin(θ) + y cos(θ)</div>
+                    <p>In the standard Cartesian convention, a positive angle rotates counterclockwise.</p>
+
+                    <h3>5. Reflection</h3>
+                    <p>Reflection creates a mirror image. Across the x-axis, (x, y) becomes (x, -y). Across the y-axis, (x, y) becomes (-x, y).</p>
+
+                    <h3>6. Transformation Matrices</h3>
+                    <p>Homogeneous coordinates represent a 2D point as (x, y, 1), allowing transformations to be represented using 3 × 3 matrices.</p>
+
+                    <div class="info-box"><strong>Remember:</strong> Translation moves, scaling resizes, rotation turns, and reflection mirrors an object.</div>
+
+                    <h3>Summary</h3>
+                    <ul>
+                        <li>Translation adds coordinate offsets.</li>
+                        <li>Scaling changes dimensions.</li>
+                        <li>Rotation changes orientation.</li>
+                        <li>Matrix multiplication can combine transformations.</li>
+                    </ul>
+                `
+            },
+            {
+                title: "Lecture 4: 3D Graphics and Projections",
+                content: `
+                    <h3>1. Three-Dimensional Coordinates</h3>
+                    <p>A 3D point is represented by (x, y, z). The z-coordinate adds depth.</p>
+
+                    <h3>2. 3D Models</h3>
+                    <p>A 3D model describes an object's shape using vertices, edges, faces, or other geometric representations. Polygon meshes made from triangles are widely used.</p>
+
+                    <h3>3. Camera and View</h3>
+                    <p>A virtual camera defines the viewpoint from which a scene is observed. Its position and orientation affect the final image.</p>
+
+                    <h3>4. Projection</h3>
+                    <p>Projection maps 3D points onto a 2D image plane.</p>
+                    <p><strong>Orthographic projection:</strong> parallel lines remain parallel, and apparent size does not decrease with distance. Useful in technical drawings.</p>
+                    <p><strong>Perspective projection:</strong> distant objects appear smaller, creating a sense of depth. Common in games and realistic scenes.</p>
+
+                    <h3>5. Clipping</h3>
+                    <p>Clipping removes or cuts geometry outside a defined viewing region.</p>
+
+                    <h3>6. Depth Buffer</h3>
+                    <p>A depth buffer, also called a z-buffer, stores depth information and helps determine which surface is in front when surfaces overlap on screen.</p>
+
+                    <h3>Summary</h3>
+                    <ul>
+                        <li>3D points use x, y, and z.</li>
+                        <li>A camera determines the scene's viewpoint.</li>
+                        <li>Perspective projection provides depth cues.</li>
+                        <li>Depth testing helps determine visible surfaces.</li>
+                    </ul>
+                `
+            },
+            {
+                title: "Lecture 5: Color, Lighting, and Shading",
+                content: `
+                    <h3>1. RGB Color Model</h3>
+                    <p>Digital displays commonly combine red, green, and blue light to create colours.</p>
+                    <div class="code-example">RGB(255, 0, 0) = Red
+RGB(0, 255, 0) = Green
+RGB(0, 0, 255) = Blue
+RGB(255, 255, 255) = White
+RGB(0, 0, 0) = Black</div>
+                    <p>In an 8-bit-per-channel RGB image, each channel commonly ranges from 0 to 255.</p>
+
+                    <h3>2. Light Sources</h3>
+                    <p>Scenes may use directional lights, point lights, spotlights, and environment lighting.</p>
+
+                    <h3>3. Materials</h3>
+                    <p>A material describes how a surface interacts with light. Properties may include colour, roughness, reflectivity, and transparency.</p>
+
+                    <h3>4. Shading</h3>
+                    <p>Shading estimates a surface's colour or brightness based on lighting, surface orientation, and material properties.</p>
+                    <ul>
+                        <li><strong>Flat shading:</strong> one lighting result per face.</li>
+                        <li><strong>Gouraud shading:</strong> lighting is calculated at vertices and interpolated.</li>
+                        <li><strong>Phong shading:</strong> normals are interpolated and lighting is calculated per pixel in the traditional model.</li>
+                    </ul>
+
+                    <h3>5. Textures and Shadows</h3>
+                    <p>Textures add details such as colours and patterns to surfaces. Shadows help communicate an object's position and depth.</p>
+
+                    <h3>Summary</h3>
+                    <ul>
+                        <li>RGB combines red, green, and blue light.</li>
+                        <li>Lighting describes illumination in a scene.</li>
+                        <li>Materials define surface response to light.</li>
+                        <li>Textures add surface detail.</li>
+                    </ul>
+                `
+            },
+            {
+                title: "Lecture 6: Rendering and Animation",
+                content: `
+                    <h3>1. Rendering</h3>
+                    <p>Rendering generates an image from scene data such as geometry, cameras, materials, textures, and lights.</p>
+
+                    <h3>2. Real-Time and Offline Rendering</h3>
+                    <p><strong>Real-time rendering</strong> produces images quickly enough for interactive applications such as games.</p>
+                    <p><strong>Offline rendering</strong> may spend much longer generating an image to achieve complex visual effects, as often used in film production.</p>
+
+                    <h3>3. Animation</h3>
+                    <p>Animation creates the appearance of movement by displaying a sequence of images or changing a scene over time.</p>
+
+                    <h3>4. Frames and FPS</h3>
+                    <p>A frame is one image in a sequence. Frames per second (FPS) measures how many frames are displayed each second. For example, 60 FPS means 60 frames per second.</p>
+
+                    <h3>5. Keyframes and Interpolation</h3>
+                    <p>Keyframes define important states at selected times. Interpolation calculates intermediate states between keyframes to produce smoother motion.</p>
+
+                    <h3>6. Applications</h3>
+                    <ul>
+                        <li>Video games and interactive entertainment.</li>
+                        <li>Film animation and visual effects.</li>
+                        <li>Architecture and engineering visualisation.</li>
+                        <li>Medical and scientific visualisation.</li>
+                        <li>Virtual reality (VR) and augmented reality (AR).</li>
+                    </ul>
+
+                    <h3>Summary</h3>
+                    <ul>
+                        <li>Rendering creates images from scene data.</li>
+                        <li>Real-time rendering prioritises interactive speed.</li>
+                        <li>Animation creates movement across time.</li>
+                        <li>Keyframes and interpolation help create animation.</li>
+                    </ul>
+                `
+            }
+        ];
+
+        function openLecture(index) {
+            const lecture = lectureMaterials[index];
+            if (!lecture) return;
+
+            document.getElementById("lectureList").style.display = "none";
+            document.getElementById("miniTest").style.display = "none";
+
+            document.getElementById("lectureContent").innerHTML =
+                `<h2>${lecture.title}</h2>${lecture.content}`;
+
+            document.getElementById("lectureViewer").style.display = "block";
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+
+        function closeLecture() {
+            document.getElementById("lectureViewer").style.display = "none";
+            document.getElementById("lectureList").style.display = "block";
+            document.getElementById("miniTest").style.display = "block";
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+
+        const quizQuestions = [
+            {
+                question: "1. What is computer graphics mainly concerned with?",
+                options: [
+                    "A. Repairing computer hardware",
+                    "B. Creating and manipulating visual images",
+                    "C. Increasing internet speed",
+                    "D. Managing passwords only"
+                ],
+                answer: 1
+            },
+            {
+                question: "2. What is a raster image made of?",
+                options: ["A. Pixels", "B. Sound waves", "C. Database tables", "D. Only vectors"],
+                answer: 0
+            },
+            {
+                question: "3. Which coordinates are commonly used for a 2D point?",
+                options: ["A. x, y, z", "B. r, g, b", "C. x, y", "D. width, height, depth"],
+                answer: 2
+            },
+            {
+                question: "4. Which transformation moves an object without changing its size?",
+                options: ["A. Scaling", "B. Translation", "C. Reflection", "D. Rotation"],
+                answer: 1
+            },
+            {
+                question: "5. Which transformation changes an object's size?",
+                options: ["A. Scaling", "B. Clipping", "C. Rasterisation", "D. Projection"],
+                answer: 0
+            },
+            {
+                question: "6. Which projection makes distant objects appear smaller?",
+                options: ["A. Orthographic", "B. Perspective", "C. Reflection", "D. Translation"],
+                answer: 1
+            },
+            {
+                question: "7. What does RGB stand for?",
+                options: [
+                    "A. Render, Geometry, Buffer",
+                    "B. Red, Green, Blue",
+                    "C. Raster, Grid, Bitmap",
+                    "D. Rotation, Gradient, Brightness"
+                ],
+                answer: 1
+            },
+            {
+                question: "8. What is the purpose of a depth buffer?",
+                options: [
+                    "A. To store audio",
+                    "B. To select a programming language",
+                    "C. To help determine which surfaces are in front",
+                    "D. To increase image width"
+                ],
+                answer: 2
+            },
+            {
+                question: "9. What does FPS measure?",
+                options: [
+                    "A. Frames per second",
+                    "B. Files per system",
+                    "C. Focus per screen",
+                    "D. Formats per scene"
+                ],
+                answer: 0
+            },
+            {
+                question: "10. What is rendering?",
+                options: [
+                    "A. Deleting 3D models",
+                    "B. Generating an image from scene data",
+                    "C. Naming variables",
+                    "D. Connecting a keyboard"
+                ],
+                answer: 1
+            }
+        ];
+
+        let currentQuestion = 0;
+        let userAnswers = [];
+        let timeLeft = 600;
+        let quizTimer = null;
+        let quizFinished = false;
+
+        function startQuiz() {
+            clearInterval(quizTimer);
+
+            currentQuestion = 0;
+            userAnswers = new Array(quizQuestions.length).fill(null);
+            timeLeft = 600;
+            quizFinished = false;
+
+            document.getElementById("quizIntro").style.display = "none";
+            document.getElementById("quizResult").style.display = "none";
+            document.getElementById("quizArea").style.display = "block";
+
+            renderQuestion();
+            updateTimer();
+
+            quizTimer = setInterval(function () {
+                timeLeft--;
+                updateTimer();
+                if (timeLeft <= 0) finishQuiz();
+            }, 1000);
+
+            document.getElementById("miniTest").scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+        }
+
+        function updateTimer() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+
+            document.getElementById("timer").textContent =
+                "Time: " + String(minutes).padStart(2, "0") +
+                ":" + String(seconds).padStart(2, "0");
+        }
+
+        function renderQuestion() {
+            const question = quizQuestions[currentQuestion];
+
+            document.getElementById("questionCounter").textContent =
+                "Question " + (currentQuestion + 1) +
+                " of " + quizQuestions.length;
+
+            document.getElementById("progressBar").style.width =
+                ((currentQuestion + 1) / quizQuestions.length * 100) + "%";
+
+            document.getElementById("questionText").textContent =
+                question.question;
+
+            const optionsContainer = document.getElementById("answerOptions");
+            optionsContainer.innerHTML = "";
+
+            question.options.forEach(function (option, index) {
+                const label = document.createElement("label");
+                label.className = "answer-option";
+
+                const radio = document.createElement("input");
+                radio.type = "radio";
+                radio.name = "quizAnswer";
+                radio.value = index;
+                radio.checked = userAnswers[currentQuestion] === index;
+
+                radio.addEventListener("change", function () {
+                    userAnswers[currentQuestion] = index;
+                });
+
+                label.appendChild(radio);
+                label.appendChild(document.createTextNode(option));
+                optionsContainer.appendChild(label);
+            });
+
+            document.getElementById("previousBtn").disabled =
+                currentQuestion === 0;
+
+            document.getElementById("nextBtn").textContent =
+                currentQuestion === quizQuestions.length - 1
+                    ? "Finish Test"
+                    : "Next";
+        }
+
+        function nextQuestion() {
+            if (quizFinished) return;
+
+            if (currentQuestion === quizQuestions.length - 1) {
+                finishQuiz();
+                return;
+            }
+
+            currentQuestion++;
+            renderQuestion();
+        }
+
+        function previousQuestion() {
+            if (quizFinished || currentQuestion === 0) return;
+
+            currentQuestion--;
+            renderQuestion();
+        }
+
+        function finishQuiz() {
+            if (quizFinished) return;
+
+            quizFinished = true;
+            clearInterval(quizTimer);
+
+            let score = 0;
+
+            quizQuestions.forEach(function (question, index) {
+                if (userAnswers[index] === question.answer) score++;
+            });
+
+            const percentage = Math.round(
+                score / quizQuestions.length * 100
+            );
+
+            document.getElementById("quizArea").style.display = "none";
+            document.getElementById("quizResult").style.display = "block";
+
+            document.getElementById("scoreText").textContent =
+                score + "/" + quizQuestions.length + " — " + percentage + "%";
+
+            let message;
+
+            if (percentage === 100) {
+                message = "Excellent! You answered every question correctly.";
+            } else if (percentage >= 80) {
+                message = "Great job! You have a strong understanding of the material.";
+            } else if (percentage >= 60) {
+                message = "Good effort! Review the incorrect answers to improve.";
+            } else {
+                message = "Keep practicing! Review the lectures and try again.";
+            }
+
+            document.getElementById("resultMessage").textContent = message;
+
+            const review = document.getElementById("answerReview");
+            review.innerHTML = "";
+
+            quizQuestions.forEach(function (question, index) {
+                const item = document.createElement("div");
+                item.className = "review-item";
+
+                const questionTitle = document.createElement("p");
+                questionTitle.textContent = question.question;
+                item.appendChild(questionTitle);
+
+                const yourAnswer = document.createElement("p");
+
+                if (userAnswers[index] === null) {
+                    yourAnswer.textContent = "Your answer: Not answered";
+                    yourAnswer.className = "wrong-answer";
+                } else {
+                    yourAnswer.textContent =
+                        "Your answer: " + question.options[userAnswers[index]];
+
+                    yourAnswer.className =
+                        userAnswers[index] === question.answer
+                            ? "correct-answer"
+                            : "wrong-answer";
+                }
+
+                item.appendChild(yourAnswer);
+
+                const correctAnswer = document.createElement("p");
+                correctAnswer.textContent =
+                    "Correct answer: " + question.options[question.answer];
+                correctAnswer.className = "correct-answer";
+
+                item.appendChild(correctAnswer);
+                review.appendChild(item);
+            });
+
+            document.getElementById("quizResult").scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+        }
+
+        function restartQuiz() {
+            startQuiz();
+        }
+    </script>
+</body>
+</html>

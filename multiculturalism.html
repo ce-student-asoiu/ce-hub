@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Multiculturalism | CE HUB</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        .course-container {
+            max-width: 1000px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+        .course-header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .course-header h1 {
+            color: #1d4ed8;
+            margin-bottom: 10px;
+        }
+
+        .lecture-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 22px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04);
+        }
+
+        .lecture-card h3 {
+            margin: 0 0 8px;
+            color: #1f2937;
+        }
+
+        .lecture-card p {
+            margin: 0;
+            color: #6b7280;
+            line-height: 1.6;
+        }
+
+        .open-btn,
+        .primary-btn {
+            display: inline-block;
+            background: #2563eb;
+            color: white;
+            padding: 11px 22px;
+            border: none;
+            border-radius: 8px;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .open-btn:hover,
+        .primary-btn:hover {
+            background: #1d4ed8;
+        }
+
+        #lectureViewer {
+            display: none;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 28px;
+            margin: 30px 0;
+            line-height: 1.8;
+            overflow-wrap: anywhere;
+        }
+
+        #lectureContent h2 {
+            color: #1d4ed8;
+            margin-top: 5px;
+        }
+
+        #lectureContent h3 {
+            color: #1f2937;
+            margin-top: 25px;
+        }
+
+        #lectureContent h4 {
+            color: #374151;
+            margin-top: 20px;
+        }
+
+        #lectureContent ul,
+        #lectureContent ol {
+            padding-left: 25px;
+        }
+
+        #lectureContent li {
+            margin-bottom: 8px;
+        }
+
+        .code-example {
+            background: #111827;
+            color: #e5e7eb;
+            padding: 16px;
+            border-radius: 8px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            font-family: Consolas, monospace;
+            line-height: 1.6;
+        }
+
+        .info-box {
+            background: #eff6ff;
+            border-left: 4px solid #2563eb;
+            padding: 14px 18px;
+            margin: 18px 0;
+            border-radius: 5px;
+        }
+
+        .quiz-section {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 30px;
+            margin-top: 45px;
+            margin-bottom: 40px;
+        }
+
+        .quiz-intro {
+            text-align: center;
+        }
+
+        .quiz-intro h2 {
+            color: #1d4ed8;
+            margin-bottom: 10px;
+        }
+
+        .quiz-intro p {
+            color: #6b7280;
+        }
+
+        .time-limit {
+            font-weight: 600;
+            color: #374151;
+            margin: 18px 0;
+        }
+
+        .quiz-start {
+            font-size: 16px;
+            padding: 14px 30px;
+        }
+
+        #quizArea,
+        #quizResult {
+            display: none;
+        }
+
+        .quiz-top {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+            font-weight: 600;
+        }
+
+        #timer {
+            color: #dc2626;
+        }
+
+        .progress-track {
+            width: 100%;
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 25px;
+        }
+
+        #progressBar {
+            height: 100%;
+            width: 0%;
+            background: #2563eb;
+            transition: width 0.2s;
+        }
+
+        #questionText {
+            color: #1f2937;
+            font-size: 20px;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .answer-option {
+            display: block;
+            padding: 14px 16px;
+            border: 1px solid #d1d5db;
+            border-radius: 9px;
+            margin: 10px 0;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .answer-option:hover {
+            background: #eff6ff;
+            border-color: #2563eb;
+        }
+
+        .answer-option input {
+            margin-right: 10px;
+            accent-color: #2563eb;
+        }
+
+        .quiz-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+
+        .secondary-btn {
+            background: #e5e7eb;
+            color: #1f2937;
+            padding: 11px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .secondary-btn:hover {
+            background: #d1d5db;
+        }
+
+        .secondary-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .result-score {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1d4ed8;
+            margin: 15px 0;
+        }
+
+        .result-message {
+            color: #4b5563;
+            line-height: 1.7;
+        }
+
+        .review-item {
+            text-align: left;
+            border-top: 1px solid #e5e7eb;
+            padding: 15px 0;
+            line-height: 1.6;
+        }
+
+        .correct-answer {
+            color: #15803d;
+            font-weight: 600;
+        }
+
+        .wrong-answer {
+            color: #dc2626;
+            font-weight: 600;
+        }
+
+        @media (max-width: 600px) {
+            .lecture-card {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            #lectureViewer,
+            .quiz-section {
+                padding: 20px;
+            }
+
+            .open-btn {
+                width: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="logo">CE HUB</div>
+
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="index.html#subjects">Subjects</a></li>
+            <li><a href="exams.html">Exams</a></li>
+            <li><a href="deadlines.html">Deadlines</a></li>
+        </ul>
+    </nav>
+
+    <main class="course-container">
+
+        <!-- Course Header -->
+        <header class="course-header">
+            <h1>🌍 Multiculturalism</h1>
+            <p>Computer Engineering — Course Materials</p>
+        </header>
+
+        <!-- Lecture List -->
+        <section id="lectureList">
+
+            <div class="lecture-card">
+                <div>
+                    <h3>Lecture 1: Introduction to Multiculturalism</h3>
+                    <p>Learn the meaning of multiculturalism, cultural diversity, cultural identity, tolerance, and mutual respect.</p>
+                </div>
+                <button class="open-btn" onclick="openLecture(0)">Open</button>
+            </div>
+
+            <div class="lecture-card">
+                <div>
+                    <h3>Lecture 2: Cultural Diversity and Identity</h3>
+                    <p>Explore cultural identity, language, traditions, religion, ethnicity, and the importance of cultural diversity.</p>
+                </div>
+                <button class="open-btn" onclick="openLecture(1)">Open</button>
+            </div>
+
+            <div class="lecture-card">
+                <div>
+                    <h3>Lecture 3: Multiculturalism in Azerbaijan</h3>
+                    <p>Discover Azerbaijan's cultural heritage, different communities, historical coexistence, and the idea of Azerbaijani multiculturalism.</p>
+                </div>
+                <button class="open-btn" onclick="openLecture(2)">Open</button>
+            </div>
+
+            <div class="lecture-card">
+                <div>
+                    <h3>Lecture 4: Tolerance, Dialogue and Globalization</h3>
+                    <p>Understand intercultural dialogue, stereotypes, discrimination, globalization, and ways to promote peaceful coexistence.</p>
+                </div>
+                <button class="open-btn" onclick="openLecture(3)">Open</button>
+            </div>
+
+        </section>
+
+        <!-- Lecture Viewer -->
+        <section id="lectureViewer">
+            <button class="secondary-btn" onclick="closeLecture()">← Back to Lectures</button>
+            <div id="lectureContent"></div>
+            <button class="secondary-btn" onclick="closeLecture()">← Back to Lectures</button>
+        </section>
+
+        <!-- Mini Test -->
+        <section class="quiz-section" id="miniTest">
+
+            <div class="quiz-intro" id="quizIntro">
+                <h2>📝 Mini Test</h2>
+                <p>Test your understanding of the Multiculturalism course.</p>
+                <p class="time-limit">⏱️ Time Limit: 10 minutes</p>
+                <button class="primary-btn quiz-start" onclick="startQuiz()">Start Mini Test</button>
+            </div>
+
+            <div id="quizArea">
+                <div class="quiz-top">
+                    <span id="questionCounter">Question 1 of 10</span>
+                    <span id="timer">Time: 10:00</span>
+                </div>
+
+                <div class="progress-track">
+                    <div id="progressBar"></div>
+                </div>
+
+                <h3 id="questionText"></h3>
+                <div id="answerOptions"></div>
+
+                <div class="quiz-controls">
+                    <button class="secondary-btn" id="previousBtn" onclick="previousQuestion()">Previous</button>
+                    <button class="primary-btn" id="nextBtn" onclick="nextQuestion()">Next</button>
+                </div>
+            </div>
+
+            <div id="quizResult">
+                <h2>📝 Test Completed!</h2>
+                <p>Your result:</p>
+                <div class="result-score" id="scoreText"></div>
+                <p class="result-message" id="resultMessage"></p>
+
+                <h3>Answer Review</h3>
+                <div id="answerReview"></div>
+
+                <button class="primary-btn" onclick="restartQuiz()">Try Again</button>
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer>
+        <p>© 2026 CE HUB | Computer Engineering Learning Hub</p>
+    </footer>
+
+    <script>
+        // =========================================
+        // LECTURE MATERIALS
+        // =========================================
+
+        const lectureMaterials = [
+
+            {
+                title: "Lecture 1: Introduction to Multiculturalism",
+                content: `
+                    <h3>1. What Is Culture?</h3>
+
+                    <p><strong>Culture</strong> refers to the shared values, beliefs, customs, traditions, language, knowledge, and ways of life of a group of people.</p>
+
+                    <p>Culture influences how people communicate, celebrate important events, understand the world, prepare food, and interact with others. It is learned through family, education, society, and everyday experience.</p>
+
+                    <p>Culture can include:</p>
+
+                    <ul>
+                        <li>Language and communication.</li>
+                        <li>Religious and philosophical beliefs.</li>
+                        <li>Traditional clothing and food.</li>
+                        <li>Music, literature, and art.</li>
+                        <li>Family customs and social values.</li>
+                        <li>Historical memories and shared experiences.</li>
+                    </ul>
+
+                    <div class="info-box">
+                        <strong>Key idea:</strong> Culture shapes people's identities, but individuals within the same culture may still have different opinions, experiences, and lifestyles.
+                    </div>
+
+                    <h3>2. What Is Cultural Diversity?</h3>
+
+                    <p><strong>Cultural diversity</strong> means the existence of different cultural groups, traditions, languages, beliefs, and ways of life within a society or across the world.</p>
+
+                    <p>A culturally diverse society may include people from different ethnic, linguistic, religious, and national backgrounds.</p>
+
+                    <p>For example, a city where people speak several languages and celebrate different cultural holidays demonstrates cultural diversity.</p>
+
+                    <h3>3. What Is Multiculturalism?</h3>
+
+                    <p><strong>Multiculturalism</strong> is an approach to understanding and organizing a society in which different cultural communities are recognized and can participate in public life.</p>
+
+                    <p>It emphasizes the recognition of cultural differences, equality, mutual respect, and the possibility of different communities living together peacefully.</p>
+
+                    <p>Multiculturalism can refer to:</p>
+
+                    <ul>
+                        <li><strong>A social reality:</strong> Different cultural communities live within the same society.</li>
+                        <li><strong>A social or political approach:</strong> Institutions recognize cultural diversity and seek fair participation.</li>
+                        <li><strong>A set of values:</strong> Respect, equality, dialogue, and rejection of discrimination.</li>
+                    </ul>
+
+                    <h3>4. Multiculturalism and Assimilation</h3>
+
+                    <p><strong>Assimilation</strong> generally refers to a process in which a minority group adopts many of the dominant society's cultural practices, sometimes at the expense of maintaining its own traditions.</p>
+
+                    <p>Multicultural approaches, by contrast, support the possibility of participating in a shared society while preserving aspects of one's cultural identity.</p>
+
+                    <p>These concepts can work differently in different countries and historical situations. Cultural integration does not necessarily require people to abandon their heritage.</p>
+
+                    <h3>5. What Is Tolerance?</h3>
+
+                    <p><strong>Tolerance</strong> means respecting people's right to hold different beliefs, opinions, and cultural practices, within the framework of human rights and the law.</p>
+
+                    <p>Tolerance does not require people to agree with every belief or practice. It requires respectful treatment and a willingness to live peacefully with differences.</p>
+
+                    <p>Examples of tolerance include:</p>
+
+                    <ul>
+                        <li>Respecting a classmate's religious beliefs.</li>
+                        <li>Listening politely to different cultural perspectives.</li>
+                        <li>Avoiding insults based on ethnicity or language.</li>
+                        <li>Allowing people to express their cultural identity peacefully.</li>
+                    </ul>
+
+                    <h3>6. Equality and Human Rights</h3>
+
+                    <p><strong>Equality</strong> means that people should have equal dignity and rights. No person should be treated as less valuable because of their cultural or religious background.</p>
+
+                    <p>Human rights provide a foundation for protecting freedom of thought, religion, expression, and equal treatment.</p>
+
+                    <p>Respect for cultural diversity must be considered alongside the rights and dignity of individuals. Cultural traditions should not be used as a justification for discrimination or violations of human rights.</p>
+
+                    <h3>7. Benefits of Multiculturalism</h3>
+
+                    <ul>
+                        <li><strong>Broader perspectives:</strong> People encounter different ways of thinking and solving problems.</li>
+                        <li><strong>Creativity:</strong> Cultural exchange can inspire art, education, and innovation.</li>
+                        <li><strong>Social understanding:</strong> Meaningful contact can reduce misunderstandings.</li>
+                        <li><strong>Cultural preservation:</strong> Communities can maintain and share their traditions.</li>
+                        <li><strong>International cooperation:</strong> Understanding other cultures can support communication across borders.</li>
+                    </ul>
+
+                    <h3>8. Challenges of Multicultural Societies</h3>
+
+                    <p>Cultural diversity does not automatically guarantee peaceful coexistence. Societies may face challenges such as:</p>
+
+                    <ul>
+                        <li>Prejudice and stereotypes.</li>
+                        <li>Language barriers.</li>
+                        <li>Unequal access to opportunities.</li>
+                        <li>Social exclusion and discrimination.</li>
+                        <li>Misunderstandings about cultural or religious practices.</li>
+                    </ul>
+
+                    <p>Education, fair laws, equal opportunities, and open communication can help address these challenges.</p>
+
+                    <h3>9. The Role of Education</h3>
+
+                    <p>Education can help people understand different histories, beliefs, and cultural experiences.</p>
+
+                    <p>Multicultural education encourages students to examine stereotypes, appreciate different perspectives, and treat classmates fairly.</p>
+
+                    <h3>10. Everyday Examples of Multiculturalism</h3>
+
+                    <ul>
+                        <li>Students from different backgrounds studying together.</li>
+                        <li>Community events that introduce different cultural traditions.</li>
+                        <li>Schools teaching the histories and contributions of different communities.</li>
+                        <li>Public institutions providing fair access to services.</li>
+                        <li>People working together while respecting different customs.</li>
+                    </ul>
+
+                    <h3>Lecture 1 Summary</h3>
+
+                    <ul>
+                        <li>Culture includes shared values, beliefs, customs, and ways of life.</li>
+                        <li>Cultural diversity means the presence of different cultures.</li>
+                        <li>Multiculturalism recognizes diversity and supports respectful coexistence.</li>
+                        <li>Tolerance means respecting differences without necessarily agreeing with them.</li>
+                        <li>Equality and human rights are important foundations of inclusive societies.</li>
+                        <li>Education and dialogue can reduce prejudice and misunderstanding.</li>
+                    </ul>
+                `
+            },
+
+            {
+                title: "Lecture 2: Cultural Diversity and Identity",
+                content: `
+                    <h3>1. What Is Cultural Identity?</h3>
+
+                    <p><strong>Cultural identity</strong> refers to the sense of belonging that a person develops through cultural experiences, traditions, language, history, values, and relationships with communities.</p>
+
+                    <p>A person's cultural identity can be influenced by family, education, place of residence, religion, language, personal experiences, and contact with other cultures.</p>
+
+                    <div class="info-box">
+                        <strong>Important:</strong> Cultural identity is not always fixed. It can develop and change as people gain new experiences and interact with different communities.
+                    </div>
+
+                    <h3>2. Elements of Cultural Identity</h3>
+
+                    <h4>Language</h4>
+
+                    <p>Language allows people to communicate ideas, preserve stories, and pass traditions from one generation to another.</p>
+
+                    <p>Speaking a language can create a sense of belonging. Multilingualism can also help people communicate across cultural boundaries.</p>
+
+                    <h4>Religion and Beliefs</h4>
+
+                    <p>Religious and philosophical beliefs can influence moral values, holidays, ceremonies, and daily practices. People within the same religion may interpret beliefs differently.</p>
+
+                    <h4>Traditions and Customs</h4>
+
+                    <p>Traditions include practices passed from one generation to another, such as celebrations, family gatherings, traditional clothing, music, and food.</p>
+
+                    <h4>History and Collective Memory</h4>
+
+                    <p>Historical experiences, literature, monuments, and stories can contribute to a community's shared understanding of its past.</p>
+
+                    <h3>3. Ethnicity and National Identity</h3>
+
+                    <p><strong>Ethnicity</strong> often refers to a shared sense of belonging based on cultural heritage, ancestry, history, language, or traditions.</p>
+
+                    <p><strong>National identity</strong> refers to a sense of belonging to a nation. It may be connected to citizenship, shared institutions, history, language, or national symbols.</p>
+
+                    <p>Ethnic identity and national identity are related but are not identical. People of different ethnic backgrounds can share the same national identity.</p>
+
+                    <h3>4. Individual and Group Identity</h3>
+
+                    <p>People can belong to several communities at the same time. For example, one person may identify with a family tradition, a local community, a national culture, and an international student community.</p>
+
+                    <p>These identities can coexist. Belonging to one group does not automatically mean rejecting another group.</p>
+
+                    <h3>5. Cultural Diversity in Everyday Life</h3>
+
+                    <p>Cultural diversity can be observed in:</p>
+
+                    <ul>
+                        <li>Different languages spoken in a community.</li>
+                        <li>Traditional dishes and food practices.</li>
+                        <li>Music, dance, literature, and architecture.</li>
+                        <li>Religious and cultural celebrations.</li>
+                        <li>Different approaches to family and social relationships.</li>
+                        <li>Distinct artistic and historical traditions.</li>
+                    </ul>
+
+                    <h3>6. Cultural Relativism and Ethnocentrism</h3>
+
+                    <p><strong>Cultural relativism</strong> is an approach that seeks to understand a cultural practice within its own social and historical context rather than judging it only by the standards of another culture.</p>
+
+                    <p>It encourages careful observation and understanding. However, understanding cultural context does not mean that every practice must be accepted regardless of its effects on human rights.</p>
+
+                    <p><strong>Ethnocentrism</strong> is the tendency to evaluate other cultures primarily through the assumptions and standards of one's own culture.</p>
+
+                    <p>Ethnocentrism can lead to misunderstandings when people assume that their own customs are the only normal or correct ones.</p>
+
+                    <h3>7. Stereotypes and Prejudice</h3>
+
+                    <p>A <strong>stereotype</strong> is an oversimplified belief about a group of people.</p>
+
+                    <p><strong>Prejudice</strong> is a preconceived attitude or judgment about a person or group, often formed without sufficient knowledge or evidence.</p>
+
+                    <p>Both can cause people to judge individuals unfairly based on assumptions about their cultural background.</p>
+
+                    <p>For example, assuming that every member of a community has the same personality is a stereotype. Individuals should be understood through their own actions and characteristics.</p>
+
+                    <h3>8. Cultural Exchange</h3>
+
+                    <p><strong>Cultural exchange</strong> occurs when people and communities share traditions, knowledge, art, language, food, and ideas.</p>
+
+                    <p>Cultural exchange can encourage creativity and understanding. It can also help communities discover similarities while respecting differences.</p>
+
+                    <h3>9. Cultural Preservation</h3>
+
+                    <p>Cultural preservation involves protecting and passing on cultural heritage, including languages, historical sites, traditional arts, music, crafts, and oral histories.</p>
+
+                    <p>Families, schools, museums, cultural organizations, and public institutions can all contribute to preservation.</p>
+
+                    <h3>10. How to Respect Cultural Differences</h3>
+
+                    <ol>
+                        <li>Listen carefully when others describe their experiences.</li>
+                        <li>Avoid making assumptions about an entire group.</li>
+                        <li>Ask respectful questions when something is unfamiliar.</li>
+                        <li>Learn about the history and traditions of different communities.</li>
+                        <li>Recognize that individuals within a culture are not all the same.</li>
+                        <li>Challenge unfair treatment and discrimination.</li>
+                    </ol>
+
+                    <h3>Lecture 2 Summary</h3>
+
+                    <ul>
+                        <li>Cultural identity is influenced by language, traditions, history, beliefs, and community.</li>
+                        <li>People can have several identities at the same time.</li>
+                        <li>Ethnic identity and national identity are related but different concepts.</li>
+                        <li>Cultural relativism encourages understanding cultural context.</li>
+                        <li>Ethnocentrism can lead to unfair judgments of other cultures.</li>
+                        <li>Stereotypes and prejudice can contribute to discrimination.</li>
+                        <li>Cultural exchange and preservation help maintain and share cultural heritage.</li>
+                    </ul>
+                `
+            },
+
+            {
+                title: "Lecture 3: Multiculturalism in Azerbaijan",
+                content: `
+                    <h3>1. Azerbaijan's Cultural Heritage</h3>
+
+                    <p>Azerbaijan is located at the crossroads of Eastern Europe and Western Asia, in the South Caucasus. Its geographical position and historical connections have contributed to a rich cultural heritage.</p>
+
+                    <p>Throughout its history, the region has experienced trade, migration, political change, and cultural interaction. These developments have influenced its languages, architecture, literature, music, food, and social traditions.</p>
+
+                    <div class="info-box">
+                        <strong>Key idea:</strong> Azerbaijan's cultural heritage includes traditions associated with its majority population as well as the histories and contributions of different communities.
+                    </div>
+
+                    <h3>2. Religious Diversity</h3>
+
+                    <p>Islam has played an important role in Azerbaijan's history and cultural life. Azerbaijan is also home to communities with other religious traditions, including Christianity and Judaism.</p>
+
+                    <p>Religious diversity can be seen in places of worship, historical monuments, community traditions, and cultural heritage.</p>
+
+                    <p>It is important to recognize that people within any religious community may differ in how they practice their faith and understand their beliefs.</p>
+
+                    <h3>3. Ethnic and Linguistic Diversity</h3>
+
+                    <p>Azerbaijan includes communities with different ethnic and linguistic backgrounds. Azerbaijani is the official language, while other languages are also used by various communities.</p>
+
+                    <p>Examples of communities associated with Azerbaijan's cultural and linguistic diversity include Lezgins, Talysh, Avars, Tats, and others.</p>
+
+                    <p>Each community may have its own traditions, oral histories, linguistic heritage, and cultural practices. These traditions contribute to the broader cultural landscape of the country.</p>
+
+                    <h3>4. Historical Coexistence</h3>
+
+                    <p>The history of the South Caucasus includes periods of cooperation and coexistence as well as periods of conflict and political change.</p>
+
+                    <p>Understanding multiculturalism requires studying this history carefully rather than assuming that relations between communities have always been the same.</p>
+
+                    <p>Historical towns, places of worship, cemeteries, architectural sites, and written records can provide evidence of the region's diverse cultural past.</p>
+
+                    <h3>5. Baku as a Multicultural City</h3>
+
+                    <p>Baku has developed through centuries of regional trade, migration, economic activity, and cultural exchange.</p>
+
+                    <p>The city's historical architecture reflects different periods and influences. Its cultural life includes literature, music, theatre, museums, and contemporary artistic activity.</p>
+
+                    <p>Baku's history illustrates how cities can be shaped by the interaction of communities, ideas, and economic connections.</p>
+
+                    <h3>6. Novruz and Shared Cultural Traditions</h3>
+
+                    <p><strong>Novruz</strong> is a spring celebration observed in Azerbaijan and several other countries and communities across the region.</p>
+
+                    <p>It is associated with the arrival of spring, renewal, family gatherings, hospitality, and traditional foods and customs.</p>
+
+                    <p>Novruz is an example of a cultural tradition that connects communities across national borders while also having local forms of celebration.</p>
+
+                    <h3>7. Music, Literature and Arts</h3>
+
+                    <p>Azerbaijan's cultural heritage includes mugham music, traditional folk music, literature, carpet weaving, architecture, and other artistic traditions.</p>
+
+                    <p>These cultural forms preserve historical knowledge and express the experiences and creativity of communities.</p>
+
+                    <p>Sharing cultural heritage through concerts, exhibitions, educational programs, and festivals can encourage understanding between different groups.</p>
+
+                    <h3>8. The Concept of Azerbaijani Multiculturalism</h3>
+
+                    <p>In contemporary Azerbaijan, multiculturalism is often discussed in connection with the country's cultural diversity, interreligious relations, and the coexistence of different communities.</p>
+
+                    <p>The concept is also used in public and academic discussions about tolerance, cultural heritage, and the role of the state and society in supporting diversity.</p>
+
+                    <p>When studying this topic, it is useful to distinguish official policies and public statements from historical evidence and the lived experiences of individuals and communities.</p>
+
+                    <h3>9. Protecting Cultural Heritage</h3>
+
+                    <p>Cultural heritage can be protected through:</p>
+
+                    <ul>
+                        <li>Restoring historical buildings and monuments.</li>
+                        <li>Preserving traditional music, crafts, and oral histories.</li>
+                        <li>Supporting education about different communities.</li>
+                        <li>Documenting and teaching endangered languages.</li>
+                        <li>Encouraging museums and cultural institutions to share historical information.</li>
+                        <li>Promoting respectful access to religious and cultural sites.</li>
+                    </ul>
+
+                    <h3>10. The Role of Young People</h3>
+
+                    <p>Young people can support intercultural understanding through education, community projects, cultural events, language learning, and respectful communication.</p>
+
+                    <p>Students can also investigate different perspectives, check historical information carefully, and challenge stereotypes when they encounter them.</p>
+
+                    <h3>Lecture 3 Summary</h3>
+
+                    <ul>
+                        <li>Azerbaijan's location and history have contributed to its cultural diversity.</li>
+                        <li>The country has communities with different ethnic, linguistic, and religious backgrounds.</li>
+                        <li>Baku's history reflects trade, migration, and cultural interaction.</li>
+                        <li>Novruz and traditional arts are important parts of regional cultural heritage.</li>
+                        <li>Azerbaijani multiculturalism is discussed in relation to diversity and coexistence.</li>
+                        <li>Historical study should consider evidence and different experiences.</li>
+                        <li>Education and heritage preservation can support intercultural understanding.</li>
+                    </ul>
+                `
+            },
+
+            {
+                title: "Lecture 4: Tolerance, Dialogue and Globalization",
+                content: `
+                    <h3>1. What Is Intercultural Dialogue?</h3>
+
+                    <p><strong>Intercultural dialogue</strong> is communication between people from different cultural backgrounds with the aim of developing mutual understanding and exploring different perspectives.</p>
+
+                    <p>Dialogue does not require everyone to reach the same opinion. Its purpose is to create opportunities for people to communicate respectfully and learn from one another.</p>
+
+                    <div class="info-box">
+                        <strong>Key idea:</strong> Effective intercultural dialogue requires listening, respect, openness, and a willingness to reconsider assumptions.
+                    </div>
+
+                    <h3>2. Why Is Dialogue Important?</h3>
+
+                    <ul>
+                        <li>It can reduce misunderstandings.</li>
+                        <li>It helps people learn about different traditions and values.</li>
+                        <li>It can build trust between communities.</li>
+                        <li>It provides peaceful ways to discuss disagreements.</li>
+                        <li>It encourages cooperation in schools, workplaces, and communities.</li>
+                    </ul>
+
+                    <h3>3. What Is Globalization?</h3>
+
+                    <p><strong>Globalization</strong> is the growing connection between countries and societies through trade, technology, communication, migration, education, and cultural exchange.</p>
+
+                    <p>The internet, international travel, global business, and digital media allow people to encounter cultures from around the world more easily than in the past.</p>
+
+                    <h3>4. Globalization and Cultural Exchange</h3>
+
+                    <p>Globalization can make cultural exchange easier. People can discover music, films, literature, food, languages, and ideas from other countries.</p>
+
+                    <p>International education and cooperation can help people develop intercultural skills and understand different perspectives.</p>
+
+                    <p>At the same time, globalization can create concerns about the loss of local languages, traditions, and cultural practices when dominant global influences become especially powerful.</p>
+
+                    <h3>5. Cultural Homogenization</h3>
+
+                    <p><strong>Cultural homogenization</strong> refers to a process in which cultures become more similar, often because widely distributed products, media, or lifestyles influence local practices.</p>
+
+                    <p>For example, the same international brands, entertainment, and social media trends may become popular in many countries.</p>
+
+                    <p>However, global influences do not always replace local culture. Communities often adapt international trends and combine them with their own traditions.</p>
+
+                    <h3>6. Stereotypes and Discrimination</h3>
+
+                    <p>A <strong>stereotype</strong> is an oversimplified idea about a group. <strong>Discrimination</strong> occurs when people are treated unfairly because of characteristics such as ethnicity, religion, language, or cultural background.</p>
+
+                    <p>Discrimination can limit access to education, employment, public services, and participation in community life.</p>
+
+                    <p>Fair rules, public awareness, inclusive education, and effective protection of rights can help prevent discriminatory treatment.</p>
+
+                    <h3>7. The Role of Media and Social Networks</h3>
+
+                    <p>Media can help people discover other cultures, learn about global events, and hear experiences that differ from their own.</p>
+
+                    <p>However, inaccurate information and harmful stereotypes can also spread quickly online.</p>
+
+                    <p>Responsible media use includes checking sources, considering context, avoiding the spread of unverified claims, and recognizing that a single online post cannot represent an entire community.</p>
+
+                    <h3>8. Intercultural Communication Skills</h3>
+
+                    <p>Good intercultural communication involves several practical skills:</p>
+
+                    <ul>
+                        <li><strong>Active listening:</strong> Paying attention to what another person says.</li>
+                        <li><strong>Empathy:</strong> Trying to understand another person's perspective.</li>
+                        <li><strong>Clear communication:</strong> Explaining ideas without unnecessary assumptions.</li>
+                        <li><strong>Respectful questions:</strong> Asking for clarification without insulting others.</li>
+                        <li><strong>Self-awareness:</strong> Recognizing how one's own experiences shape personal views.</li>
+                        <li><strong>Flexibility:</strong> Adjusting communication when cultural expectations differ.</li>
+                    </ul>
+
+                    <h3>9. Resolving Cultural Misunderstandings</h3>
+
+                    <p>Misunderstandings may arise when people have different communication styles, customs, or expectations.</p>
+
+                    <p>Useful steps include:</p>
+
+                    <ol>
+                        <li>Identify what was misunderstood.</li>
+                        <li>Listen to each person's explanation.</li>
+                        <li>Avoid blaming an entire cultural group.</li>
+                        <li>Clarify intentions and expectations.</li>
+                        <li>Look for a fair solution that respects everyone's rights.</li>
+                    </ol>
+
+                    <h3>10. Multiculturalism in Education and the Workplace</h3>
+
+                    <p>Schools and workplaces often bring together people with different experiences and cultural backgrounds.</p>
+
+                    <p>Inclusive environments encourage equal participation, fair treatment, and respectful discussion. They also make it easier for people to share ideas and work collaboratively.</p>
+
+                    <h3>11. Young People and Global Citizenship</h3>
+
+                    <p><strong>Global citizenship</strong> refers to awareness of the wider world and a sense of responsibility toward other people and shared global challenges.</p>
+
+                    <p>Young people can develop global citizenship by learning about world cultures, checking information critically, volunteering, studying languages, and cooperating with people from different backgrounds.</p>
+
+                    <h3>12. Building an Inclusive Society</h3>
+
+                    <p>An inclusive society aims to ensure that people can participate in social, educational, cultural, and public life without unfair barriers.</p>
+
+                    <p>Important approaches include:</p>
+
+                    <ul>
+                        <li>Protecting equal rights and opportunities.</li>
+                        <li>Providing fair access to education and public services.</li>
+                        <li>Encouraging intercultural dialogue.</li>
+                        <li>Addressing stereotypes and discrimination.</li>
+                        <li>Supporting cultural heritage and language diversity.</li>
+                        <li>Promoting responsible communication and cooperation.</li>
+                    </ul>
+
+                    <h3>Lecture 4 Summary</h3>
+
+                    <ul>
+                        <li>Intercultural dialogue encourages understanding between different communities.</li>
+                        <li>Globalization increases connections and cultural exchange.</li>
+                        <li>Cultural homogenization can make cultural practices more similar.</li>
+                        <li>Stereotypes and discrimination can undermine inclusion.</li>
+                        <li>Media literacy helps people evaluate cultural information responsibly.</li>
+                        <li>Active listening, empathy, and clear communication support peaceful coexistence.</li>
+                        <li>Inclusive societies aim to protect rights and provide fair opportunities.</li>
+                    </ul>
+                `
+            }
+
+        ];
+
+        // =========================================
+        // OPEN AND CLOSE LECTURES
+        // =========================================
+
+        function openLecture(index) {
+            const lecture = lectureMaterials[index];
+
+            if (!lecture) {
+                return;
+            }
+
+            document.getElementById("lectureList").style.display = "none";
+            document.getElementById("miniTest").style.display = "none";
+
+            const viewer = document.getElementById("lectureViewer");
+            const content = document.getElementById("lectureContent");
+
+            content.innerHTML = `
+                <h2>${lecture.title}</h2>
+                ${lecture.content}
+            `;
+
+            viewer.style.display = "block";
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+
+        function closeLecture() {
+            document.getElementById("lectureViewer").style.display = "none";
+            document.getElementById("lectureList").style.display = "block";
+            document.getElementById("miniTest").style.display = "block";
+
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+
+        // =========================================
+        // MINI TEST QUESTIONS
+        // =========================================
+
+        const quizQuestions = [
+            {
+                question: "1. What does multiculturalism mainly emphasize?",
+                options: [
+                    "A. Making all cultures identical",
+                    "B. Recognizing cultural diversity and supporting coexistence",
+                    "C. Eliminating cultural traditions",
+                    "D. Preventing communication between communities"
+                ],
+                answer: 1
+            },
+            {
+                question: "2. What is cultural diversity?",
+                options: [
+                    "A. The existence of different cultures in a society",
+                    "B. The use of only one language worldwide",
+                    "C. The disappearance of cultural traditions",
+                    "D. The rejection of different beliefs"
+                ],
+                answer: 0
+            },
+            {
+                question: "3. What is cultural identity influenced by?",
+                options: [
+                    "A. Only a person's occupation",
+                    "B. Only their place of birth",
+                    "C. Language, traditions, history, and experiences",
+                    "D. Only their age"
+                ],
+                answer: 2
+            },
+            {
+                question: "4. What does tolerance mean in a multicultural society?",
+                options: [
+                    "A. Everyone must share the same beliefs",
+                    "B. Different opinions should never be discussed",
+                    "C. Cultural differences must be ignored",
+                    "D. Respecting differences and people's rights"
+                ],
+                answer: 3
+            },
+            {
+                question: "5. Which language is the official language of Azerbaijan?",
+                options: [
+                    "A. Azerbaijani",
+                    "B. French",
+                    "C. German",
+                    "D. Arabic"
+                ],
+                answer: 0
+            },
+            {
+                question: "6. Which of the following is a traditional spring celebration observed in Azerbaijan?",
+                options: [
+                    "A. Halloween",
+                    "B. Novruz",
+                    "C. Thanksgiving",
+                    "D. Oktoberfest"
+                ],
+                answer: 1
+            },
+            {
+                question: "7. What is intercultural dialogue?",
+                options: [
+                    "A. Avoiding people from different backgrounds",
+                    "B. Requiring everyone to agree",
+                    "C. Respectful communication between different cultures",
+                    "D. Replacing local traditions"
+                ],
+                answer: 2
+            },
+            {
+                question: "8. What is a stereotype?",
+                options: [
+                    "A. A detailed study of an individual",
+                    "B. A respectful cultural celebration",
+                    "C. A type of language",
+                    "D. An oversimplified belief about a group"
+                ],
+                answer: 3
+            },
+            {
+                question: "9. What is globalization?",
+                options: [
+                    "A. Increasing connections between countries and societies",
+                    "B. The complete separation of countries",
+                    "C. The disappearance of all technology",
+                    "D. The rejection of international communication"
+                ],
+                answer: 0
+            },
+            {
+                question: "10. Which action can help promote multicultural understanding?",
+                options: [
+                    "A. Sharing unverified information",
+                    "B. Listening respectfully and learning about other cultures",
+                    "C. Judging everyone by stereotypes",
+                    "D. Excluding people with different backgrounds"
+                ],
+                answer: 1
+            }
+        ];
+
+        let currentQuestion = 0;
+        let userAnswers = [];
+        let timeLeft = 600;
+        let quizTimer = null;
+        let quizFinished = false;
+
+        function startQuiz() {
+            clearInterval(quizTimer);
+
+            currentQuestion = 0;
+            userAnswers = new Array(quizQuestions.length).fill(null);
+            timeLeft = 600;
+            quizFinished = false;
+
+            document.getElementById("quizIntro").style.display = "none";
+            document.getElementById("quizResult").style.display = "none";
+            document.getElementById("quizArea").style.display = "block";
+
+            renderQuestion();
+            updateTimer();
+
+            quizTimer = setInterval(function () {
+                timeLeft--;
+                updateTimer();
+
+                if (timeLeft <= 0) {
+                    finishQuiz();
+                }
+            }, 1000);
+
+            document.getElementById("miniTest").scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+        }
+
+        function updateTimer() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+
+            document.getElementById("timer").textContent =
+                "Time: " +
+                String(minutes).padStart(2, "0") +
+                ":" +
+                String(seconds).padStart(2, "0");
+        }
+
+        function renderQuestion() {
+            const question = quizQuestions[currentQuestion];
+
+            document.getElementById("questionCounter").textContent =
+                "Question " + (currentQuestion + 1) +
+                " of " + quizQuestions.length;
+
+            document.getElementById("progressBar").style.width =
+                ((currentQuestion + 1) / quizQuestions.length * 100) + "%";
+
+            document.getElementById("questionText").textContent =
+                question.question;
+
+            const optionsContainer = document.getElementById("answerOptions");
+            optionsContainer.innerHTML = "";
+
+            question.options.forEach(function (option, index) {
+                const label = document.createElement("label");
+                label.className = "answer-option";
+
+                const radio = document.createElement("input");
+                radio.type = "radio";
+                radio.name = "quizAnswer";
+                radio.value = index;
+                radio.checked = userAnswers[currentQuestion] === index;
+
+                radio.addEventListener("change", function () {
+                    userAnswers[currentQuestion] = index;
+                });
+
+                label.appendChild(radio);
+                label.appendChild(document.createTextNode(option));
+                optionsContainer.appendChild(label);
+            });
+
+            document.getElementById("previousBtn").disabled =
+                currentQuestion === 0;
+
+            const nextButton = document.getElementById("nextBtn");
+
+            if (currentQuestion === quizQuestions.length - 1) {
+                nextButton.textContent = "Finish Test";
+            } else {
+                nextButton.textContent = "Next";
+            }
+        }
+
+        function nextQuestion() {
+            if (quizFinished) {
+                return;
+            }
+
+            if (currentQuestion === quizQuestions.length - 1) {
+                finishQuiz();
+                return;
+            }
+
+            currentQuestion++;
+            renderQuestion();
+        }
+
+        function previousQuestion() {
+            if (quizFinished || currentQuestion === 0) {
+                return;
+            }
+
+            currentQuestion--;
+            renderQuestion();
+        }
+
+        function finishQuiz() {
+            if (quizFinished) {
+                return;
+            }
+
+            quizFinished = true;
+            clearInterval(quizTimer);
+
+            let score = 0;
+
+            quizQuestions.forEach(function (question, index) {
+                if (userAnswers[index] === question.answer) {
+                    score++;
+                }
+            });
+
+            const percentage = Math.round(
+                (score / quizQuestions.length) * 100
+            );
+
+            document.getElementById("quizArea").style.display = "none";
+            document.getElementById("quizResult").style.display = "block";
+
+            document.getElementById("scoreText").textContent =
+                score + "/" + quizQuestions.length + " — " + percentage + "%";
+
+            let message = "";
+
+            if (percentage === 100) {
+                message = "Excellent! You answered every question correctly.";
+            } else if (percentage >= 80) {
+                message = "Great job! You have a strong understanding of the material.";
+            } else if (percentage >= 60) {
+                message = "Good effort! Review the incorrect answers to improve.";
+            } else {
+                message = "Keep practicing! Review the lectures and try the test again.";
+            }
+
+            document.getElementById("resultMessage").textContent = message;
+
+            const review = document.getElementById("answerReview");
+            review.innerHTML = "";
+
+            quizQuestions.forEach(function (question, index) {
+                const item = document.createElement("div");
+                item.className = "review-item";
+
+                const questionTitle = document.createElement("p");
+                questionTitle.textContent = question.question;
+                item.appendChild(questionTitle);
+
+                const yourAnswer = document.createElement("p");
+
+                if (userAnswers[index] === null) {
+                    yourAnswer.textContent = "Your answer: Not answered";
+                    yourAnswer.className = "wrong-answer";
+                } else {
+                    yourAnswer.textContent =
+                        "Your answer: " + question.options[userAnswers[index]];
+
+                    yourAnswer.className =
+                        userAnswers[index] === question.answer
+                            ? "correct-answer"
+                            : "wrong-answer";
+                }
+
+                item.appendChild(yourAnswer);
+
+                const correctAnswer = document.createElement("p");
+                correctAnswer.textContent =
+                    "Correct answer: " + question.options[question.answer];
+                correctAnswer.className = "correct-answer";
+
+                item.appendChild(correctAnswer);
+                review.appendChild(item);
+            });
+
+            document.getElementById("quizResult").scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+        }
+
+        function restartQuiz() {
+            startQuiz();
+        }
+    </script>
+
+</body>
+</html>

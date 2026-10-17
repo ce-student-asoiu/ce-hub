@@ -1,0 +1,1471 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Entrepreneurship | CE HUB</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        .course-container {
+            max-width: 1000px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+        .course-header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .course-header h1 {
+            color: #1d4ed8;
+            margin-bottom: 10px;
+        }
+
+        .lecture-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 22px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04);
+        }
+
+        .lecture-card h3 {
+            margin: 0 0 8px;
+            color: #1f2937;
+        }
+
+        .lecture-card p {
+            margin: 0;
+            color: #6b7280;
+            line-height: 1.6;
+        }
+
+        .open-btn,
+        .primary-btn {
+            display: inline-block;
+            background: #2563eb;
+            color: white;
+            padding: 11px 22px;
+            border: none;
+            border-radius: 8px;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .open-btn:hover,
+        .primary-btn:hover {
+            background: #1d4ed8;
+        }
+
+        #lectureViewer {
+            display: none;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 28px;
+            margin: 30px 0;
+            line-height: 1.8;
+            overflow-wrap: anywhere;
+        }
+
+        #lectureContent h2 {
+            color: #1d4ed8;
+            margin-top: 5px;
+        }
+
+        #lectureContent h3 {
+            color: #1f2937;
+            margin-top: 25px;
+        }
+
+        #lectureContent h4 {
+            color: #374151;
+            margin-top: 20px;
+        }
+
+        #lectureContent ul,
+        #lectureContent ol {
+            padding-left: 25px;
+        }
+
+        #lectureContent li {
+            margin-bottom: 8px;
+        }
+
+        .code-example {
+            background: #111827;
+            color: #e5e7eb;
+            padding: 16px;
+            border-radius: 8px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            font-family: Consolas, monospace;
+            line-height: 1.6;
+        }
+
+        .info-box {
+            background: #eff6ff;
+            border-left: 4px solid #2563eb;
+            padding: 14px 18px;
+            margin: 18px 0;
+            border-radius: 5px;
+        }
+
+        .quiz-section {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 30px;
+            margin-top: 45px;
+            margin-bottom: 40px;
+        }
+
+        .quiz-intro {
+            text-align: center;
+        }
+
+        .quiz-intro h2 {
+            color: #1d4ed8;
+            margin-bottom: 10px;
+        }
+
+        .quiz-intro p {
+            color: #6b7280;
+        }
+
+        .time-limit {
+            font-weight: 600;
+            color: #374151;
+            margin: 18px 0;
+        }
+
+        .quiz-start {
+            font-size: 16px;
+            padding: 14px 30px;
+        }
+
+        #quizArea,
+        #quizResult {
+            display: none;
+        }
+
+        .quiz-top {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+            font-weight: 600;
+        }
+
+        #timer {
+            color: #dc2626;
+        }
+
+        .progress-track {
+            width: 100%;
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 25px;
+        }
+
+        #progressBar {
+            height: 100%;
+            width: 0%;
+            background: #2563eb;
+            transition: width 0.2s;
+        }
+
+        #questionText {
+            color: #1f2937;
+            font-size: 20px;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .answer-option {
+            display: block;
+            padding: 14px 16px;
+            border: 1px solid #d1d5db;
+            border-radius: 9px;
+            margin: 10px 0;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .answer-option:hover {
+            background: #eff6ff;
+            border-color: #2563eb;
+        }
+
+        .answer-option input {
+            margin-right: 10px;
+            accent-color: #2563eb;
+        }
+
+        .quiz-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+
+        .secondary-btn {
+            background: #e5e7eb;
+            color: #1f2937;
+            padding: 11px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .secondary-btn:hover {
+            background: #d1d5db;
+        }
+
+        .result-score {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1d4ed8;
+            margin: 15px 0;
+        }
+
+        .result-message {
+            color: #4b5563;
+            line-height: 1.7;
+        }
+
+        .review-item {
+            text-align: left;
+            border-top: 1px solid #e5e7eb;
+            padding: 15px 0;
+            line-height: 1.6;
+        }
+
+        .correct-answer {
+            color: #15803d;
+            font-weight: 600;
+        }
+
+        .wrong-answer {
+            color: #dc2626;
+            font-weight: 600;
+        }
+
+        @media (max-width: 600px) {
+            .lecture-card {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            #lectureViewer,
+            .quiz-section {
+                padding: 20px;
+            }
+
+            .open-btn {
+                width: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="logo">CE HUB</div>
+
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="index.html#subjects">Subjects</a></li>
+            <li><a href="exams.html">Exams</a></li>
+            <li><a href="deadlines.html">Deadlines</a></li>
+        </ul>
+    </nav>
+
+    <main class="course-container">
+
+        <!-- Course Header -->
+        <header class="course-header">
+            <h1>💼 Entrepreneurship & Introduction to Business</h1>
+            <p>Computer Engineering — Course Materials</p>
+        </header>
+
+        <!-- Lecture List -->
+        <section id="lectureList">
+
+            <div class="lecture-card">
+                <div>
+                    <h3>Lecture 1: Introduction to Entrepreneurship</h3>
+                    <p>Learn what entrepreneurship is, the role of entrepreneurs, business ownership, innovation, and entrepreneurial skills.</p>
+                </div>
+                <button class="open-btn" onclick="openLecture(0)">Open</button>
+            </div>
+
+            <div class="lecture-card">
+                <div>
+                    <h3>Lecture 2: Business Ideas and Opportunities</h3>
+                    <p>Explore how to identify business opportunities, understand customer needs, conduct market research, and evaluate ideas.</p>
+                </div>
+                <button class="open-btn" onclick="openLecture(1)">Open</button>
+            </div>
+
+            <div class="lecture-card">
+                <div>
+                    <h3>Lecture 3: Business Models and Planning</h3>
+                    <p>Understand business models, value propositions, target customers, revenue streams, costs, and business plans.</p>
+                </div>
+                <button class="open-btn" onclick="openLecture(2)">Open</button>
+            </div>
+
+            <div class="lecture-card">
+                <div>
+                    <h3>Lecture 4: Marketing, Finance and Growth</h3>
+                    <p>Learn marketing fundamentals, budgeting, profit, cash flow, funding sources, and strategies for business growth.</p>
+                </div>
+                <button class="open-btn" onclick="openLecture(3)">Open</button>
+            </div>
+
+        </section>
+
+        <!-- Lecture Viewer -->
+        <section id="lectureViewer">
+            <button class="secondary-btn" onclick="closeLecture()">← Back to Lectures</button>
+            <div id="lectureContent"></div>
+            <button class="secondary-btn" onclick="closeLecture()">← Back to Lectures</button>
+        </section>
+
+        <!-- Mini Test -->
+        <section class="quiz-section" id="miniTest">
+
+            <div class="quiz-intro" id="quizIntro">
+                <h2>📝 Mini Test</h2>
+                <p>Test your understanding of the Entrepreneurship course.</p>
+                <p class="time-limit">⏱️ Time Limit: 10 minutes</p>
+                <button class="primary-btn quiz-start" onclick="startQuiz()">Start Mini Test</button>
+            </div>
+
+            <div id="quizArea">
+                <div class="quiz-top">
+                    <span id="questionCounter">Question 1 of 10</span>
+                    <span id="timer">Time: 10:00</span>
+                </div>
+
+                <div class="progress-track">
+                    <div id="progressBar"></div>
+                </div>
+
+                <h3 id="questionText"></h3>
+                <div id="answerOptions"></div>
+
+                <div class="quiz-controls">
+                    <button class="secondary-btn" id="previousBtn" onclick="previousQuestion()">Previous</button>
+                    <button class="primary-btn" id="nextBtn" onclick="nextQuestion()">Next</button>
+                </div>
+            </div>
+
+            <div id="quizResult">
+                <h2>📝 Test Completed!</h2>
+                <p>Your result:</p>
+                <div class="result-score" id="scoreText"></div>
+                <p class="result-message" id="resultMessage"></p>
+
+                <h3>Answer Review</h3>
+                <div id="answerReview"></div>
+
+                <button class="primary-btn" onclick="restartQuiz()">Try Again</button>
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer>
+        <p>© 2026 CE HUB | Computer Engineering Learning Hub</p>
+    </footer>
+
+    <script>
+        // =========================================
+        // LECTURE MATERIALS
+        // =========================================
+
+        const lectureMaterials = [
+
+            {
+                title: "Lecture 1: Introduction to Entrepreneurship",
+                content: `
+                    <h3>1. What Is Entrepreneurship?</h3>
+
+                    <p><strong>Entrepreneurship</strong> is the process of identifying an opportunity, developing a solution, organizing resources, and creating a business or other venture to deliver value.</p>
+
+                    <p>Entrepreneurs often introduce new products, improve existing services, solve customer problems, and create employment opportunities. They may start small businesses, technology companies, social enterprises, or other types of ventures.</p>
+
+                    <div class="info-box">
+                        <strong>Key idea:</strong> Entrepreneurship involves recognizing opportunities, creating value, organizing resources, and managing uncertainty.
+                    </div>
+
+                    <h3>2. Who Is an Entrepreneur?</h3>
+
+                    <p>An <strong>entrepreneur</strong> is a person who develops and organizes a venture, usually accepting financial and operational risks in pursuit of an opportunity.</p>
+
+                    <p>Examples of entrepreneurs include:</p>
+
+                    <ul>
+                        <li>A person who opens an online store.</li>
+                        <li>A software developer who creates a mobile application business.</li>
+                        <li>A team that builds a technology startup.</li>
+                        <li>A local business owner who provides a useful service.</li>
+                        <li>A social entrepreneur who develops solutions to community problems.</li>
+                    </ul>
+
+                    <h3>3. Why Is Entrepreneurship Important?</h3>
+
+                    <p>Entrepreneurship can contribute to economic and social development in several ways.</p>
+
+                    <ul>
+                        <li><strong>Job creation:</strong> Businesses employ people and create work opportunities.</li>
+                        <li><strong>Innovation:</strong> Entrepreneurs develop new products, services, and processes.</li>
+                        <li><strong>Competition:</strong> New businesses can encourage companies to improve quality and service.</li>
+                        <li><strong>Economic growth:</strong> Successful businesses can generate income and contribute to economic activity.</li>
+                        <li><strong>Problem-solving:</strong> Businesses can address unmet needs in society.</li>
+                        <li><strong>Customer choice:</strong> New products and services provide customers with more options.</li>
+                    </ul>
+
+                    <h3>4. Entrepreneur vs. Manager</h3>
+
+                    <p>Entrepreneurs and managers both organize resources and make decisions, but their typical responsibilities can differ.</p>
+
+                    <p><strong>Entrepreneur:</strong> Often focuses on identifying opportunities, creating a venture, developing a business model, and dealing with uncertainty.</p>
+
+                    <p><strong>Manager:</strong> Often focuses on planning, organizing, coordinating, and monitoring activities within an organization.</p>
+
+                    <p>In a small business, the same person may perform both roles.</p>
+
+                    <h3>5. Common Types of Entrepreneurship</h3>
+
+                    <h4>Small Business Entrepreneurship</h4>
+                    <p>Involves operating a business that serves a local or specific market, such as a restaurant, repair shop, or design studio.</p>
+
+                    <h4>Scalable Startup Entrepreneurship</h4>
+                    <p>Focuses on building a business designed to grow significantly, often by using technology or a repeatable business model.</p>
+
+                    <h4>Social Entrepreneurship</h4>
+                    <p>Uses entrepreneurial methods to address social or environmental problems. Financial sustainability may still be important.</p>
+
+                    <h4>Corporate Entrepreneurship</h4>
+                    <p>Involves developing new products, services, or business opportunities within an established company. It is also known as intrapreneurship when employees act entrepreneurially inside an organization.</p>
+
+                    <h3>6. Characteristics of Successful Entrepreneurs</h3>
+
+                    <p>Entrepreneurs benefit from a combination of skills, experience, and personal qualities.</p>
+
+                    <ul>
+                        <li><strong>Creativity:</strong> Developing useful ideas and alternative solutions.</li>
+                        <li><strong>Initiative:</strong> Taking action rather than waiting for every instruction.</li>
+                        <li><strong>Resilience:</strong> Learning from setbacks and adapting to change.</li>
+                        <li><strong>Communication:</strong> Explaining ideas to customers, employees, and partners.</li>
+                        <li><strong>Decision-making:</strong> Comparing options and choosing a course of action.</li>
+                        <li><strong>Financial awareness:</strong> Understanding costs, revenue, and available resources.</li>
+                        <li><strong>Adaptability:</strong> Changing plans when evidence or market conditions change.</li>
+                    </ul>
+
+                    <h3>7. Risk and Uncertainty</h3>
+
+                    <p>Starting a business involves uncertainty. Customers may not buy a product, costs may increase, or competitors may introduce better alternatives.</p>
+
+                    <p>Entrepreneurs can manage uncertainty by:</p>
+
+                    <ul>
+                        <li>Researching the market before investing heavily.</li>
+                        <li>Testing a product with a small group of customers.</li>
+                        <li>Preparing a realistic budget.</li>
+                        <li>Considering alternative plans.</li>
+                        <li>Collecting feedback and improving the product.</li>
+                    </ul>
+
+                    <p><strong>Calculated risk</strong> means considering the potential benefits, costs, and possible consequences before making a decision. It does not mean taking risks without thinking.</p>
+
+                    <h3>8. Innovation and Creativity</h3>
+
+                    <p><strong>Creativity</strong> involves generating new or different ideas. <strong>Innovation</strong> involves putting ideas into practice to create useful value.</p>
+
+                    <p>For example, a student might imagine an application that helps people organize their study schedules. Building, testing, and improving that application is part of the innovation process.</p>
+
+                    <p>Innovation does not always require inventing something completely new. It may involve improving an existing product, service, process, or customer experience.</p>
+
+                    <h3>9. Ethics and Social Responsibility</h3>
+
+                    <p>Businesses affect customers, employees, suppliers, communities, and the environment. Ethical entrepreneurship considers these stakeholders when making decisions.</p>
+
+                    <ul>
+                        <li>Provide accurate information about products.</li>
+                        <li>Respect customer privacy.</li>
+                        <li>Treat employees fairly.</li>
+                        <li>Follow relevant laws and regulations.</li>
+                        <li>Avoid misleading advertising.</li>
+                        <li>Consider the environmental and social effects of business activities.</li>
+                    </ul>
+
+                    <h3>10. From Idea to Business</h3>
+
+                    <p>A basic entrepreneurial process can include the following stages:</p>
+
+                    <ol>
+                        <li>Identify a problem or opportunity.</li>
+                        <li>Research potential customers and competitors.</li>
+                        <li>Develop a product or service idea.</li>
+                        <li>Test whether customers find the solution useful.</li>
+                        <li>Plan resources, costs, pricing, and operations.</li>
+                        <li>Launch the business or product.</li>
+                        <li>Collect feedback and improve the offering.</li>
+                    </ol>
+
+                    <div class="code-example">Problem
+   ↓
+Business Idea
+   ↓
+Market Research
+   ↓
+Test the Solution
+   ↓
+Business Launch
+   ↓
+Feedback and Improvement</div>
+
+                    <h3>Lecture 1 Summary</h3>
+
+                    <ul>
+                        <li>Entrepreneurship involves identifying opportunities and creating value.</li>
+                        <li>Entrepreneurs organize resources and manage uncertainty.</li>
+                        <li>Entrepreneurship can encourage innovation and create jobs.</li>
+                        <li>Creativity, communication, and adaptability are useful entrepreneurial skills.</li>
+                        <li>Market research and testing can reduce uncertainty.</li>
+                        <li>Ethics and social responsibility matter in business decisions.</li>
+                    </ul>
+                `
+            },
+
+            {
+                title: "Lecture 2: Business Ideas and Opportunities",
+                content: `
+                    <h3>1. What Is a Business Idea?</h3>
+
+                    <p>A <strong>business idea</strong> describes a product or service that a person or organization could offer to customers.</p>
+
+                    <p>Examples include:</p>
+
+                    <ul>
+                        <li>An online platform for tutoring students.</li>
+                        <li>A mobile application that organizes personal tasks.</li>
+                        <li>A service that repairs computers.</li>
+                        <li>A website that connects local producers with customers.</li>
+                        <li>A subscription service for educational content.</li>
+                    </ul>
+
+                    <h3>2. Business Idea vs. Business Opportunity</h3>
+
+                    <p>A business idea is a possible solution. A <strong>business opportunity</strong> exists when there is a meaningful customer need and a realistic way to provide value sustainably.</p>
+
+                    <div class="info-box">
+                        <strong>Important:</strong> An interesting idea is not automatically a profitable opportunity. Customer demand, competition, costs, and the ability to deliver the solution must also be considered.
+                    </div>
+
+                    <p>For example, an entrepreneur may have an idea for a new study application. Research is needed to determine whether students need it, whether similar applications already exist, and whether users would pay for it.</p>
+
+                    <h3>3. Sources of Business Ideas</h3>
+
+                    <p>Business ideas can come from different sources.</p>
+
+                    <ul>
+                        <li><strong>Customer problems:</strong> Finding tasks that people struggle to complete.</li>
+                        <li><strong>Personal experience:</strong> Using knowledge from education, work, or hobbies.</li>
+                        <li><strong>Market changes:</strong> Responding to changes in customer behavior or technology.</li>
+                        <li><strong>Existing products:</strong> Improving products or services that already exist.</li>
+                        <li><strong>New technology:</strong> Using technology to deliver a better solution.</li>
+                        <li><strong>Customer feedback:</strong> Listening to complaints, requests, and suggestions.</li>
+                    </ul>
+
+                    <h3>4. Identifying Customer Problems</h3>
+
+                    <p>Many successful business opportunities begin with a clear understanding of a customer's problem.</p>
+
+                    <p>Consider these questions:</p>
+
+                    <ul>
+                        <li>Who experiences the problem?</li>
+                        <li>How often does it occur?</li>
+                        <li>How do people currently solve it?</li>
+                        <li>What is frustrating or expensive about existing solutions?</li>
+                        <li>Would customers value an improved solution?</li>
+                    </ul>
+
+                    <p>For example, students may find it difficult to organize lecture notes and practice questions. A study platform that combines course materials and quizzes could address this need.</p>
+
+                    <h3>5. Market Research</h3>
+
+                    <p><strong>Market research</strong> is the process of collecting and analyzing information about customers, competitors, and market conditions.</p>
+
+                    <h4>Primary Research</h4>
+
+                    <p>Primary research involves collecting new information directly.</p>
+
+                    <ul>
+                        <li>Surveys and questionnaires.</li>
+                        <li>Customer interviews.</li>
+                        <li>Focus groups.</li>
+                        <li>Observing how people use a product.</li>
+                        <li>Testing a prototype with potential customers.</li>
+                    </ul>
+
+                    <h4>Secondary Research</h4>
+
+                    <p>Secondary research uses information that has already been collected.</p>
+
+                    <ul>
+                        <li>Industry reports.</li>
+                        <li>Government statistics.</li>
+                        <li>Published research.</li>
+                        <li>Competitor websites and public information.</li>
+                        <li>Relevant market studies.</li>
+                    </ul>
+
+                    <h3>6. Understanding the Target Market</h3>
+
+                    <p>A <strong>target market</strong> is the group of customers a business intends to serve.</p>
+
+                    <p>Businesses may divide customers into segments based on:</p>
+
+                    <ul>
+                        <li><strong>Demographics:</strong> Age group, income range, or occupation.</li>
+                        <li><strong>Geography:</strong> Country, city, or region.</li>
+                        <li><strong>Behavior:</strong> Buying habits and product usage.</li>
+                        <li><strong>Needs:</strong> Problems, preferences, and desired outcomes.</li>
+                    </ul>
+
+                    <p>A business that identifies its target market can develop products and marketing messages that are more relevant to its customers.</p>
+
+                    <h3>7. Competitor Analysis</h3>
+
+                    <p><strong>Competitor analysis</strong> examines businesses that offer similar products or alternative solutions to the same customer problem.</p>
+
+                    <p>Useful comparison factors include:</p>
+
+                    <ul>
+                        <li>Product features and quality.</li>
+                        <li>Prices and payment options.</li>
+                        <li>Customer service.</li>
+                        <li>Convenience and accessibility.</li>
+                        <li>Strengths and weaknesses.</li>
+                    </ul>
+
+                    <p>Competitor analysis helps a business identify ways to differentiate its offering. Competition can also provide evidence that a market already exists.</p>
+
+                    <h3>8. Evaluating a Business Idea</h3>
+
+                    <p>A business idea can be evaluated using several criteria.</p>
+
+                    <ul>
+                        <li><strong>Customer demand:</strong> Do potential customers need the solution?</li>
+                        <li><strong>Feasibility:</strong> Can the product or service realistically be delivered?</li>
+                        <li><strong>Financial potential:</strong> Can revenue cover costs over time?</li>
+                        <li><strong>Competition:</strong> How can the business offer distinct value?</li>
+                        <li><strong>Resources:</strong> Are the necessary skills, equipment, and funding available?</li>
+                        <li><strong>Timing:</strong> Is the market ready for the offering?</li>
+                    </ul>
+
+                    <h3>9. SWOT Analysis</h3>
+
+                    <p><strong>SWOT analysis</strong> is a tool used to examine internal strengths and weaknesses, along with external opportunities and threats.</p>
+
+                    <ul>
+                        <li><strong>Strengths:</strong> Internal advantages, such as specialized knowledge.</li>
+                        <li><strong>Weaknesses:</strong> Internal limitations, such as a small budget.</li>
+                        <li><strong>Opportunities:</strong> External conditions that could help the business grow.</li>
+                        <li><strong>Threats:</strong> External challenges, such as new competitors.</li>
+                    </ul>
+
+                    <div class="code-example">SWOT ANALYSIS
+
+Strengths       | Weaknesses
+Skills          | Limited budget
+
+Opportunities   | Threats
+Growing demand  | Strong competitors</div>
+
+                    <p>SWOT analysis helps entrepreneurs organize information and identify issues that deserve attention. It does not replace detailed market or financial research.</p>
+
+                    <h3>10. Testing an Idea Before Launch</h3>
+
+                    <p>Entrepreneurs can test an idea before investing substantial resources.</p>
+
+                    <ul>
+                        <li>Create a simple prototype.</li>
+                        <li>Interview potential customers.</li>
+                        <li>Offer a small pilot service.</li>
+                        <li>Build a minimum viable product (MVP).</li>
+                        <li>Measure customer interest and collect feedback.</li>
+                    </ul>
+
+                    <p>A <strong>minimum viable product (MVP)</strong> is a basic version of a product designed to test important assumptions and learn from early users.</p>
+
+                    <h3>Lecture 2 Summary</h3>
+
+                    <ul>
+                        <li>A business idea proposes a product or service.</li>
+                        <li>A business opportunity requires a real need and a feasible solution.</li>
+                        <li>Market research can use primary and secondary data.</li>
+                        <li>A target market identifies the customers a business wants to serve.</li>
+                        <li>Competitor analysis helps identify market differences.</li>
+                        <li>SWOT analysis examines strengths, weaknesses, opportunities, and threats.</li>
+                        <li>Testing an idea can reduce uncertainty before launch.</li>
+                    </ul>
+                `
+            },
+
+            {
+                title: "Lecture 3: Business Models and Planning",
+                content: `
+                    <h3>1. What Is a Business Model?</h3>
+
+                    <p>A <strong>business model</strong> explains how a business creates value for customers, delivers that value, and generates revenue in a sustainable way.</p>
+
+                    <p>It describes the main elements of how the business operates, including its customers, offering, activities, costs, and sources of income.</p>
+
+                    <div class="info-box">
+                        <strong>Key idea:</strong> A business model explains how a business works and how it can sustain its activities financially.
+                    </div>
+
+                    <h3>2. Value Proposition</h3>
+
+                    <p>A <strong>value proposition</strong> explains why customers might choose a product or service instead of an alternative.</p>
+
+                    <p>A strong value proposition identifies:</p>
+
+                    <ul>
+                        <li>The customer problem or need.</li>
+                        <li>The proposed solution.</li>
+                        <li>The main benefit to the customer.</li>
+                        <li>What makes the offering different or useful.</li>
+                    </ul>
+
+                    <p>For example, a study platform might offer organized lecture notes and practice tests in one place, helping students prepare for exams more efficiently.</p>
+
+                    <h3>3. Main Elements of a Business Model</h3>
+
+                    <p>Many business models include the following elements:</p>
+
+                    <ul>
+                        <li><strong>Customer segments:</strong> The groups of people or organizations served.</li>
+                        <li><strong>Value proposition:</strong> The benefits offered to customers.</li>
+                        <li><strong>Channels:</strong> How the business reaches and delivers products to customers.</li>
+                        <li><strong>Customer relationships:</strong> How the business attracts and supports customers.</li>
+                        <li><strong>Revenue streams:</strong> How the business earns money.</li>
+                        <li><strong>Key resources:</strong> Important assets, people, technology, and knowledge.</li>
+                        <li><strong>Key activities:</strong> The main tasks needed to operate.</li>
+                        <li><strong>Key partners:</strong> External organizations or people that help the business.</li>
+                        <li><strong>Cost structure:</strong> The main expenses involved in operating the business.</li>
+                    </ul>
+
+                    <h3>4. Common Business Models</h3>
+
+                    <h4>Retail Model</h4>
+                    <p>A business purchases or produces goods and sells them to customers, usually at a price that covers its costs and contributes to profit.</p>
+
+                    <h4>Subscription Model</h4>
+                    <p>Customers pay regularly, such as monthly or annually, to access a service or product.</p>
+
+                    <h4>Freemium Model</h4>
+                    <p>A basic version is provided free, while users pay for additional features or services.</p>
+
+                    <h4>Advertising Model</h4>
+                    <p>A business offers content or services and earns revenue by displaying advertisements to an audience.</p>
+
+                    <h4>Marketplace Model</h4>
+                    <p>A platform connects buyers and sellers and may earn commissions or fees from transactions.</p>
+
+                    <h4>Service Model</h4>
+                    <p>A business earns revenue by providing services, such as consulting, repair, design, or software development.</p>
+
+                    <h3>5. Revenue and Costs</h3>
+
+                    <p><strong>Revenue</strong> is the income a business earns from selling products or providing services before expenses are deducted.</p>
+
+                    <p><strong>Costs</strong> are the expenses associated with running the business.</p>
+
+                    <p>Common cost categories include:</p>
+
+                    <ul>
+                        <li><strong>Fixed costs:</strong> Costs that generally remain stable within a relevant activity range, such as monthly rent.</li>
+                        <li><strong>Variable costs:</strong> Costs that change with production or sales volume, such as materials used for each product.</li>
+                    </ul>
+
+                    <p>For example, a business may pay rent each month and also pay for materials for every item it produces.</p>
+
+                    <h3>6. Profit and Loss</h3>
+
+                    <p><strong>Profit</strong> is the amount remaining when total expenses are subtracted from total revenue. If expenses exceed revenue, the business has a loss.</p>
+
+                    <div class="code-example">Profit = Total Revenue - Total Costs
+
+Example:
+Revenue = 5,000
+Total Costs = 3,500
+
+Profit = 5,000 - 3,500
+Profit = 1,500</div>
+
+                    <p>Profit is important, but a business also needs enough cash available to pay its bills when they are due.</p>
+
+                    <h3>7. The Break-Even Point</h3>
+
+                    <p>The <strong>break-even point</strong> is the sales level at which total revenue equals total costs, meaning there is neither a profit nor a loss under the calculation's assumptions.</p>
+
+                    <p>For a simple product business, the break-even quantity can be calculated as:</p>
+
+                    <div class="code-example">Break-even quantity =
+Fixed Costs / (Selling Price per Unit - Variable Cost per Unit)</div>
+
+                    <p>Example:</p>
+
+                    <div class="code-example">Fixed Costs = 1,000
+Selling Price per Unit = 20
+Variable Cost per Unit = 10
+
+Break-even quantity = 1,000 / (20 - 10)
+Break-even quantity = 100 units</div>
+
+                    <p>The business must sell 100 units to cover its fixed and variable costs under these assumptions.</p>
+
+                    <h3>8. What Is a Business Plan?</h3>
+
+                    <p>A <strong>business plan</strong> is a document that describes a business's goals, market, strategy, operations, and financial expectations.</p>
+
+                    <p>A business plan can help an entrepreneur organize decisions, communicate the business idea, and evaluate resource needs.</p>
+
+                    <h3>9. Main Sections of a Business Plan</h3>
+
+                    <ul>
+                        <li><strong>Executive summary:</strong> A short overview of the business and its goals.</li>
+                        <li><strong>Business description:</strong> What the business does and the value it offers.</li>
+                        <li><strong>Market analysis:</strong> Information about customers, competitors, and demand.</li>
+                        <li><strong>Marketing strategy:</strong> How the business will attract and retain customers.</li>
+                        <li><strong>Operations plan:</strong> How products or services will be delivered.</li>
+                        <li><strong>Management:</strong> The people and responsibilities involved.</li>
+                        <li><strong>Financial plan:</strong> Expected revenue, costs, funding requirements, and cash flow.</li>
+                        <li><strong>Goals and milestones:</strong> Important targets and the steps needed to reach them.</li>
+                    </ul>
+
+                    <h3>10. Setting SMART Goals</h3>
+
+                    <p>SMART is a framework for making goals more specific and actionable.</p>
+
+                    <ul>
+                        <li><strong>Specific:</strong> Clearly state what should be achieved.</li>
+                        <li><strong>Measurable:</strong> Identify how progress will be measured.</li>
+                        <li><strong>Achievable:</strong> Make the goal realistic given available resources.</li>
+                        <li><strong>Relevant:</strong> Connect the goal to the business's priorities.</li>
+                        <li><strong>Time-bound:</strong> Set a deadline or time frame.</li>
+                    </ul>
+
+                    <p>Instead of saying, "We want more customers," a business could set a goal to acquire 50 new customers within three months using a defined marketing budget.</p>
+
+                    <h3>11. Why Planning Matters</h3>
+
+                    <p>Business planning helps entrepreneurs:</p>
+
+                    <ul>
+                        <li>Clarify goals and priorities.</li>
+                        <li>Estimate financial needs.</li>
+                        <li>Identify possible challenges.</li>
+                        <li>Organize daily operations.</li>
+                        <li>Communicate with potential partners or investors.</li>
+                        <li>Measure progress and revise strategies.</li>
+                    </ul>
+
+                    <p>A business plan is not fixed forever. It should be updated when new information, customer feedback, or market conditions require changes.</p>
+
+                    <h3>Lecture 3 Summary</h3>
+
+                    <ul>
+                        <li>A business model explains how a business creates and captures value.</li>
+                        <li>A value proposition describes the main customer benefit.</li>
+                        <li>Revenue is income before expenses; profit is what remains after expenses.</li>
+                        <li>Fixed and variable costs behave differently as activity changes.</li>
+                        <li>The break-even point occurs when revenue equals costs.</li>
+                        <li>A business plan describes strategy, operations, market conditions, and finances.</li>
+                        <li>SMART goals help make business objectives clear and measurable.</li>
+                    </ul>
+                `
+            },
+
+            {
+                title: "Lecture 4: Marketing, Finance and Growth",
+                content: `
+                    <h3>1. What Is Marketing?</h3>
+
+                    <p><strong>Marketing</strong> involves understanding customer needs and communicating, delivering, and exchanging value through products and services.</p>
+
+                    <p>Marketing is broader than advertising. It can include market research, product decisions, pricing, distribution, customer relationships, and promotion.</p>
+
+                    <h3>2. The Marketing Mix: The 4 Ps</h3>
+
+                    <p>The traditional marketing mix contains four main elements.</p>
+
+                    <h4>Product</h4>
+                    <p>The product or service offered to customers, including its features, quality, design, and benefits.</p>
+
+                    <h4>Price</h4>
+                    <p>The amount customers pay and the pricing approach used by the business.</p>
+
+                    <h4>Place</h4>
+                    <p>Where and how customers can access or purchase the product, such as a shop, website, or mobile application.</p>
+
+                    <h4>Promotion</h4>
+                    <p>How the business communicates with potential customers through advertising, social media, public relations, and other promotional methods.</p>
+
+                    <div class="info-box">
+                        <strong>Remember:</strong> Product, Price, Place, and Promotion are known as the 4 Ps of marketing.
+                    </div>
+
+                    <h3>3. Understanding Customer Needs</h3>
+
+                    <p>Effective marketing begins with understanding the target audience.</p>
+
+                    <p>Businesses can learn about customers by:</p>
+
+                    <ul>
+                        <li>Conducting surveys and interviews.</li>
+                        <li>Studying customer questions and feedback.</li>
+                        <li>Analyzing purchasing behavior.</li>
+                        <li>Monitoring market trends.</li>
+                        <li>Testing different messages or product features.</li>
+                    </ul>
+
+                    <p>Customer research helps businesses choose relevant features, appropriate prices, and effective communication methods.</p>
+
+                    <h3>4. Digital Marketing</h3>
+
+                    <p><strong>Digital marketing</strong> uses digital channels to reach and communicate with customers.</p>
+
+                    <ul>
+                        <li><strong>Social media marketing:</strong> Sharing content and engaging with audiences on social platforms.</li>
+                        <li><strong>Search engine optimization (SEO):</strong> Improving a website's visibility in relevant unpaid search results.</li>
+                        <li><strong>Email marketing:</strong> Sending useful information and offers to people who have agreed to receive them.</li>
+                        <li><strong>Content marketing:</strong> Publishing helpful articles, videos, guides, or other content.</li>
+                        <li><strong>Online advertising:</strong> Paying to display advertisements to selected audiences.</li>
+                    </ul>
+
+                    <p>Businesses should choose channels based on their target audience, goals, budget, and ability to measure results.</p>
+
+                    <h3>5. Branding and Customer Relationships</h3>
+
+                    <p><strong>Branding</strong> is the process of developing a recognizable identity and reputation for a business, product, or service.</p>
+
+                    <p>A brand may include its name, logo, visual style, communication, values, and the experiences customers associate with it.</p>
+
+                    <p>Customer relationships can be strengthened by:</p>
+
+                    <ul>
+                        <li>Providing reliable products and services.</li>
+                        <li>Communicating clearly and honestly.</li>
+                        <li>Responding to customer questions.</li>
+                        <li>Handling complaints fairly.</li>
+                        <li>Protecting customer information.</li>
+                    </ul>
+
+                    <h3>6. Introduction to Business Finance</h3>
+
+                    <p><strong>Business finance</strong> concerns how a business obtains, manages, and uses money to support its operations and goals.</p>
+
+                    <p>Entrepreneurs need to estimate how much money is required to start and operate the business, when expenses will occur, and when income is expected.</p>
+
+                    <h3>7. Budgeting</h3>
+
+                    <p>A <strong>budget</strong> is a financial plan that estimates income and expenses for a particular period.</p>
+
+                    <p>A basic business budget may include:</p>
+
+                    <ul>
+                        <li>Expected sales revenue.</li>
+                        <li>Rent and utilities.</li>
+                        <li>Materials and inventory.</li>
+                        <li>Employee salaries.</li>
+                        <li>Marketing expenses.</li>
+                        <li>Equipment and software.</li>
+                        <li>Emergency reserves.</li>
+                    </ul>
+
+                    <p>Comparing actual results with the budget helps the business identify unexpected costs or differences in sales.</p>
+
+                    <h3>8. Cash Flow</h3>
+
+                    <p><strong>Cash flow</strong> refers to money moving into and out of a business over a period.</p>
+
+                    <ul>
+                        <li><strong>Cash inflows:</strong> Money received from customers, loans, investments, or other sources.</li>
+                        <li><strong>Cash outflows:</strong> Money paid for rent, salaries, supplies, loan repayments, and other expenses.</li>
+                    </ul>
+
+                    <div class="code-example">Net Cash Flow =
+Cash Inflows - Cash Outflows
+
+Example:
+Cash Inflows = 4,000
+Cash Outflows = 3,200
+
+Net Cash Flow = 800</div>
+
+                    <p>A business can report a profit but still experience cash-flow problems if customers pay late or large payments are due before money arrives.</p>
+
+                    <h3>9. Sources of Business Funding</h3>
+
+                    <p>Businesses may obtain funding from different sources.</p>
+
+                    <h4>Personal Savings</h4>
+                    <p>The founder uses personal funds to finance the business.</p>
+
+                    <h4>Loans</h4>
+                    <p>A lender provides money that generally must be repaid according to agreed terms, often with interest.</p>
+
+                    <h4>Investors</h4>
+                    <p>Investors may provide money in exchange for an ownership stake or another agreed financial arrangement.</p>
+
+                    <h4>Bootstrapping</h4>
+                    <p>The business grows using its own revenue and limited external funding, often by controlling expenses carefully.</p>
+
+                    <h4>Grants and Competitions</h4>
+                    <p>Some organizations, institutions, or public programs offer funding or prizes for eligible projects. Requirements vary.</p>
+
+                    <p>The best funding source depends on the business's stage, funding needs, risk, repayment ability, and the founder's goals.</p>
+
+                    <h3>10. Profitability and Financial Decisions</h3>
+
+                    <p>Entrepreneurs should monitor revenue, costs, profit, and cash flow instead of relying on sales figures alone.</p>
+
+                    <p>Useful financial questions include:</p>
+
+                    <ul>
+                        <li>Are sales covering the business's costs?</li>
+                        <li>Which products or services generate the most value?</li>
+                        <li>Are expenses increasing faster than revenue?</li>
+                        <li>Does the business have enough cash to pay upcoming bills?</li>
+                        <li>How much funding is needed for the next stage?</li>
+                    </ul>
+
+                    <h3>11. Business Growth Strategies</h3>
+
+                    <p>A business may pursue growth in several ways.</p>
+
+                    <ul>
+                        <li><strong>Market penetration:</strong> Selling more of existing products to the current market.</li>
+                        <li><strong>Market development:</strong> Introducing existing products to new customer groups or locations.</li>
+                        <li><strong>Product development:</strong> Creating new or improved products for existing customers.</li>
+                        <li><strong>Partnerships:</strong> Working with other organizations to reach customers or access resources.</li>
+                        <li><strong>Online expansion:</strong> Using digital channels to reach a broader audience.</li>
+                        <li><strong>Customer retention:</strong> Encouraging existing customers to continue using the business.</li>
+                    </ul>
+
+                    <p>Growth should be managed carefully. Expanding too quickly can increase costs, strain resources, and reduce service quality.</p>
+
+                    <h3>12. Measuring Business Performance</h3>
+
+                    <p><strong>Key performance indicators (KPIs)</strong> are measurements used to monitor progress toward business goals.</p>
+
+                    <p>Examples include:</p>
+
+                    <ul>
+                        <li>Monthly sales revenue.</li>
+                        <li>Number of new customers.</li>
+                        <li>Customer retention rate.</li>
+                        <li>Profit margin.</li>
+                        <li>Website visits and conversion rate.</li>
+                        <li>Customer satisfaction.</li>
+                        <li>Average time needed to deliver a service.</li>
+                    </ul>
+
+                    <p>The most useful KPIs depend on the business's objectives. Measurements should help managers make better decisions rather than simply collect numbers.</p>
+
+                    <h3>Lecture 4 Summary</h3>
+
+                    <ul>
+                        <li>Marketing helps businesses understand customers and communicate value.</li>
+                        <li>The 4 Ps are Product, Price, Place, and Promotion.</li>
+                        <li>Digital marketing includes SEO, social media, email, content, and online advertising.</li>
+                        <li>Budgets estimate income and expenses.</li>
+                        <li>Cash flow tracks money entering and leaving the business.</li>
+                        <li>Funding can come from savings, loans, investors, grants, and business revenue.</li>
+                        <li>Growth strategies should match available resources and market demand.</li>
+                        <li>KPIs help businesses measure performance and progress.</li>
+                    </ul>
+                `
+            }
+
+        ];
+
+        // =========================================
+        // OPEN AND CLOSE LECTURES
+        // =========================================
+
+        function openLecture(index) {
+            const lecture = lectureMaterials[index];
+
+            if (!lecture) {
+                return;
+            }
+
+            document.getElementById("lectureList").style.display = "none";
+            document.getElementById("miniTest").style.display = "none";
+
+            const viewer = document.getElementById("lectureViewer");
+            const content = document.getElementById("lectureContent");
+
+            content.innerHTML = `
+                <h2>${lecture.title}</h2>
+                ${lecture.content}
+            `;
+
+            viewer.style.display = "block";
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+
+        function closeLecture() {
+            document.getElementById("lectureViewer").style.display = "none";
+            document.getElementById("lectureList").style.display = "block";
+            document.getElementById("miniTest").style.display = "block";
+
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+
+        // =========================================
+        // MINI TEST QUESTIONS
+        // =========================================
+
+        const quizQuestions = [
+            {
+                question: "1. What is entrepreneurship?",
+                options: [
+                    "A. Only working as an employee",
+                    "B. Avoiding every business decision",
+                    "C. Identifying opportunities and creating value through a venture",
+                    "D. Buying products only for personal use"
+                ],
+                answer: 2
+            },
+            {
+                question: "2. Which of the following is a key characteristic of an entrepreneur?",
+                options: [
+                    "A. Refusing to learn from mistakes",
+                    "B. Creativity and adaptability",
+                    "C. Avoiding all communication",
+                    "D. Ignoring customer needs"
+                ],
+                answer: 1
+            },
+            {
+                question: "3. What is the main purpose of market research?",
+                options: [
+                    "A. To understand customers, competitors, and market conditions",
+                    "B. To guarantee that every business will succeed",
+                    "C. To eliminate all business expenses",
+                    "D. To avoid learning about competitors"
+                ],
+                answer: 0
+            },
+            {
+                question: "4. What does SWOT analysis examine?",
+                options: [
+                    "A. Sales, wages, orders, and taxes only",
+                    "B. Websites, operations, technology, and tools",
+                    "C. Supply, wealth, ownership, and trade",
+                    "D. Strengths, weaknesses, opportunities, and threats"
+                ],
+                answer: 3
+            },
+            {
+                question: "5. What is a value proposition?",
+                options: [
+                    "A. A list of employee holidays",
+                    "B. An explanation of the value a product offers customers",
+                    "C. A record of every business expense",
+                    "D. A document containing only tax information"
+                ],
+                answer: 1
+            },
+            {
+                question: "6. Which statement correctly describes profit?",
+                options: [
+                    "A. Profit is always equal to total revenue",
+                    "B. Profit is the amount borrowed from a bank",
+                    "C. Profit is revenue minus total costs",
+                    "D. Profit is the number of customers"
+                ],
+                answer: 2
+            },
+            {
+                question: "7. What is the break-even point?",
+                options: [
+                    "A. The point where total revenue equals total costs",
+                    "B. The point where a business has no customers",
+                    "C. The moment a business hires its first employee",
+                    "D. The point where all products are free"
+                ],
+                answer: 0
+            },
+            {
+                question: "8. Which option is part of the 4 Ps of marketing?",
+                options: [
+                    "A. Planning",
+                    "B. Productivity",
+                    "C. Partnership",
+                    "D. Promotion"
+                ],
+                answer: 3
+            },
+            {
+                question: "9. What does cash flow measure?",
+                options: [
+                    "A. The number of products in a warehouse",
+                    "B. Money moving into and out of a business",
+                    "C. The number of competitors in a market",
+                    "D. The number of employees in a company"
+                ],
+                answer: 1
+            },
+            {
+                question: "10. Which of the following is an example of a SMART goal?",
+                options: [
+                    "A. Become successful someday",
+                    "B. Get as many customers as possible",
+                    "C. Acquire 50 new customers within three months",
+                    "D. Improve the business without setting a target"
+                ],
+                answer: 2
+            }
+        ];
+
+        let currentQuestion = 0;
+        let userAnswers = [];
+        let timeLeft = 600;
+        let quizTimer = null;
+        let quizFinished = false;
+
+        function startQuiz() {
+            clearInterval(quizTimer);
+
+            currentQuestion = 0;
+            userAnswers = new Array(quizQuestions.length).fill(null);
+            timeLeft = 600;
+            quizFinished = false;
+
+            document.getElementById("quizIntro").style.display = "none";
+            document.getElementById("quizResult").style.display = "none";
+            document.getElementById("quizArea").style.display = "block";
+
+            renderQuestion();
+            updateTimer();
+
+            quizTimer = setInterval(function () {
+                timeLeft--;
+                updateTimer();
+
+                if (timeLeft <= 0) {
+                    finishQuiz();
+                }
+            }, 1000);
+
+            document.getElementById("miniTest").scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+        }
+
+        function updateTimer() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+
+            document.getElementById("timer").textContent =
+                "Time: " +
+                String(minutes).padStart(2, "0") +
+                ":" +
+                String(seconds).padStart(2, "0");
+        }
+
+        function renderQuestion() {
+            const question = quizQuestions[currentQuestion];
+
+            document.getElementById("questionCounter").textContent =
+                "Question " + (currentQuestion + 1) +
+                " of " + quizQuestions.length;
+
+            document.getElementById("progressBar").style.width =
+                ((currentQuestion + 1) / quizQuestions.length * 100) + "%";
+
+            document.getElementById("questionText").textContent =
+                question.question;
+
+            const optionsContainer = document.getElementById("answerOptions");
+            optionsContainer.innerHTML = "";
+
+            question.options.forEach(function (option, index) {
+                const label = document.createElement("label");
+                label.className = "answer-option";
+
+                const radio = document.createElement("input");
+                radio.type = "radio";
+                radio.name = "quizAnswer";
+                radio.value = index;
+                radio.checked = userAnswers[currentQuestion] === index;
+
+                radio.addEventListener("change", function () {
+                    userAnswers[currentQuestion] = index;
+                });
+
+                label.appendChild(radio);
+                label.appendChild(document.createTextNode(option));
+                optionsContainer.appendChild(label);
+            });
+
+            document.getElementById("previousBtn").disabled =
+                currentQuestion === 0;
+
+            const nextButton = document.getElementById("nextBtn");
+
+            if (currentQuestion === quizQuestions.length - 1) {
+                nextButton.textContent = "Finish Test";
+            } else {
+                nextButton.textContent = "Next";
+            }
+        }
+
+        function nextQuestion() {
+            if (quizFinished) {
+                return;
+            }
+
+            if (currentQuestion === quizQuestions.length - 1) {
+                finishQuiz();
+                return;
+            }
+
+            currentQuestion++;
+            renderQuestion();
+        }
+
+        function previousQuestion() {
+            if (quizFinished || currentQuestion === 0) {
+                return;
+            }
+
+            currentQuestion--;
+            renderQuestion();
+        }
+
+        function finishQuiz() {
+            if (quizFinished) {
+                return;
+            }
+
+            quizFinished = true;
+            clearInterval(quizTimer);
+
+            let score = 0;
+
+            quizQuestions.forEach(function (question, index) {
+                if (userAnswers[index] === question.answer) {
+                    score++;
+                }
+            });
+
+            const percentage = Math.round(
+                (score / quizQuestions.length) * 100
+            );
+
+            document.getElementById("quizArea").style.display = "none";
+            document.getElementById("quizResult").style.display = "block";
+
+            document.getElementById("scoreText").textContent =
+                score + "/" + quizQuestions.length + " — " + percentage + "%";
+
+            let message = "";
+
+            if (percentage === 100) {
+                message = "Excellent! You answered every question correctly.";
+            } else if (percentage >= 80) {
+                message = "Great job! You have a strong understanding of the material.";
+            } else if (percentage >= 60) {
+                message = "Good effort! Review the incorrect answers to improve.";
+            } else {
+                message = "Keep practicing! Review the lectures and try the test again.";
+            }
+
+            document.getElementById("resultMessage").textContent = message;
+
+            const review = document.getElementById("answerReview");
+            review.innerHTML = "";
+
+            quizQuestions.forEach(function (question, index) {
+                const item = document.createElement("div");
+                item.className = "review-item";
+
+                const questionTitle = document.createElement("p");
+                questionTitle.textContent = question.question;
+                item.appendChild(questionTitle);
+
+                const yourAnswer = document.createElement("p");
+
+                if (userAnswers[index] === null) {
+                    yourAnswer.textContent = "Your answer: Not answered";
+                    yourAnswer.className = "wrong-answer";
+                } else {
+                    yourAnswer.textContent =
+                        "Your answer: " + question.options[userAnswers[index]];
+
+                    yourAnswer.className =
+                        userAnswers[index] === question.answer
+                            ? "correct-answer"
+                            : "wrong-answer";
+                }
+
+                item.appendChild(yourAnswer);
+
+                const correctAnswer = document.createElement("p");
+                correctAnswer.textContent =
+                    "Correct answer: " + question.options[question.answer];
+                correctAnswer.className = "correct-answer";
+
+                item.appendChild(correctAnswer);
+                review.appendChild(item);
+            });
+
+            document.getElementById("quizResult").scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+        }
+
+        function restartQuiz() {
+            startQuiz();
+        }
+    </script>
+
+</body>
+</html>
